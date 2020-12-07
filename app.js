@@ -14,6 +14,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
 const env = require('dotenv').config();
+const cors = require('cors');
 const app = express();
 
 let privateKey  = fs.readFileSync('sslcert/ashar_service.key', 'utf8');
@@ -32,6 +33,7 @@ let socketIO = require('./util/socket-manager').openIO(io);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
