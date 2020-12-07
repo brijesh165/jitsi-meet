@@ -64,7 +64,7 @@ server.listen(process.env.HTTP_PORT, function() {
 });
 
 httpsServer.listen(3443, function() {
-  console.log(`ASHAR SERVICE listening on ${process.env.HTTP_PORT}`);
+  console.log(`ASHAR SERVICE listening on ${process.env.HTTPS_PORT}`);
 });
 
 
