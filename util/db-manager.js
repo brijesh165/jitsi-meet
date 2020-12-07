@@ -1,7 +1,7 @@
-const mysql2 = require('mysql2');
+const mysql = require('mysql');
 const config = require('./../config/config.json');
 
-const con = mysql2.createConnection({
+const con = mysql.createConnection({
     host: config.development.host,
     port: config.development.port,
     user: config.development.username,
