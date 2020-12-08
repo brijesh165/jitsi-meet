@@ -18,10 +18,8 @@ exports.getMeeting = async (params, cb) => {
                 id: params.meeting_id
             }
         });
-
-        console.log("Meeting : ", meeting!==null, meeting.length);
         
-        if (meeting.length) {
+        if (meeting.length > 0) {
             response = {
                 code: 200,
                 message: "success"
