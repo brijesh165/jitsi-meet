@@ -3,6 +3,7 @@ const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const dbManager = require('./../util/db-manager');
 const models = require('./../models');
+const { responseCode } = require('./../util/constants');
 
 
 /**
@@ -155,6 +156,7 @@ exports.addlogs = async (params, cb) => {
 exports.editmeeting = async (params, cb) => {
     try {
         console.log("Edit Meeting Params : ", params);
+        let response;
         if (params.id) {
             let meeting = await meeting.findAll({
                 where: {
@@ -175,12 +177,17 @@ exports.editmeeting = async (params, cb) => {
                         id: params.meeting_id
                     }
                 })
+                response = {
+                    code: 200,
+                    message: "success"
+                }
             } else {
                 response = {
                     code: 501,
                     message:  "Invalid meeting id. Please try again with valid meeting ID."
                 }
             }
+            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
         }
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
