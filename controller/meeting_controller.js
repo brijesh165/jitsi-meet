@@ -18,6 +18,8 @@ exports.getMeeting = async (params, cb) => {
                 id: params.meeting_id
             }
         });
+
+        console.log("Meeting : ", meeting!==null, meeting.length > 0);
         
         if (meeting.length > 0) {
             response = {
