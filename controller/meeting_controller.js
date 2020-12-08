@@ -19,7 +19,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting!==null, meeting.length > 0);
+        console.log("Meeting : ", meeting);
         
         if (meeting.length > 0) {
             console.log("In IF TRUE")
