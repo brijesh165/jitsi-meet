@@ -19,7 +19,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting!==null);
+        console.log("Meeting : ", meeting!==null, meeting.length);
         
         if (meeting.length) {
             response = {
