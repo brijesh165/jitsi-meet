@@ -162,6 +162,13 @@ exports.editmeeting = async (params, cb) => {
                 }
             });
 
+            if (params.body.start_time) {
+                params.body.start_time = moment(params.body.start_time, 'x').toDate()
+            }
+            if (params.body.end_time) {
+                params.body.end_time = moment(params.body.end_time, 'x').toDate()
+            }
+            console.log("Params Body: ", params.body)
             if (meeting.length > 0) {
                 await meeting.update(params.body, {
                     where: {
