@@ -25,7 +25,8 @@ exports.getMeeting = async (params, cb) => {
             console.log("In IF TRUE")
             response = {
                 code: 200,
-                message: "success"
+                message: "success",
+                meeting: meeting
             }
         } else {
             console.log("In IF FALSE")
@@ -141,6 +142,41 @@ exports.addlogs = async (params, cb) => {
         return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
     } catch (error) {
         console.log("Meeting Controller || Add Logs", error);
+        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+    }
+}
+
+
+/**
+ * 
+ * @param {*} meeting_id 
+ * @param {*} body 
+ */
+exports.editmeeting = async (params, cb) => {
+    try {
+        console.log("Edit Meeting Params : ", params);
+        if (params.id) {
+            let meeting = await meeting.findAll({
+                where: {
+                    id: params.meeting_id
+                }
+            });
+
+            if (meeting.length > 0) {
+                await meeting.update(params.body, {
+                    where: {
+                        id: params.meeting_id
+                    }
+                })
+            } else {
+                response = {
+                    code: 501,
+                    message:  "Invalid meeting id. Please try again with valid meeting ID."
+                }
+            }
+        }
+    } catch (error) {
+        console.log("Meeting Controller || Edit Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
 }
