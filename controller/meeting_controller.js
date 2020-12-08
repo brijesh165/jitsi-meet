@@ -164,10 +164,11 @@ exports.editmeeting = async (params, cb) => {
                 }
             });
 
-            if (params.body.start_time) {
+            console.log(params.body.start_time)
+            if (params.body.start_time !== "" && params.body.start_time !== null) {
                 params.body.start_time = moment(params.body.start_time, 'x').toDate()
             }
-            if (params.body.end_time) {
+            if (params.body.end_time !== "" && params.body.end_time !== null) {
                 params.body.end_time = moment(params.body.end_time, 'x').toDate()
             }
             console.log("Params Body: ", params.body)
