@@ -22,13 +22,13 @@ exports.getMeeting = async (params, cb) => {
         console.log("Meeting : ", meeting!==null, meeting.length > 0);
         
         if (meeting.length > 0) {
-            console.length("In IF TRUE")
+            console.log("In IF TRUE")
             response = {
                 code: 200,
                 message: "success"
             }
         } else {
-            console.length("In IF FALSE")
+            console.log("In IF FALSE")
             response = {
                 code: 501,
                 message:  "Invalid meeting id. Please try again with valid meeting ID."
