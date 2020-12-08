@@ -158,7 +158,7 @@ exports.editmeeting = async (params, cb) => {
         console.log("Edit Meeting Params : ", params);
         let response;
         if (params.meeting_id) {
-            let meeting = await meeting.findAll({
+            let meeting = await models.meeting.findAll({
                 where: {
                     id: params.meeting_id
                 }
@@ -173,7 +173,7 @@ exports.editmeeting = async (params, cb) => {
             }
             console.log("Params Body: ", params.body)
             if (meeting.length > 0) {
-                await meeting.update(params.body, {
+                await models.meeting.update(params.body, {
                     where: {
                         id: params.meeting_id
                     }
