@@ -19,9 +19,9 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting);
+        console.log("Meeting : ", meeting!==null);
         
-        if (meeting) {
+        if (meeting !== null) {
             response = {
                 code: 200,
                 message: "success"
