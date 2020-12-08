@@ -157,7 +157,7 @@ exports.editmeeting = async (params, cb) => {
     try {
         console.log("Edit Meeting Params : ", params);
         let response;
-        if (params.meeting_id) {
+        if (params.meeting_id !== 'undefined') {
             let meeting = await models.meeting.findAll({
                 where: {
                     id: params.meeting_id
