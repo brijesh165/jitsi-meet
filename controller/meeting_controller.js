@@ -188,8 +188,13 @@ exports.editmeeting = async (params, cb) => {
                     message:  "Invalid meeting id. Please try again with valid meeting ID."
                 }
             }
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
+        } else {
+            response = {
+                code: 501,
+                message: "Please provice meeting id and try again!"
+            }
         }
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
