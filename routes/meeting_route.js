@@ -28,4 +28,11 @@ module.exports = function(app) {
       return res.json(response);
     })
   })
+
+  app.post('/edit-meeting', function (req, res) {
+    meetingController.editmeeting(req.body, function(err, response) {
+      if (err) return res.json(err);
+      return res.json(response);
+    })
+  })
 }
