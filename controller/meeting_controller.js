@@ -164,7 +164,7 @@ exports.editmeeting = async (params, cb) => {
                 }
             });
 
-            console.log(params.body.start_time)
+            console.log("start time : ", params.body.start_time)
             if (params.body.start_time !== "" && params.body.start_time !== null) {
                 params.body.start_time = moment(params.body.start_time, 'x').toDate()
             }
