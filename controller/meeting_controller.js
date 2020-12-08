@@ -19,6 +19,8 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
+        console.log("Meeting : ", meeting);
+        
         if (meeting) {
             response = {
                 code: 200,
