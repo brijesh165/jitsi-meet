@@ -11,7 +11,7 @@ const { responseCode } = require('./../util/constants');
  * @param {*} meeting_id 
  */
 exports.getMeeting = async (params, cb) => {
-    try {   
+    try {
         console.log("Get Meeting Params : ", params);
         let response;
         const meeting = await models.meeting.findAll({
@@ -21,7 +21,7 @@ exports.getMeeting = async (params, cb) => {
         });
 
         console.log("Meeting : ", meeting);
-        
+
         if (meeting.length > 0) {
             console.log("In IF TRUE")
             response = {
@@ -33,7 +33,7 @@ exports.getMeeting = async (params, cb) => {
             console.log("In IF FALSE")
             response = {
                 code: 501,
-                message:  "Invalid meeting id. Please try again with valid meeting ID."
+                message: "Invalid meeting id. Please try again with valid meeting ID."
             }
         }
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
@@ -102,7 +102,7 @@ exports.changeMeetingStatus = async (params, cb) => {
                 status: params.status,
                 actual_end_time: moment(params.actual_end_time, 'x').toDate()
             }
-            
+
             await models.meeting.update({ status: params.status, actual_end_time: moment(params.actual_end_time, 'x').toDate() }, {
                 where: {
                     id: params.meeting_id
@@ -157,41 +157,33 @@ exports.editmeeting = async (params, cb) => {
     try {
         console.log("Edit Meeting Params : ", params);
         let response;
-        if (params.meeting_id !== 'undefined') {
-            let meeting = await models.meeting.findAll({
+        let meeting = await models.meeting.findAll({
+            where: {
+                id: params.meeting_id
+            }
+        });
+
+        if ('start_time' in params.body) {
+            params.body.start_time = moment(params.body.start_time, 'x').toDate()
+        }
+        if ('end_time' in params.body) {
+            params.body.end_time = moment(params.body.end_time, 'x').toDate()
+        }
+        console.log("Params Body: ", params.body)
+        if (meeting.length > 0) {
+            await models.meeting.update(params.body, {
                 where: {
                     id: params.meeting_id
                 }
-            });
-
-            console.log("start time : ", params.body)
-            if ('start_time' in params.body) {
-                params.body.start_time = moment(params.body.start_time, 'x').toDate()
-            }
-            if ('end_time' in params.body) {
-                params.body.end_time = moment(params.body.end_time, 'x').toDate()
-            }
-            console.log("Params Body: ", params.body)
-            if (meeting.length > 0) {
-                await models.meeting.update(params.body, {
-                    where: {
-                        id: params.meeting_id
-                    }
-                })
-                response = {
-                    code: 200,
-                    message: "success"
-                }
-            } else {
-                response = {
-                    code: 501,
-                    message:  "Invalid meeting id. Please try again with valid meeting ID."
-                }
+            })
+            response = {
+                code: 200,
+                message: "success"
             }
         } else {
             response = {
                 code: 501,
-                message: "Please provice meeting id and try again!"
+                message: "Invalid meeting id. Please try again with valid meeting ID."
             }
         }
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
