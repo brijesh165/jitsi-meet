@@ -12,6 +12,7 @@ const models = require('./../models');
 exports.getMeeting = async (params, cb) => {
     try {   
         console.log("Get Meeting Params : ", params);
+        let response;
         const meeting = await models.meeting.findAll({
             where: {
                 id: params.meeting_id
@@ -19,10 +20,17 @@ exports.getMeeting = async (params, cb) => {
         });
 
         if (meeting) {
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), meeting));
+            response = {
+                code: 200,
+                message: "success"
+            }
         } else {
-            return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+            response = {
+                code: 501,
+                message:  "Invalid meeting id. Please try again with valid meeting ID."
+            }
         }
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
