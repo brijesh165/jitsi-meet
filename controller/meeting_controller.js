@@ -21,7 +21,7 @@ exports.getMeeting = async (params, cb) => {
 
         console.log("Meeting : ", meeting!==null);
         
-        if (meeting !== null) {
+        if (meeting.length) {
             response = {
                 code: 200,
                 message: "success"
