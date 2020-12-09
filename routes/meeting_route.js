@@ -10,7 +10,9 @@ module.exports = function(app) {
     const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
     const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
 
-    const meeting = await models.meeting.findAll(id, {
+    const meeting = await models.meeting.findAll({
+      attributes: ['id']
+    }, {
       where: {
         id: meeting_id
       }
