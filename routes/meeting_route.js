@@ -17,9 +17,9 @@ module.exports = function(app) {
     });
 
     if (meeting && userstatus == "start") {
-      window.location.href = `https://meet.teamlocus.com/${meeting[0].datavalues.id}`
+      res.redirect(`https://meet.teamlocus.com/${meeting[0].datavalues.id}`);
     } else {
-      window.location.href = `https://meet.teamlocus.com/waitingpage`
+      res.redirect(`https://meet.teamlocus.com/waitingpage`);
     }
 
     return res.json({
