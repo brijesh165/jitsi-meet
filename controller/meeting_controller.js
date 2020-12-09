@@ -17,7 +17,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting.dataValues);
+        console.log("Meeting : ", meeting);
         console.log("Encrypt: ", appUtil.encryptMeetingId(meeting.dataValues.id, "start"));
         console.log("Decrypt: ", appUtil.decryptMeetingId(appUtil.encryptMeetingId(meeting.dataValues.id, "start")));
         if (!meeting.length) {
@@ -27,9 +27,7 @@ exports.getMeeting = async (params, cb) => {
             }))            
         }
 
-        response = appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting);
-
-        return cb(null, response);
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting));
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
