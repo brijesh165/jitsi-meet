@@ -88,8 +88,8 @@ exports.startMeeting = async (params, cb) => {
     
         // console.log("Meeting Id: ", meeting);
         if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-        //   meetingController.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
-        //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+            exports.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
+            exports.addlogs(meeting.id, "meeting_start", "Host started meeting.");
             url = `https://meet.teamlocus.com/${meeting.id}`;
             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         } else {
