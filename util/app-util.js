@@ -26,8 +26,8 @@ exports.generateRandomId = function (prefix = '') {
 }
 
 exports.encryptMeetingId = function (meeting_id, keyword) {
-    let cipher = crypto.createCipher(algorithm, encryptKey);
-    let crypted = cipher.update(meeting_id, input_encoding, output_encoding);
+    let cipher = crypto.createCipher(algorithm, encryptkey);
+    let crypted = cipher.update(meeting_id, keyword, input_encoding, output_encoding);
     crypted = crypted + cipher.final(output_encoding);
     return crypted;
 }
