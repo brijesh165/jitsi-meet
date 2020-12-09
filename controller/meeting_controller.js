@@ -17,7 +17,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting.length);
+        // console.log("Meeting : ", meeting);
 
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
@@ -25,7 +25,10 @@ exports.getMeeting = async (params, cb) => {
                 message: "Invalid meeting id. Please try with valid meeting id."
             }))            
         }
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), meeting)
+
+        response = appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting);
+
+        return cb(null, response);
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
