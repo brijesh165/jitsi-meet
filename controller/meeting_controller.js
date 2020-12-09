@@ -18,9 +18,10 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting[0].dataValues.id);
-        console.log("Encrypt: ", appUtil.encryptMeetingId(meeting[0].dataValues.id.toString(), "start"));
-        console.log("Decrypt: ", appUtil.decryptMeetingId(appUtil.encryptMeetingId(meeting[0].dataValues.id.toString(), "start")));
+        const encryptedMeeting = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
+
+        console.log("Encrypt: ", appUtil.encryptMeetingId(encryptedMeeting));
+        console.log("Decrypt: ", appUtil.decryptMeetingId(encryptedMeeting));
 
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
