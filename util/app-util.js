@@ -1,5 +1,6 @@
 const shortid = require('shortid');
 const crypto = require('crypto');
+const cryptoAes = require('crypto-js/aes');
 const algorithm = 'aes-256-ctr';
 const encryptkey = '123456';
 const input_encoding = "utf8";
@@ -27,9 +28,10 @@ exports.generateRandomId = function (prefix = '') {
 
 exports.encryptMeetingId = function (meeting_id, keyword) {
     const meeting = meeting_id.toString() + "" + keyword;    
-    let cipher = crypto.createCipher(algorithm, encryptkey);
-    let crypted = cipher.update(meeting, input_encoding, output_encoding);
-    crypted = crypted + cipher.final(output_encoding);
+    let crypted = cryptoAes.encrypt(meeting, encryptkey);
+    // let cipher = crypto.createCipher(algorithm, encryptkey);
+    // let crypted = cipher.update(meeting, input_encoding, output_encoding);
+    // crypted = crypted + cipher.final(output_encoding);
     return crypted;
 }
 
