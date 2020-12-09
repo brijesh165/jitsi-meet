@@ -11,14 +11,12 @@ module.exports = function(app) {
     const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
 
     const meeting = await models.meeting.findOne({
-      attributes: ['id']
-    }, {
       where: {
         id: meeting_id
       }
     });
 
-    console.log("Meeting Id: ", meeting.id);
+    console.log("Meeting Id: ", meeting);
 
     if (meeting && userstatus == "start") {
       res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
