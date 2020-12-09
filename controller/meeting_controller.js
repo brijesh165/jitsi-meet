@@ -109,6 +109,7 @@ exports.joinMeeting = async (params, cb) => {
         let url;
         const queryParams = params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
+        console.log("dfd", meeting_id);
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
     
         const meeting = await models.meeting.findOne({
