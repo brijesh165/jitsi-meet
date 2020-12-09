@@ -10,7 +10,7 @@ module.exports = function(app) {
     const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
     const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
 
-    const meeting = await models.meeting.findAll({
+    const meeting = await models.meeting.findOne({
       attributes: ['id']
     }, {
       where: {
@@ -18,7 +18,7 @@ module.exports = function(app) {
       }
     });
 
-    console.log("Meeting Id: ", meeting);
+    console.log("Meeting Id: ", meeting.id);
 
     if (meeting && userstatus == "start") {
       res.redirect(`https://meet.teamlocus.com/${meeting[0].datavalues.id}`);
