@@ -7,6 +7,7 @@ const appUtil = require('./../util/app-util');
 module.exports = function(app) {
   app.get('/start-meeting/:id', async function(req, res) {
     const queryParams = req.query.id;
+    console.log("Query Params: ", queryParams);
     const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
     console.log("Meeting Id: ", meeting_id);
 
