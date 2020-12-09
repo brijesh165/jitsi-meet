@@ -12,7 +12,12 @@ module.exports = function(app) {
     })
   })
 
-  app.post('/create-meeting', function(req, res) {
+  app.post('/create-meeting', [
+    check('application').not().isEmpty().isIn('teamlocus', 'tlchat').withMessage('Please provide application name or application name should be teamlocus/tlchat'),
+    check('meeting_host').not().isEmpty().withMessage('Meeting host is required.'),
+    check('start_time').not().isEmpty().withMessage('Start Time is required.'),
+    check('end_time').not().isEmpty().withMessage('End Time is required.')
+  ], formValidationMiddleware, function(req, res) {
     meetingController.createmeeting(req.body, function(err, response) {
       if (err) return res.json(err);
       return res.json(response);

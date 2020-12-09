@@ -20,8 +20,8 @@ exports.getMeeting = async (params, cb) => {
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
-        response.start_url = `https://meet.teamlocus.com/${encryptedMeetingforstart}`;
-        response.join_url = `https://meet.teamlocus.com/${encryptedMeetingforjoin}`;
+        response.start_url = `https://meet.teamlocus.com/?meeting_id=${encryptedMeetingforstart}`;
+        response.join_url = `https://meet.teamlocus.com/?meeting_id=${encryptedMeetingforjoin}`;
         
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
@@ -39,6 +39,7 @@ exports.getMeeting = async (params, cb) => {
 /**
  * 
  * @param {*} application(teamlocus, tlchat) 
+ * @param {*} meeting_type(daily, weekly)
  * @param {*} meeting_host
  * @param {*} status
  * @param {*} start_time(UTC)
@@ -46,19 +47,22 @@ exports.getMeeting = async (params, cb) => {
  */
 exports.createmeeting = async (params, cb) => {
     try {
-        const queryParams = {
-            application: params.application,
-            meeting_host: params.meeting_host,
-            status: "pending",
-            start_time: moment(params.start_time, 'x').toDate(),
-            end_time: moment(params.end_time, 'x').toDate()
-        };
-        console.log("Query Params : ", queryParams)
-        await models.meeting.create(queryParams);
-        // const query = "INSERT into meetings SET ?";
-        // await dbManager.executeNonQuery(query, queryParams);
+        if (params.meeting_type == 'daily') {
+            const createmeetingparams = {
+                application: params.application,
+                meeting_host: params.meeting_host,
+                status: "pending",
+                start_time: moment(params.start_time, 'x').toDate(),
+                end_time: moment(params.end_time, 'x').toDate()
+            };
+            console.log("Query Params : ", createmeetingparams)
+            await models.meeting.create(createmeetingparams);
+    
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+        } else if (params.meeting_type == 'weekly') {
+            
+        }
 
-        return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
