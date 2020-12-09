@@ -1,10 +1,8 @@
 const shortid = require('shortid');
 const crypto = require('crypto');
-const cryptoAes = require('crypto-js/aes');
-const algorithm = 'aes-256-ctr';
+const cryptoJS = require('crypto-js');
+
 const encryptkey = '123456';
-const input_encoding = "utf8";
-const output_encoding = "hex";
 
 exports.createResponse = function (code, message, data) {
     return {
@@ -28,7 +26,7 @@ exports.generateRandomId = function (prefix = '') {
 
 exports.encryptMeetingId = function (meeting_id, keyword) {
     const meeting = meeting_id.toString() + "" + keyword;    
-    let crypted = cryptoAes.encrypt(meeting, encryptkey);
+    let crypted = cryptoJS.AES.encrypt(meeting, encryptkey).toString();
     // let cipher = crypto.createCipher(algorithm, encryptkey);
     // let crypted = cipher.update(meeting, input_encoding, output_encoding);
     // crypted = crypted + cipher.final(output_encoding);
