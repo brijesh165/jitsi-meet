@@ -3,6 +3,10 @@ const formValidationMiddleware = require('../util/middlewares/form-validation-mi
 const { check } = require('express-validator');
 
 module.exports = function(app) {
+  app.get('/start-meeting/:id', function(req, res) {
+    
+  })
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, function(req, res) {

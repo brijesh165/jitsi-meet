@@ -20,8 +20,11 @@ exports.getMeeting = async (params, cb) => {
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
-        response.start_url = `https://meet.teamlocus.com/?meeting_id=${encryptedMeetingforstart}`;
-        response.join_url = `https://meet.teamlocus.com/?meeting_id=${encryptedMeetingforjoin}`;
+        
+        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+        response.start_url = `https://meet.teamlocus.com:3443/start-meeting/${encryptedMeetingforstart}`;
+        response.join_url = `https://meet.teamlocus.com:3443/join-meeting/${encryptedMeetingforjoin}`;
         
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
