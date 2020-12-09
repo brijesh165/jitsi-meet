@@ -7,16 +7,20 @@ const appUtil = require('./../util/app-util');
 module.exports = function(app) {
   app.get('/start-meeting/:id', async function(req, res) {
     const queryParams = req.params.id;
-    console.log("Query Params: ", queryParams);
     const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-    console.log("Meeting Id: ", meeting_id);
+    const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
 
     const meeting = await models.meeting.findAll({
       where: {
         id: meeting_id
       }
     });
-    console.log("Meeting: ", meeting);
+
+    if (meeting && userstatus == "start") {
+      window.location.href = `https://meet.teamlocus.com/${meeting[0].datavalues.id}`
+    } else {
+      window.location.href = `https://meet.teamlocus.com/waitingpage`
+    }
 
     return res.json({
       code: 200,
