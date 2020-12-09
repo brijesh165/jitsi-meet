@@ -91,10 +91,10 @@ exports.startMeeting = async (params, cb) => {
           meetingController.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
           meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
             let url = `https://meet.teamlocus.com/${meeting.id}`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), url)
+            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         } else {
             url = `https://meet.teamlocus.com/waiting`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), url)
+            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         }    
 
     } catch (error) {
