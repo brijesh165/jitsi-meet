@@ -7,31 +7,10 @@ const moment = require('moment');
 
 module.exports = function(app) {
   app.get('/start-meeting/:id', async function(req, res) {
-    const queryParams = req.params.id;
-    const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-    const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
-
-    const meeting = await models.meeting.findOne({
-      where: {
-        id: meeting_id
-      }
-    });
-
-    // console.log("Meeting Id: ", meeting);
-    console.log("Meeting end time: ", meeting.end_time.valueOf());
-    console.log("Current time: ", moment().utc().toDate().valueOf());
-    if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-      res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
-    } else {
-      res.redirect(`https://meet.teamlocus.com/waitingpage`);
-    }
-
-    return res.json({
-      code: 200,
-      message: "success",
-      meeting: meeting
+    meetingController.startMeeting(req.body, function(err, response) {
+      if (err) return res.json(err);
+      return res.json(response);
     })
-  
   })
 
   app.post('/get-meeting', [

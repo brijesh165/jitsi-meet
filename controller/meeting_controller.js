@@ -72,6 +72,34 @@ exports.createmeeting = async (params, cb) => {
     }
 }
 
+exports.startMeeting = async (params, cb) => {
+    try {
+        const queryParams = params.id;
+        const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
+        const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
+    
+        const meeting = await models.meeting.findOne({
+          where: {
+            id: meeting_id
+          }
+        });
+    
+        // console.log("Meeting Id: ", meeting);
+        if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+          meetingController.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
+          meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+          res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
+        } else {
+          res.redirect(`https://meet.teamlocus.com/waiting`);
+        }    
+
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
+    } catch (error) {
+        console.log("Meeting Controller || Create Meeting", error);
+        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+    }
+}
+
 /**
  * 
  * @param {*} meeting_id 
