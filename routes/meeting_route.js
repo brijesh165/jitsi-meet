@@ -10,7 +10,7 @@ module.exports = function(app) {
     meetingController.startMeeting(req.params, function(err, response) {
       if (err) return res.json(err);
       console.log(response);
-      return res.redirect(response.url);
+      return res.redirect(response.data);
     })
   })
 
