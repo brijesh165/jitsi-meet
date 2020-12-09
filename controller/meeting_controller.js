@@ -117,7 +117,7 @@ exports.joinMeeting = async (params, cb) => {
           }
         });
     
-        // console.log("Meeting Id: ", meeting);
+        console.log("Meeting Id: ", meeting);
         if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
         //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
             url = `https://meet.teamlocus.com/${meeting.id}`;
