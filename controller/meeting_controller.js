@@ -19,21 +19,13 @@ exports.getMeeting = async (params, cb) => {
 
         console.log("Meeting : ", meeting.length);
 
-        if (meeting.length > 0) {
-            console.log("In IF TRUE")
-            response = {
-                code: 200,
-                message: "success",
-                meeting: meeting
-            }
-        } else {
-            console.log("In IF FALSE")
-            response = {
-                code: 501,
-                message: "Invalid meeting id. Please try again with valid meeting ID."
-            }
+        if (!meeting.length) {
+            return cb(null, appUtil.createErrorResponse({
+                code: 400,
+                message: "Invalid meeting id. Please try with valid meeting id."
+            }))            
         }
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), meeting)
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
