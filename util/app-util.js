@@ -27,8 +27,6 @@ exports.generateRandomId = function (prefix = '') {
 
 exports.encryptMeetingId = function (meeting_id, keyword) {
     const meeting = meeting_id.toString() + "" + keyword;
-    console.log("Meeting: " + meeting);
-    console.log("Type of meeting: ", typeof meeting);
     
     let cipher = crypto.createCipher(algorithm, encryptkey);
     let crypted = cipher.update(meeting, input_encoding, output_encoding);

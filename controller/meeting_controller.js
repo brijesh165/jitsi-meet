@@ -17,12 +17,12 @@ exports.getMeeting = async (params, cb) => {
                 id: params.meeting_id
             }
         });
-
-        const encryptedMeeting = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
-
-        console.log("Encrypt: ", appUtil.encryptMeetingId(encryptedMeeting));
-        console.log("Decrypt: ", appUtil.decryptMeetingId(encryptedMeeting));
-
+        response.meeting_details = meeting;
+        const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
+        const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
+        response.start_url = `https://meet.teamlocus.com/${encryptedMeetingforstart}`;
+        response.join_url = `https://meet.teamlocus.com/${encryptedMeetingforjoin}`;
+        
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
                 code: 400,
@@ -30,7 +30,7 @@ exports.getMeeting = async (params, cb) => {
             }))            
         }
 
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting));
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response));
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
