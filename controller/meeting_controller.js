@@ -1,10 +1,7 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
-const dbManager = require('./../util/db-manager');
 const models = require('./../models');
-const { responseCode } = require('./../util/constants');
-
 
 /**
  * 
@@ -20,7 +17,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting);
+        console.log("Meeting : ", meeting.length);
 
         if (meeting.length > 0) {
             console.log("In IF TRUE")
