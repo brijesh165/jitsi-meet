@@ -11,15 +11,17 @@ exports.getMeeting = async (params, cb) => {
     try {
         console.log("Get Meeting Params : ", params);
         let response;
+
         const meeting = await models.meeting.findAll({
             where: {
                 id: params.meeting_id
             }
         });
 
-        console.log("Meeting : ", typeof meeting);
+        console.log("Meeting : ", meeting.values(id));
         console.log("Encrypt: ", appUtil.encryptMeetingId(meeting.dataValues.id, "start"));
         console.log("Decrypt: ", appUtil.decryptMeetingId(appUtil.encryptMeetingId(meeting.dataValues.id, "start")));
+
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
                 code: 400,
