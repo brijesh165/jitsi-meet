@@ -75,7 +75,7 @@ exports.createmeeting = async (params, cb) => {
 exports.startMeeting = async (params, cb) => {
     try {
         console.log("Start Meeting Params: ", params.id);
-
+        let url;
         const queryParams = params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
@@ -86,11 +86,11 @@ exports.startMeeting = async (params, cb) => {
           }
         });
     
-        // console.log("Meeting Id: ", meeting);
+        console.log("Meeting Id: ", meeting);
         if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
           meetingController.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
           meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-            let url = `https://meet.teamlocus.com/${meeting.id}`;
+            url = `https://meet.teamlocus.com/${meeting.id}`;
             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         } else {
             url = `https://meet.teamlocus.com/waiting`;
