@@ -21,7 +21,7 @@ module.exports = function(app) {
     console.log("Meeting Id: ", meeting.id);
 
     if (meeting && userstatus == "start") {
-      res.redirect(`https://meet.teamlocus.com/${meeting[0].datavalues.id}`);
+      res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
     } else {
       res.redirect(`https://meet.teamlocus.com/waitingpage`);
     }
