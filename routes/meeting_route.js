@@ -18,7 +18,7 @@ module.exports = function(app) {
 
     console.log("Meeting Id: ", meeting);
 
-    if (meeting && userstatus == "start") {
+    if (meeting && userstatus == "start" && meeting.end_time.valueOf() > new Date().valueOf()) {
       res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
     } else {
       res.redirect(`https://meet.teamlocus.com/waitingpage`);
