@@ -18,7 +18,7 @@ module.exports = function(app) {
     });
 
     // console.log("Meeting Id: ", meeting);
-    console.log("Meeting end time: ", meeting.end_time);
+    console.log("Meeting end time: ", meeting.end_time.valueOf());
     console.log("Current time: ", moment().utc().toDate().valueOf());
     if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
       res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
