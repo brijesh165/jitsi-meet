@@ -17,7 +17,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        console.log("Meeting : ", meeting.id);
+        console.log("Meeting : ", meeting);
         console.log("Encrypt: ", appUtil.encryptMeetingId(meeting.id, "start"));
         console.log("Decrypt: ", appUtil.decryptMeetingId(appUtil.encryptMeetingId(meeting.id, "start")));
         if (!meeting.length) {
