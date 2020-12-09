@@ -1,4 +1,3 @@
-const { check } = require('express-validator');
 const meetingController = require('../controller/meeting_controller');
 const formValidationMiddleware = require('../util/middlewares/form-validation-middleware');
 const { check } = require('express-validator');
