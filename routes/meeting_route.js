@@ -7,7 +7,7 @@ const moment = require('moment');
 
 module.exports = function(app) {
   app.get('/start-meeting/:id', async function(req, res) {
-    meetingController.startMeeting(req.body, function(err, response) {
+    meetingController.startMeeting(req, function(err, response) {
       if (err) return res.json(err);
       return res.json(response);
     })
