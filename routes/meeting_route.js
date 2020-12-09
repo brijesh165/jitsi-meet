@@ -1,10 +1,28 @@
 const meetingController = require('../controller/meeting_controller');
 const formValidationMiddleware = require('../util/middlewares/form-validation-middleware');
 const { check } = require('express-validator');
+const models = require('./../models');
+const appUtil = require('./../util/app-util');
 
 module.exports = function(app) {
   app.get('/start-meeting/:id', function(req, res) {
-    
+    const queryParams = req.query.id;
+    const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
+    console.log("Meeting Id: ", meeting_id);
+
+    const meeting = await models.meeting.findAll({
+      where: {
+        id: meeting_id
+      }
+    });
+    console.log("Meeting: ", meeting);
+
+    return res.json({
+      code: 200,
+      message: "success",
+      meeting: meeting
+    })
+  
   })
 
   app.post('/get-meeting', [
