@@ -1,7 +1,10 @@
 const shortid = require('shortid');
-const CryptoJS = require('crypto-js');
+const crypto = require('crypto');
 
+const algorithm = 'aes-256-ctr';
 const encryptkey = '123456';
+const input_encoding = "utf8";
+const output_encoding = "hex";
 
 exports.createResponse = function (code, message, data) {
     return {
