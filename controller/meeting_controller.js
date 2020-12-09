@@ -90,12 +90,13 @@ exports.startMeeting = async (params, cb) => {
         if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
           meetingController.changeMeetingStatus(meeting.id, "started", moment().utc().toDate().valueOf());
           meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-          res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
+            let url = `https://meet.teamlocus.com/${meeting.id}`;
+            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), url)
         } else {
-          res.redirect(`https://meet.teamlocus.com/waiting`);
+            url = `https://meet.teamlocus.com/waiting`;
+            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), url)
         }    
 
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))

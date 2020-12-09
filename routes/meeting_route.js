@@ -9,7 +9,8 @@ module.exports = function(app) {
   app.get('/start-meeting/:id', async function(req, res) {
     meetingController.startMeeting(req.params, function(err, response) {
       if (err) return res.json(err);
-      return res.json(response);
+      console.log(response);
+      return res.redirect(response.url);
     })
   })
 
