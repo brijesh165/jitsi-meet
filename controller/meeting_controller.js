@@ -76,8 +76,8 @@ exports.startMeeting = async (req, res) => {
     try {
         console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
-        const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-        const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
+        const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
+        const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
     
         const meeting = await models.meeting.findOne({
           where: {
