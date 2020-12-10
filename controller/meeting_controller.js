@@ -10,21 +10,23 @@ const models = require('./../models');
 exports.getMeeting = async (params, cb) => {
     try {
         console.log("Get Meeting Params : ", params);
-        let response = {};
+        // let response = {};
+        let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
 
         const meeting = await models.meeting.findAll({
             where: {
-                id: params.meeting_id
+                id: meeting_id
             }
         });
-        response.meeting_details = meeting;
-        const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
-        const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
+        
+        // response.meeting_details = meeting;
+        // const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
+        // const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
 
-        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-        response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-        response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+        // response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+        // response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
@@ -33,7 +35,7 @@ exports.getMeeting = async (params, cb) => {
             }))
         }
 
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response));
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting));
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
@@ -95,23 +97,21 @@ exports.startMeeting = async (req, res) => {
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting`);
-            }
+            }m
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
             } else {
-                return res.redirect(`https://meet.teamlocus.com/waiting`);
+                return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.id}`);
             }
         }
-
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
         return res.json({
             code: 401,
             message: "Something went wrong! Please try again."
         })
-        // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
 }
 
