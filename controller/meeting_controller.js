@@ -67,8 +67,8 @@ exports.createmeeting = async (params, cb) => {
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting);
 
-            const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
+            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting[0].dataValues.id, "start");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting[0].dataValues.id, "join");
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
