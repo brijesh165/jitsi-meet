@@ -126,8 +126,8 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        console.log("Database time: ", meeting.end_time.getTime().valueOf());
-        console.log("Current time: ", moment().utc().toDate().getTime().valueOf());
+        console.log("Database time: ", meeting.end_time.format("hh:mm:ss").valueOf());
+        console.log("Current time: ", moment().utc().format("hh:mm:ss").valueOf());
 
         if (userstatus == "start") {
             if (meeting && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
