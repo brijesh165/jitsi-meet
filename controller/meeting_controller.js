@@ -20,17 +20,17 @@ exports.getMeeting = async (params, cb) => {
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
-        
+
         console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
         console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
         response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
-        
+
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
                 code: 400,
                 message: "Invalid meeting id. Please try with valid meeting id."
-            }))            
+            }))
         }
 
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response));
@@ -60,10 +60,10 @@ exports.createmeeting = async (params, cb) => {
             };
             console.log("Query Params : ", createmeetingparams)
             await models.meeting.create(createmeetingparams);
-    
+
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
         } else if (params.meeting_type == 'weekly') {
-            
+
         }
 
     } catch (error) {
@@ -78,33 +78,33 @@ exports.startMeeting = async (req, res) => {
         const queryParams = req.params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
-    
+
         const meeting = await models.meeting.findOne({
-          where: {
-            id: meeting_id
-          }
+            where: {
+                id: meeting_id
+            }
         });
-    
+
         if (userstatus == "start") {
-            if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+            if (meeting && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
                     }
                 });
-    
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
-                // url = `https://meet.teamlocus.com/${meeting.id}`;
-                // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting`);
-                // url = `https://meet.teamlocus.com/waiting`;
-                // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
             }
         } else if (userstatus == "join") {
-            return res.redirect(`https://meet.teamlocus.com/waiting`);
+            if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+                //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+            } else {
+                return res.redirect(`https://meet.teamlocus.com/waiting`);
+            }
         }
-    
+
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
         return res.json({
@@ -122,16 +122,16 @@ exports.joinMeeting = async (params, cb) => {
         const queryParams = params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
-    
+
         const meeting = await models.meeting.findOne({
-          where: {
-            id: meeting_id
-          }
+            where: {
+                id: meeting_id
+            }
         });
-    
+
         console.log("Meeting Id: ", meeting);
         if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-        //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+            //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
             url = `https://meet.teamlocus.com/${meeting.id}`;
             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         } else {
