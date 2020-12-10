@@ -85,23 +85,26 @@ exports.startMeeting = async (req, res) => {
           }
         });
     
-        // console.log("Meeting Id: ", meeting);
-        if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-            await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-                where: {
-                    id: meeting.id
-                }
-            });
-
-            return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
-            // url = `https://meet.teamlocus.com/${meeting.id}`;
-            // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-        } else {
+        if (userstatus == "start") {
+            if (meeting && userstatus == "start" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                    where: {
+                        id: meeting.id
+                    }
+                });
+    
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+                // url = `https://meet.teamlocus.com/${meeting.id}`;
+                // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+            } else {
+                return res.redirect(`https://meet.teamlocus.com/waiting`);
+                // url = `https://meet.teamlocus.com/waiting`;
+                // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+            }
+        } else if (userstatus == "join") {
             return res.redirect(`https://meet.teamlocus.com/waiting`);
-            // url = `https://meet.teamlocus.com/waiting`;
-            // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-        }    
-
+        }
+    
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
         return res.json({
