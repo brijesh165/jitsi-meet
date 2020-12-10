@@ -53,6 +53,7 @@ exports.getMeeting = async (params, cb) => {
  */
 exports.createmeeting = async (params, cb) => {
     try {
+        let response;
         if (params.meeting_type == 'daily') {
             const createmeetingparams = {
                 application: params.application,
@@ -67,15 +68,15 @@ exports.createmeeting = async (params, cb) => {
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting.id);
 
-            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting.dataValues.id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting.dataValues.id, "join");
+            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
             response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response)));
         } else if (params.meeting_type == 'weekly') {
             const createmeetingparams = {
                 application: params.application,
@@ -91,15 +92,16 @@ exports.createmeeting = async (params, cb) => {
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting);
 
-            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting[0].dataValues.id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting[0].dataValues.id, "join");
+            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+
             response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response)));
         }
 
     } catch (error) {
