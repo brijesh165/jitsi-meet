@@ -73,7 +73,7 @@ exports.createmeeting = async (params, cb) => {
                 meeting_host: params.meeting_host,
                 status: "pending",
                 meeting_type: params.meeting_type,
-                meeting_days: params.meeting_days.split(","),
+                meeting_days: params.meeting_days,
                 start_time: moment(params.start_time, 'x').toDate(),
                 end_time: moment(params.end_time, 'x').toDate()
             };
