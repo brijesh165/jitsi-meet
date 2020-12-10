@@ -1,5 +1,6 @@
-var dbManager = require('../../util/db-manager');
-const appUtil = require('../../util/app-util');
+var dbManager = require('./../util/db-manager');
+const appUtil = require('./../util/app-util');
+
 _seeder = {};
 
 _seeder.execute = async function () {
