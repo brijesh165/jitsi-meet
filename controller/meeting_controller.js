@@ -53,7 +53,7 @@ exports.getMeeting = async (params, cb) => {
  */
 exports.createmeeting = async (params, cb) => {
     try {
-        let response;
+        let response = {};
         if (params.meeting_type == 'daily') {
             const createmeetingparams = {
                 application: params.application,
