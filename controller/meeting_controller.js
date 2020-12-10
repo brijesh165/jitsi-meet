@@ -126,8 +126,11 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
+        console.log("Database time: ", meeting.end_time.getTime().valueOf());
+        console.log("Current time: ", moment().utc().toDate().getTime().valueOf());
+
         if (userstatus == "start") {
-            if (meeting && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+            if (meeting && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
@@ -145,6 +148,7 @@ exports.startMeeting = async (req, res) => {
                 return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
             }
         }
+
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
         return res.json({
