@@ -26,6 +26,14 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false,
     },
+    meeting_type: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    meeting_days: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
     start_time: {
       type: DataTypes.DATE,
       allowNull: false
