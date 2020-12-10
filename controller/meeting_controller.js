@@ -10,12 +10,11 @@ const models = require('./../models');
 exports.getMeeting = async (params, cb) => {
     try {
         console.log("Get Meeting Params : ", params);
-        // let response = {};
-        let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
+        // let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
 
         const meeting = await models.meeting.findAll({
             where: {
-                id: meeting_id
+                id: params.meeting_id
             }
         });
         
@@ -103,7 +102,7 @@ exports.startMeeting = async (req, res) => {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
             } else {
-                return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.id}`);
+                return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
             }
         }
     } catch (error) {
