@@ -93,16 +93,22 @@ exports.startMeeting = async (req, res) => {
                 }
             });
 
-            url = `https://meet.teamlocus.com/${meeting.id}`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+            return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+            // url = `https://meet.teamlocus.com/${meeting.id}`;
+            // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         } else {
-            url = `https://meet.teamlocus.com/waiting`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+            return res.redirect(`https://meet.teamlocus.com/waiting`);
+            // url = `https://meet.teamlocus.com/waiting`;
+            // return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
         }    
 
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        return res.json({
+            code: 401,
+            message: "Something went wrong! Please try again."
+        })
+        // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
 }
 
