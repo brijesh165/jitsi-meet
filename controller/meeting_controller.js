@@ -23,8 +23,8 @@ exports.getMeeting = async (params, cb) => {
         
         console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
         console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-        response.start_url = `https://meet.teamlocus.com:3443/start-meeting/${encryptedMeetingforstart}`;
-        response.join_url = `https://meet.teamlocus.com:3443/join-meeting/${encryptedMeetingforjoin}`;
+        response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+        response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
         
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
@@ -72,11 +72,10 @@ exports.createmeeting = async (params, cb) => {
     }
 }
 
-exports.startMeeting = async (params, cb) => {
+exports.startMeeting = async (req, res) => {
     try {
-        console.log("Start Meeting Params: ", params.id);
-        let url;
-        const queryParams = params.id;
+        console.log("Start Meeting Params: ", req.id);
+        const queryParams = req.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
     
@@ -113,7 +112,6 @@ exports.joinMeeting = async (params, cb) => {
         let url;
         const queryParams = params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-        console.log("dfd", meeting_id);
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
     
         const meeting = await models.meeting.findOne({

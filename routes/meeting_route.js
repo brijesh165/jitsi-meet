@@ -6,20 +6,14 @@ const appUtil = require('./../util/app-util');
 const moment = require('moment');
 
 module.exports = function(app) {
-  app.get('/start-meeting/:id', async function(req, res) {
-    meetingController.startMeeting(req.params, function(err, response) {
-      if (err) return res.json(err);
-      // console.log(response);
-      return res.redirect(response.data);
-    })
-  })
+  app.get('/join/:id', meetingController.startMeeting);
 
-  app.get('/join-meeting/:id', async function(req, res) {
-    meetingController.joinMeeting(req.params, function(err, response) {
-      if (err) return res.json(err);
-      return res.redirect(response.data);
-    })
-  })
+  // app.get('/join-meeting/:id', async function(req, res) {
+  //   meetingController.joinMeeting(req.params, function(err, response) {
+  //     if (err) return res.json(err);
+  //     return res.redirect(response.data);
+  //   })
+  // })
 
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
