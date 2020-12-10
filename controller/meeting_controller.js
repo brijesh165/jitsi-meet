@@ -46,6 +46,8 @@ exports.getMeeting = async (params, cb) => {
  * @param {*} meeting_type(daily, weekly)
  * @param {*} meeting_host
  * @param {*} status
+ * @param {*} meeting_type(daily, weekly)
+ * @param {*} meeting_days(Comma seperated string)
  * @param {*} start_time(UTC)
  * @param {*} end_time(UTC)
  */
@@ -61,8 +63,9 @@ exports.createmeeting = async (params, cb) => {
                 end_time: moment(params.end_time, 'x').toDate()
             };
             console.log("Query Params : ", createmeetingparams)
-            await models.meeting.create(createmeetingparams);
-
+            const createdMeeting = await models.meeting.create(createmeetingparams);
+            console.log("Created Meeting: ", createdMeeting);
+            
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
         } else if (params.meeting_type == 'weekly') {
             const createmeetingparams = {
@@ -76,7 +79,8 @@ exports.createmeeting = async (params, cb) => {
             };
 
             console.log("Query Params : ", createmeetingparams)
-            await models.meeting.create(createmeetingparams);
+            const createdMeeting = await models.meeting.create(createmeetingparams);
+            console.log("Created Meeting: ", createdMeeting);
 
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
         }
