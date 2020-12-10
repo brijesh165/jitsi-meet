@@ -130,16 +130,23 @@ exports.startMeeting = async (req, res) => {
         console.log("Current time: ", moment().utc().format("HHmm"));
 
         if (userstatus == "start") {
-            if (meeting && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
+            if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
                     }
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+            } else if (meeting && meeting.meeting_type == "weekly" && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
+                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                    where: {
+                        id: meeting.id
+                    }
+                });
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
             } else {
-                return res.redirect(`https://meet.teamlocus.com/waiting`);
-            } m
+                return res.redirect(`https://meet.teamlocas.com/waiting`)
+            }
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
