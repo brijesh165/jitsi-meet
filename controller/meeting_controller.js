@@ -62,7 +62,7 @@ exports.createmeeting = async (params, cb) => {
                 start_time: moment(params.start_time, 'x').toDate(),
                 end_time: moment(params.end_time, 'x').toDate()
             };
-            console.log("Query Params : ", createmeetingparams)
+            console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting);
 
@@ -78,7 +78,7 @@ exports.createmeeting = async (params, cb) => {
                 end_time: moment(params.end_time, 'x').toDate()
             };
 
-            console.log("Query Params : ", createmeetingparams)
+            console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting);
 
