@@ -283,7 +283,7 @@ exports.editmeeting = async (params, cb) => {
     }
 }
 
-exports.deletemeeting = async (params, cb) {
+exports.deletemeeting = async (params, cb) => {
     try {
         console.log("Delete Meeting Params: ", params);
 
@@ -293,6 +293,7 @@ exports.deletemeeting = async (params, cb) {
             }
         })
 
+        console.log("Delete Meeting: ", deletemeeting);
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
