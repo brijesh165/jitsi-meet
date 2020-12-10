@@ -282,3 +282,20 @@ exports.editmeeting = async (params, cb) => {
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
 }
+
+exports.deletemeeting = async (params, cb) {
+    try {
+        console.log("Delete Meeting Params: ", params);
+
+        const deletemeeting = await models.meeting.destroy({
+            where: {
+                id: params.meeting_id
+            }
+        })
+
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
+    } catch (error) {
+        console.log("Meeting Controller || Edit Meeting", error);
+        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+    }
+}

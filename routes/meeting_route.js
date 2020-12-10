@@ -59,4 +59,13 @@ module.exports = function(app) {
       return res.json(response);
     })
   })
+
+  app.post('/delete-meeting', [
+    check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
+  ], formValidationMiddleware, function(req, res) {
+    meetingController.deletemeeting(req.body, function(err, response) {
+      if (err) return res.json(err);
+      return res.json(response);
+    })
+  })
 }
