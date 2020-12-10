@@ -76,7 +76,7 @@ exports.createmeeting = async (params, cb) => {
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
             response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
-            console.log("Response: ", response);
+
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         } else if (params.meeting_type == 'weekly') {
             let response = {};
@@ -104,7 +104,7 @@ exports.createmeeting = async (params, cb) => {
             response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS, response)));
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
 
     } catch (error) {
