@@ -74,8 +74,8 @@ exports.createmeeting = async (params, cb) => {
 
 exports.startMeeting = async (req, res) => {
     try {
-        console.log("Start Meeting Params: ", req);
-        const queryParams = req.body.id;
+        console.log("Start Meeting Params: ", req.params);
+        const queryParams = req.params;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
     
