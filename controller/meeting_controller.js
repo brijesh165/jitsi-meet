@@ -74,8 +74,8 @@ exports.createmeeting = async (params, cb) => {
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            response.start_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         } else if (params.meeting_type == 'weekly') {
@@ -101,8 +101,8 @@ exports.createmeeting = async (params, cb) => {
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
 
-            response.start_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             return cb(null, appUtil.createSuccessResponse(appUtiul.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
