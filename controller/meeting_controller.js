@@ -138,14 +138,14 @@ exports.startMeeting = async (req, res) => {
                         id: meeting.id
                     }
                 });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}${meeting.meeting_host}`)
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}host=true`)
             } else if (meeting && meeting.meeting_type == "weekly" && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
                     }
                 });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}${meeting.meeting_host}`);
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}host=true`);
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting`)
             }
