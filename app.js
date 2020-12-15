@@ -25,7 +25,7 @@ const server = require('http').Server(app);
 const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
-let io = require('socket.io')(server);
+let io = require('socket.io')(httpsServer);
 let socketIO = require('./util/socket-manager').openIO(io);
 
 
