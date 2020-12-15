@@ -74,8 +74,8 @@ exports.createmeeting = async (params, cb) => {
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforjoin}`;
 
             return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         } else if (params.meeting_type == 'weekly') {
@@ -101,10 +101,10 @@ exports.createmeeting = async (params, cb) => {
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
 
-            response.start_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocas.com:3030/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://meet.teamlocus.com:3030/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
+            return cb(null, appUtil.createSuccessResponse(appUtiul.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
 
     } catch (error) {
@@ -259,10 +259,6 @@ exports.addlogs = async (params, cb) => {
         };
 
         await models.meeting_logs.create(logsParams);
-
-        // const query = "INSERT INTO meeting_logs SET ?";
-        // await dbManager.executeNonQuery(query, logsParams);
-
         return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
     } catch (error) {
         console.log("Meeting Controller || Add Logs", error);
@@ -320,13 +316,12 @@ exports.deletemeeting = async (params, cb) => {
     try {
         console.log("Delete Meeting Params: ", params);
 
-        const deletemeeting = await models.meeting.destroy({
+        await models.meeting.destroy({
             where: {
                 id: params.meeting_id
             }
-        })
+        });
 
-        console.log("Delete Meeting: ", deletemeeting);
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
