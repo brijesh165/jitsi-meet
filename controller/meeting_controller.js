@@ -121,7 +121,7 @@ exports.startMeeting = async (req, res) => {
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
         console.log("Meeting Id: ", meeting_id);
         console.log("User Status: ", userstatus);
-        
+
         const meeting = await models.meeting.findOne({
             where: {
                 id: meeting_id
@@ -138,14 +138,14 @@ exports.startMeeting = async (req, res) => {
                         id: meeting.id
                     }
                 });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}${meeting_host}`)
             } else if (meeting && meeting.meeting_type == "weekly" && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
                     }
                 });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}${meeting_host}`);
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting`)
             }
