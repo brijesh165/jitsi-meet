@@ -145,7 +145,7 @@ exports.startMeeting = async (req, res) => {
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`);
             } else {
-                return res.redirect(`https://meet.teamlocas.com/waiting`)
+                return res.redirect(`https://meet.teamlocus.com/waiting`)
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
