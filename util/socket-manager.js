@@ -6,7 +6,7 @@ exports.openIO = function (io) {
     socketIO = io;
     let meeting_id;
 
-    io.on('connection', function (socket) {
+    io.on('connection', async function (socket) {
         socket.on("hangup", (data) => {
             meeting_id = data.meeting_id
         })
