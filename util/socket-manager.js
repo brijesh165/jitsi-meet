@@ -13,7 +13,7 @@ exports.openIO = function (io) {
         })
 
         console.log("Meeting_id: ", meeting_id)
-        if (meeting_id !== null || meeting_id !== '') {
+        if (meeting_id !== null || meeting_id !== '' || meeting_id !== 'undefined') {
             await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
                 where: {
                     id: meeting_id
