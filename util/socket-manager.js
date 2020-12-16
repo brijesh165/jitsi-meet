@@ -6,8 +6,8 @@ let socketIO;
 exports.openIO = function (io) {
     socketIO = io;
 
-    io.on('connection', async function (socket) {
-        socket.on("hangup", (data) => {
+    io.on('connection', function (socket) {
+        socket.on("hangup", async (data) => {
             if (data.meeting_id != null && data.meeting_id.length > 0) {
                 await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
                     where: {
