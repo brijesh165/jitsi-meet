@@ -5,23 +5,21 @@ let socketIO;
 
 exports.openIO = function (io) {
     socketIO = io;
-    let meeting_id;
 
     io.on('connection', async function (socket) {
         socket.on("hangup", (data) => {
-            meeting_id = data.meeting_id
+            if (data.meeting_id != null && data.meeting_id.length > 0) {
+                await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+                    where: {
+                        id: data.meeting_id
+                    }
+                });
+    
+                socket.emit("end_meeting", { "meeting_id": data.meeting_id });
+            }
+    
         })
 
-        console.log("Meeting_id: ", meeting_id)
-        if (meeting_id !== null && meeting_id !== '' && meeting_id !== 'undefined') {
-            await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
-                where: {
-                    id: meeting_id
-                }
-            });
-
-            socket.emit("end_meeting", { "meeting_id": meeting_id });
-        }
         console.log('Socket Connection successful.');
     })
 }
