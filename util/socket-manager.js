@@ -1,12 +1,25 @@
+const models = require('./../models');
+
 let socketIO;
 
 exports.openIO = function(io) {
     socketIO = io;
+    let meeting_id;
 
     io.on('connection', function(socket) {
         socket.on("hangup", (data) => {
-            console.log(data);
+            meeting_id = data.meeting_id
         })
+
+        console.log("Meeting_id: ", meeting_id);
+
+        // await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+        //     where: {
+        //         id: meeting.id
+        //     }
+        // });
+
+        // socket.emit("end_meeting", {"meeting_id": meeting_id});
         console.log('Socket Connection successful.');
     })
 }
