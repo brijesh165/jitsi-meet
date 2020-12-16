@@ -15,7 +15,7 @@ exports.openIO = function (io) {
                     }
                 });
     
-                socket.emit("end_meeting", { "meeting_id": data.meeting_id });
+                io.emit("end_meeting", { "meeting_id": data.meeting_id });
             }
     
         })
