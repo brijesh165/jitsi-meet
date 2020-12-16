@@ -4,6 +4,7 @@ exports.openIO = function(io) {
     socketIO = io;
 
     io.on('connection', function(socket) {
+        console.log("Socket: ", socket);
         socketIO.on("hangup", (data) => {
             console.log(data);
         })
