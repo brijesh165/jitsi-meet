@@ -4,6 +4,9 @@ exports.openIO = function(io) {
     socketIO = io;
 
     io.on('connection', function(socket) {
+        socketIO.on("hangup", (data) => {
+            console.log(data);
+        })
         console.log('Socket Connection successful.');
     })
 }
@@ -11,7 +14,7 @@ exports.openIO = function(io) {
 exports.emit = function (topic, message, to = null) {
     if (to) {
         socketIO.to(to).emit(topic, message);
-    } else {
+    } else {        
         socketIO.emit(topic, message);
         console.log('Socket Emmited : ', topic, message);
     }
