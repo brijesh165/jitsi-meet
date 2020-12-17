@@ -40,6 +40,27 @@ exports.getMeeting = async (params, cb) => {
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
 }
+
+exports.getMeetingInfo = async (req, res) => {
+    try {
+        console.log("Params: ", req.body);
+        
+        const meetingInfo = await models.meeting.findOne({
+            where: {
+                id: req.body.id
+            }
+        });
+        console.log("Meeting Info: ", meetingInfo);
+        res.send({
+            code: 200,
+            meeting_info: meetingInfo
+        })
+    } catch(error) {
+        console.log("Meeting Controller || Create Meeting", error);
+        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+    }
+}
+
 /**
  * 
  * @param {*} application(teamlocus, tlchat) 
@@ -147,14 +168,14 @@ exports.startMeeting = async (req, res) => {
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
-                return res.redirect(`https://meet.teamlocus.com/end_meeting`)
+                return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
             } else if (meeting && meeting.status == "ended") {
-                return res.redirect(`https://meet.teamlocus.com/end_meeting`)
+                return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
             }

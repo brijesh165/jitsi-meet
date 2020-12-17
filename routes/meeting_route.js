@@ -24,6 +24,10 @@ module.exports = function(app) {
     })
   })
 
+  app.post('/get-meeting-info', [
+    check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
+  ], formValidationMiddleware, meetingController.getMeetingInfo);
+
   app.post('/create-meeting', [
     check('application').not().isEmpty().isIn(['teamlocus', 'tlchat']).withMessage('Please provide application name or application name should be teamlocus/tlchat'),
     check('meeting_host').not().isEmpty().withMessage('Meeting host is required.'),
