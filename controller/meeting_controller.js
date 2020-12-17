@@ -41,13 +41,13 @@ exports.getMeeting = async (params, cb) => {
     }
 }
 
-exports.getMeetingInfo = async (req, res) => {
+exports.getMeetingInfo = async (params, cb) => {
     try {
-        console.log("Params: ", req.body);
+        console.log("Params: ", params);
         
         const meetingInfo = await models.meeting.findOne({
             where: {
-                id: req.body.id
+                id: params.meeting_id
             }
         });
         console.log("Meeting Info: ", meetingInfo);
