@@ -51,10 +51,7 @@ exports.getMeetingInfo = async (params, cb) => {
             }
         });
         console.log("Meeting Info: ", meetingInfo);
-        res.send({
-            code: 200,
-            meeting_info: meetingInfo
-        })
+        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meetingInfo));
     } catch(error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
