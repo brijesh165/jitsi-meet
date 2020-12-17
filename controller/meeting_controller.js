@@ -147,12 +147,14 @@ exports.startMeeting = async (req, res) => {
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
-                return res.redirect(`https://meet.teamlocus.com/waiting`)
+                return res.redirect(`https://meet.teamlocus.com/end_meeting`)
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+            } else if (meeting && meeting.status == "ended") {
+                return res.redirect(`https://meet.teamlocus.com/end_meeting`)
             } else {
                 return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
             }
