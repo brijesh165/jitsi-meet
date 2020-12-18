@@ -50,7 +50,7 @@ exports.getMeetingInfo = async (params, cb) => {
                 id: params.meeting_id
             }
         });
-        console.log("Meeting Info: ", meetingInfo);
+        // console.log("Meeting Info: ", meetingInfo);
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meetingInfo));
     } catch(error) {
         console.log("Meeting Controller || Create Meeting", error);

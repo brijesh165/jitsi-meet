@@ -14,7 +14,6 @@ exports.openIO = function (io) {
                         id: data.meeting_id
                     }
                 });
-    
                 socketIO.emit("end_meeting", { "meeting_id": data.meeting_id });
             }
     
