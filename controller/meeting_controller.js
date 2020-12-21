@@ -150,7 +150,7 @@ exports.startMeeting = async (req, res) => {
         console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
         console.log("Current time: ", moment().utc().format("HHmm"));
         console.log("Meeting Days: ", meeting.meeting_days);
-        
+
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
@@ -159,7 +159,7 @@ exports.startMeeting = async (req, res) => {
                     }
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
-            } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.include(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
+            } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
                         id: meeting.id
