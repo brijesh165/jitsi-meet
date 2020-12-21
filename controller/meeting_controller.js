@@ -149,7 +149,8 @@ exports.startMeeting = async (req, res) => {
 
         console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
         console.log("Current time: ", moment().utc().format("HHmm"));
-
+        console.log("Meeting Days: ", meeting.meeting_days);
+        
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
