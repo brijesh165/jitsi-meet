@@ -122,7 +122,7 @@ exports.createmeeting = async (params, cb) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtiul.createSuccessResponse(constants.responseCode.SUCCESS), response));
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
 
     } catch (error) {
