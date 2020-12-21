@@ -168,11 +168,11 @@ exports.startMeeting = async (req, res) => {
                     });
                     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
                 }
             } else {
                 console.log('In else');
-                return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
+                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
