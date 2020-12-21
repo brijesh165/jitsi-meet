@@ -159,13 +159,17 @@ exports.startMeeting = async (req, res) => {
                     }
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
-            } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
-                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-                    where: {
-                        id: meeting.id
-                    }
-                });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
+            } else if (meeting && meeting.meeting_type == "weekly" && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
+                if (meeting.meeting_days.includes(moment().weekday())) {
+                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                        where: {
+                            id: meeting.id
+                        }
+                    });
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
+                } else {
+                    return res.redirect(`https://meet.teamlocus.com/errorpage`);
+                }
             } else {
                 return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
             }
