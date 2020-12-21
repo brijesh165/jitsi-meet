@@ -168,7 +168,7 @@ exports.startMeeting = async (req, res) => {
                     });
                     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/errorpage`);
+                    return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
                 }
             } else {
                 return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
