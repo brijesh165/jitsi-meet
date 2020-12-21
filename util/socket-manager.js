@@ -20,7 +20,7 @@ exports.openIO = function (io) {
     
         })
 
-        console.log(`Socket Connection successful${socket.id}`);
+        console.log(`Socket Connection successful ${socket.id}`);
     })
 }
 
