@@ -44,7 +44,7 @@ exports.getMeeting = async (params, cb) => {
 exports.getMeetingInfo = async (params, cb) => {
     try {
         console.log("Params: ", params);
-        
+
         const meetingInfo = await models.meeting.findOne({
             where: {
                 id: params.meeting_id
@@ -52,7 +52,7 @@ exports.getMeetingInfo = async (params, cb) => {
         });
         // console.log("Meeting Info: ", meetingInfo);
         return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meetingInfo));
-    } catch(error) {
+    } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
     }
@@ -159,19 +159,15 @@ exports.startMeeting = async (req, res) => {
                     }
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
-            } else if (meeting && meeting.meeting_type == "weekly" && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
-                if (meeting.meeting_days.includes(moment().weekday())) {
-                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-                        where: {
-                            id: meeting.id
-                        }
-                    });
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
-                } else {
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
-                }
+            } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
+                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                    where: {
+                        id: meeting.id
+                    }
+                });
+                return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
-                console.log('In else');
+                console.log("In Else")
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
             }
         } else if (userstatus == "join") {
