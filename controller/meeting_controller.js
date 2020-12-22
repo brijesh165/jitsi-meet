@@ -152,9 +152,6 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting Days: ", meeting.meeting_days);
 
         if (userstatus == "start") {
-            console.log("1. ", meeting);
-            console.log("2. ", meeting.meeting_type == "daily")
-            console.log("3. ", meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf())
             if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                     where: {
