@@ -167,7 +167,6 @@ exports.startMeeting = async (req, res) => {
                 });
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
-                console.log("In Else")
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
             }
         } else if (userstatus == "join") {
