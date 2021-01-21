@@ -5,7 +5,7 @@
     "database": "jitsi_db",
     "host": "34.194.91.34",
     "port":3306,
-    "dialect": "mysql"
+    "dialect": "mysqli"
   },
   "test": {
     "username": "root",
