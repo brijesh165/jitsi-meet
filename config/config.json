@@ -3,7 +3,7 @@
     "username": "nodejitsi",
     "password": "node123456789",
     "database": "jitsi_db",
-    "host": "34.194.91.34",
+    "host": "127.0.0.1",
     "port":3306,
     "dialect": "mysql"
   },
