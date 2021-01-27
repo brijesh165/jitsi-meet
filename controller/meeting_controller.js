@@ -72,7 +72,7 @@ exports.getMeetingInfo = async (params, cb) => {
 exports.createmeeting = async (req, res) => {
     const params = req.body;
     try {
-        if (params.meeting_type == 'periodic') {
+        if (params.meeting_type == 'non-periodic') {
             let response = {};
 
             const createmeetingparams = {
@@ -105,7 +105,7 @@ exports.createmeeting = async (req, res) => {
                     join_url: response.join_url
                 }
             })
-        } else if (params.meeting_type == 'non-periodic') {
+        } else if (params.meeting_type == 'periodic') {
             let response = {};
 
             const createmeetingparams = {
