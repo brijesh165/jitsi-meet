@@ -36,15 +36,12 @@ module.exports = function(app) {
   app.post('/create-meeting', [
     check('application').not().isEmpty().isIn(['teamlocus', 'tlchat']).withMessage('Please provide application name or application name should be teamlocus/tlchat'),
     check('meeting_host').not().isEmpty().withMessage('Meeting host is required.'),
-    check('meeting_type').not().isEmpty().isIn(['daily', 'weekly']).withMessage('Meeting type should be daily or weekly'),
+    check('meeting_type').not().isEmpty().isIn(['periodic', 'nonperiodic']).withMessage('Meeting type should be daily or weekly'),
+    check('subject').not().isEmpty().withMessage("Subject is required."),
     check('start_time').not().isEmpty().withMessage('Start Time is required.'),
     check('end_time').not().isEmpty().withMessage('End Time is required.')
-  ], formValidationMiddleware, function(req, res) {
-    meetingController.createmeeting(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  ], formValidationMiddleware, 
+    meetingController.createmeeting)
 
   app.post('/change-meeting-status', function (req, res) {
     meetingController.changeMeetingStatus(req.body, function(err, response) {

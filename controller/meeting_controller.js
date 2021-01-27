@@ -69,9 +69,10 @@ exports.getMeetingInfo = async (params, cb) => {
  * @param {*} start_time(UTC)
  * @param {*} end_time(UTC)
  */
-exports.createmeeting = async (params, cb) => {
+exports.createmeeting = async (req, res) => {
+    const params = req.body;
     try {
-        if (params.meeting_type == 'daily') {
+        if (params.meeting_type == 'periodic') {
             let response = {};
 
             const createmeetingparams = {
@@ -79,6 +80,7 @@ exports.createmeeting = async (params, cb) => {
                 meeting_host: params.meeting_host,
                 status: "pending",
                 meeting_type: params.meeting_type,
+                subject: params.subject,
                 start_time: moment(params.start_time, 'x').toDate(),
                 end_time: moment(params.end_time, 'x').toDate()
             };
@@ -95,8 +97,14 @@ exports.createmeeting = async (params, cb) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
-        } else if (params.meeting_type == 'weekly') {
+            res.send({ 
+                status: "ok",
+                message: {
+                    start_url: response.start_url,
+                    join_url: response.join_url
+                }
+            })
+        } else if (params.meeting_type == 'non-periodic') {
             let response = {};
 
             const createmeetingparams = {
@@ -122,12 +130,24 @@ exports.createmeeting = async (params, cb) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
+            res.send({
+                code: "ok",
+                message: {
+                    start_url: response.start_url,
+                    join_url: response.join_url
+                }
+            })
+
+            // return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
 
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        res.send({
+            status: "error", 
+            message: "Internal Server Error"
+        })
     }
 }
 
