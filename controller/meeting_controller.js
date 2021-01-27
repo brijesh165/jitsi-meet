@@ -72,7 +72,7 @@ exports.getMeetingInfo = async (params, cb) => {
 exports.createmeeting = async (req, res) => {
     const params = req.body;
     try {
-        if (params.meeting_type == 'non-periodic') {
+        if (params.meeting_type == 'nonperiodic') {
             let response = {};
 
             const createmeetingparams = {
