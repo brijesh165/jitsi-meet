@@ -100,6 +100,7 @@ exports.createmeeting = async (req, res) => {
             res.send({ 
                 status: "ok",
                 message: {
+                    meeting_id: createdMeeting.id,
                     start_url: response.start_url,
                     join_url: response.join_url
                 }
@@ -133,6 +134,7 @@ exports.createmeeting = async (req, res) => {
             res.send({
                 code: "ok",
                 message: {
+                    meeting_id: createdMeeting.id,
                     start_url: response.start_url,
                     join_url: response.join_url
                 }
