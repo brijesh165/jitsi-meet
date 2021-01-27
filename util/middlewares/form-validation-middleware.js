@@ -9,7 +9,7 @@ module.exports = async function(req, res, next) {
         console.log( errors.array().map(item => item.msg).join(", "));
 
         return res.json({
-            code: 400,
+            code: "error",
             message: errors.array().map(item => item.msg).join(", ")
         })
     } else {
