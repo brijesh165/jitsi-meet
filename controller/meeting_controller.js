@@ -61,21 +61,23 @@ exports.getMeetingInfo = async (params, cb) => {
 /**
  * 
  * @param {*} application(teamlocus, tlchat) 
- * @param {*} meeting_type(daily, weekly)
  * @param {*} meeting_host
  * @param {*} status
- * @param {*} meeting_type(daily, weekly)
- * @param {*} meeting_days(Comma seperated string)
+ * @param {*} meeting_type(non-periodic, periodic)
+ * @param {*} subject
  * @param {*} start_time(UTC)
  * @param {*} end_time(UTC)
+ * @param {*} meeting_schedule
  */
 exports.createmeeting = async (req, res) => {
     const params = req.body;
     try {
         if (params.meeting_type == 'nonperiodic') {
             let response = {};
+            const currentTimeStamp = moment().utc().format('x').toString();
 
             const createmeetingparams = {
+                meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, data.length),
                 application: params.application,
                 meeting_host: params.meeting_host,
                 status: "pending",
@@ -85,24 +87,24 @@ exports.createmeeting = async (req, res) => {
                 end_time: moment(params.end_time, 'x').toDate()
             };
 
-            console.log("Create Meeting Params : ", createmeetingparams)
-            const createdMeeting = await models.meeting.create(createmeetingparams);
-            console.log("Created Meeting: ", createdMeeting.id);
+            // console.log("Create Meeting Params : ", createmeetingparams)
+            // const createdMeeting = await models.meeting.create(createmeetingparams);
+            // console.log("Created Meeting: ", createdMeeting.id);
 
-            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
+            // const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
+            // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
 
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+            // response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            // response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             res.send({ 
                 status: "ok",
                 message: {
-                    meeting_id: createdMeeting.id,
-                    start_url: response.start_url,
-                    join_url: response.join_url
+                    meeting_id: createmeetingparams.id,
+                    // start_url: response.start_url,
+                    // join_url: response.join_url
                 }
             })
         } else if (params.meeting_type == 'periodic') {
