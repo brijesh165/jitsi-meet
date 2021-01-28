@@ -34,6 +34,10 @@ module.exports = {
       actual_end_time: {
         type: Sequelize.DATE
       },
+      meeting_id: {
+        type: Sequelize.STRING(255),
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
