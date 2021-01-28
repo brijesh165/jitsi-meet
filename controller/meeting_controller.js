@@ -84,7 +84,15 @@ exports.createmeeting = async (req, res) => {
                 meeting_type: params.meeting_type,
                 subject: params.subject,
                 start_time: moment(params.start_time, 'x').toDate(),
-                end_time: moment(params.end_time, 'x').toDate()
+                end_time: moment(params.end_time, 'x').toDate(),
+                repeat_event_until: params.meeting_schedule.repeat_event_until,
+                repeat_interval: params.meeting_schedule.repeat_interval,
+                repeat_start_time: moment(params.start_time, 'x').toDate(),
+                repeat_end_time: params.meeting_schedule.repeat_end_time,
+                repeat_frequency: params.meeting_schedule.repeat_frequency,
+                occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
+                occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
+                occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
             };
 
             console.log("Create Meeting Params : ", createmeetingparams)
