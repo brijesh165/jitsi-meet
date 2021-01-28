@@ -74,7 +74,7 @@ exports.createmeeting = async (req, res) => {
     try {
         if (params.meeting_type == 'nonperiodic') {
             let response = {};
-            const currentTimeStamp = moment().utc().format('x').toString();
+            const currentTimeStamp = moment().utc().valueOf().toString();
 
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
