@@ -40,8 +40,7 @@ module.exports = function(app) {
     check('subject').not().isEmpty().withMessage("Subject is required."),
     check('start_time').not().isEmpty().withMessage('Start Time is required.'),
     check('end_time').not().isEmpty().withMessage('End Time is required.')
-  ], formValidationMiddleware, 
-    meetingController.createmeeting)
+  ], formValidationMiddleware, meetingController.createmeeting)
 
   app.post('/change-meeting-status', function (req, res) {
     meetingController.changeMeetingStatus(req.body, function(err, response) {
