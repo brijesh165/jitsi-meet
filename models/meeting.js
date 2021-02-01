@@ -62,11 +62,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    repeat_start_time: {
+    repeat_start_date: {
       type: DataTypes.DATE,
       allowNull: true
     },
-    repeat_end_time: {
+    repeat_end_date: {
       type: DataTypes.DATE,
       allowNull: true
     },
