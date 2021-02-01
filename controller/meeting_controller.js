@@ -183,7 +183,7 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting: ", meeting);
+        console.log("Meeting: ", meeting.dataValues);
         console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
         console.log("Current time: ", moment().utc().format("HHmm"));
         console.log("Meeting Days: ", meeting.meeting_days);
@@ -207,7 +207,8 @@ exports.startMeeting = async (req, res) => {
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
             }
         } else if (userstatus == "join") {
-            if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+            if (meeting && meeting.status == "started" 
+                    && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                 //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
                 return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
             } else if (meeting && meeting.status == "ended") {
