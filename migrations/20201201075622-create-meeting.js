@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      meting_id: {
+      meeting_id: {
         type: Sequelize.STRING(255),
         allowNull: false
       },

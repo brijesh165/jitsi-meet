@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   meeting.init({
-    meting_id: {
+    meeting_id: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
