@@ -170,8 +170,8 @@ exports.startMeeting = async (req, res) => {
     try {
         console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
-        const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
-        const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
+        const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0]+appUtil.decryptMeetingId(queryParams).split("-")[1]+appUtil.decryptMeetingId(queryParams).split("-")[2];
+        const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[3];
         console.log("Meeting Id: ", meeting_id);
         console.log("User Status: ", userstatus);
         console.log("Today Day Position: ", moment().weekday());
