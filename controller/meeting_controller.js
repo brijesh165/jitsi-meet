@@ -182,6 +182,7 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
+        console.log("Meeting: ", meeting);
         console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
         console.log("Current time: ", moment().utc().format("HHmm"));
         console.log("Meeting Days: ", meeting.meeting_days);
