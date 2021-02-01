@@ -80,32 +80,43 @@ exports.createmeeting = async (req, res) => {
                 meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: params.application,
                 meeting_host: params.meeting_host,
-                status: "pending",
-                meeting_type: params.meeting_type,
                 subject: params.subject,
+                status: params.meeting_status ? params.meeting_status :"pending",
+                meeting_type: params.meeting_type,
                 start_time: moment(params.start_time, 'x').toDate(),
-                end_time: moment(params.end_time, 'x').toDate(),
-                repeat_event_until: params.meeting_schedule.repeat_event_until,
-                repeat_interval: params.meeting_schedule.repeat_interval,
-                repeat_start_time: moment(params.start_time, 'x').toDate(),
-                repeat_end_time: params.meeting_schedule.repeat_end_time,
-                repeat_frequency: params.meeting_schedule.repeat_frequency,
-                occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
-                occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
-                occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
+                end_time: moment(params.end_time, 'x').toDate()
             };
 
+            // const createmeetingparams = {
+            //     meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
+            //     application: params.application,
+            //     meeting_host: params.meeting_host,
+            //     status: params.meeting_status ? params.meeting_status :"pending",
+            //     meeting_type: params.meeting_type,
+            //     subject: params.subject,
+            //     start_time: moment(params.start_time, 'x').toDate(),
+            //     end_time: moment(params.end_time, 'x').toDate(),
+            //     repeat_event_until: params.meeting_schedule.repeat_event_until,
+            //     repeat_interval: params.meeting_schedule.repeat_interval,
+            //     repeat_start_time: moment(params.start_time, 'x').toDate(),
+            //     repeat_end_time: params.meeting_schedule.repeat_end_time,
+            //     repeat_frequency: params.meeting_schedule.repeat_frequency,
+            //     occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
+            //     occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
+            //     occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
+            // };
+
             console.log("Create Meeting Params : ", createmeetingparams)
-            // const createdMeeting = await models.meeting.create(createmeetingparams);
-            // console.log("Created Meeting: ", createdMeeting.id);
+            const createdMeeting = await models.Meetings.create(createmeetingparams);
+            console.log("Created Meeting: ", createdMeeting.meeting_id);
 
-            // const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
-            // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
+            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meting_id, "join");
 
-            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            // response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            // response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             res.send({ 
                 status: "ok",
