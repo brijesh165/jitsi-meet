@@ -111,7 +111,7 @@ exports.createmeeting = async (req, res) => {
             console.log("Created Meeting: ", createdMeeting.meeting_id);
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meting_id, "join");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
@@ -121,9 +121,9 @@ exports.createmeeting = async (req, res) => {
             res.send({ 
                 status: "ok",
                 message: {
-                    meeting_id: createmeetingparams.id,
-                    // start_url: response.start_url,
-                    // join_url: response.join_url
+                    meeting_id: createmeetingparams.meeting_id,
+                    start_url: response.start_url,
+                    join_url: response.join_url
                 }
             })
         } else if (params.meeting_type == 'periodic') {
