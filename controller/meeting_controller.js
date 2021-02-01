@@ -71,6 +71,7 @@ exports.getMeetingInfo = async (params, cb) => {
  */
 exports.createmeeting = async (req, res) => {
     const params = req.body;
+    const currentTimeStamp = moment().utc().unix().toString();
     try {
         if (params.meeting_type == 'nonperiodic') {
             let response = {};
@@ -86,25 +87,6 @@ exports.createmeeting = async (req, res) => {
                 start_time: moment(params.start_time, 'x').toDate(),
                 end_time: moment(params.end_time, 'x').toDate()
             };
-
-            // const createmeetingparams = {
-            //     meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
-            //     application: params.application,
-            //     meeting_host: params.meeting_host,
-            //     status: params.meeting_status ? params.meeting_status :"pending",
-            //     meeting_type: params.meeting_type,
-            //     subject: params.subject,
-            //     start_time: moment(params.start_time, 'x').toDate(),
-            //     end_time: moment(params.end_time, 'x').toDate(),
-            //     repeat_event_until: params.meeting_schedule.repeat_event_until,
-            //     repeat_interval: params.meeting_schedule.repeat_interval,
-            //     repeat_start_time: moment(params.start_time, 'x').toDate(),
-            //     repeat_end_time: params.meeting_schedule.repeat_end_time,
-            //     repeat_frequency: params.meeting_schedule.repeat_frequency,
-            //     occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
-            //     occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
-            //     occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
-            // };
 
             console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
@@ -128,23 +110,33 @@ exports.createmeeting = async (req, res) => {
             })
         } else if (params.meeting_type == 'periodic') {
             let response = {};
-
+            console.log("Params: ", params)
             const createmeetingparams = {
+                meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: params.application,
                 meeting_host: params.meeting_host,
-                status: "pending",
+                status: params.meeting_status ? params.meeting_status :"pending",
                 meeting_type: params.meeting_type,
-                meeting_days: params.meeting_days,
+                subject: params.subject,
                 start_time: moment(params.start_time, 'x').toDate(),
-                end_time: moment(params.end_time, 'x').toDate()
+                end_time: moment(params.end_time, 'x').toDate(),
+                repeat_event_until: params.meeting_schedule.repeat_event_until,
+                repeat_interval: params.meeting_schedule.repeat_interval,
+                repeat_start_time: moment(params.start_time, 'x').toDate(),
+                repeat_end_time: moment(params.meeting_schedule.repeat_end_time).toDate(),
+                repeat_frequency: params.meeting_schedule.repeat_frequency,
+                occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
+                occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
+                occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
             };
+
 
             console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting);
 
-            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.id, "start");
-            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.id, "join");
+            const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
+            const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
 
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
@@ -155,7 +147,7 @@ exports.createmeeting = async (req, res) => {
             res.send({
                 code: "ok",
                 message: {
-                    meeting_id: createdMeeting.id,
+                    meeting_id: createdMeeting.meeting_id,
                     start_url: response.start_url,
                     join_url: response.join_url
                 }
