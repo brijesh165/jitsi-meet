@@ -107,7 +107,7 @@ exports.createmeeting = async (req, res) => {
             // };
 
             console.log("Create Meeting Params : ", createmeetingparams)
-            const createdMeeting = await models.Meetings.create(createmeetingparams);
+            const createdMeeting = await models.meeting.create(createmeetingparams);
             console.log("Created Meeting: ", createdMeeting.meeting_id);
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
