@@ -11,7 +11,12 @@ module.exports = {
       meeting_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
-        references: { model: 'meetings', key: 'id' }
+        references: { 
+          model: 'meetings', 
+          key: 'id' 
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE'
       },
       log_type: {
         type: Sequelize.STRING(255),

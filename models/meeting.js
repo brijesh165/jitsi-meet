@@ -14,29 +14,29 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   meeting.init({
+    meting_id: {
+      type: DataTypes.STRING(255),
+      allowNull: false
+    },
     application: {
       type: DataTypes.STRING(255),
       allowNull: false
     },
     meeting_host: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: false
     },
     status: {
       type: DataTypes.STRING(255),
-      allowNull: false,
+      allowNull: false
     },
     meeting_type: {
       type: DataTypes.STRING(255),
-      allowNull: true
+      allowNull: false
     },
     subject: {
       type: DataTypes.STRING(255),
       allowNull: false
-    },
-    meeting_days: {
-      type: DataTypes.STRING(255),
-      allowNull: true
     },
     start_time: {
       type: DataTypes.DATE,
@@ -47,11 +47,45 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     actual_start_time: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: true
     },
     actual_end_time: {
-      type: DataTypes.DATE
+      type: DataTypes.DATE,
+      allowNull: true
     },
+    repeat_event_until: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    repeat_interval: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    repeat_start_time: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    repeat_end_time: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    repeat_frequency: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    occurance: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    occurance_on_week_no: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    },
+    occurance_year_month_date: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'meeting',
