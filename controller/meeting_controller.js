@@ -256,7 +256,7 @@ exports.startMeeting = async (req, res) => {
                 } else {
                     console.log("Else Periodic meeting.")
                 }
-            }
+            
             // if (meeting && meeting.status == "started" 
             //         && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
             //       meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
