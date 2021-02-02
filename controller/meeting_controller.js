@@ -236,8 +236,8 @@ exports.startMeeting = async (req, res) => {
 
             if (meeting && meeting.meeting_type == "periodic") {
                 console.log("1: ", moment().utc().toDate().valueOf())
-                console.log("2: ", meeting.repeat_end_date)
-                if (!moment().utc().toDate().valueOf() > meeting.repeat_end_date) {
+                console.log("2: ", meeting.repeat_end_date.getTime().valueOf())
+                if (!moment().utc().toDate().valueOf() > meeting.repeat_end_date.getTime().valueOf()) {
                     const day = moment().isoWeekday();
                     const dayFromParams = moment(meeting.start_time).isoWeekday();
                     console.log("Day: " + day + ": Day From Params: " + dayFromParams);
