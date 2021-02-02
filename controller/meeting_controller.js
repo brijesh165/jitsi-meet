@@ -245,22 +245,28 @@ exports.startMeeting = async (req, res) => {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     if (meeting.repeat_event_until == "every_week") {
                         const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
-                        console.log("Diff: ", difference);
 
-                        const day = moment().isoWeekday();
-                        const dayFromParams = moment(meeting.start_time).isoWeekday();
-                        const time = moment().utc();
-                        if (day == dayFromParams) {
-                            if (meeting.status == "started"
-                            && moment(time).isAfter(meeting.start_time)
-                            && moment(time).isBefore(meeting.end_time)) {
-                                return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
-                            } else {
-                                return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                            }
-                        } 
+                        if (difference % 7 == 0) {
+                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                        } else {
+                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                        }
+                        // const day = moment().isoWeekday();
+                        // const dayFromParams = moment(meeting.start_time).isoWeekday();
+                        // const time = moment().utc();
+                        // if (day == dayFromParams) {
+                        //     if (meeting.status == "started"
+                        //     && moment(time).isAfter(meeting.start_time)
+                        //     && moment(time).isBefore(meeting.end_time)) {
+                        //         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                        //     } else {
+                        //         return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                        //     }
+                        // } 
                     } else if (meeting.repeat_event_until == "every_2_week") {
-                        if (meeting.status == "started" && moment(meeting.start_time).add(14, 'days') == moment().utc().toDate.valueOf()) {
+                        const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
+                        
+                        if (difference % 14 == 0) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
