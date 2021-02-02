@@ -241,7 +241,7 @@ exports.startMeeting = async (req, res) => {
                     const day = moment().isoWeekday();
                     const dayFromParams = moment(meeting.start_time).isoWeekday();
                     console.log("Day: " + day + ": Day From Params: " + dayFromParams);
-                    console.log("Time: ", meeting.start_time.format("hh:mm"));
+                    console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
                     console.log("Current Time: ", moment().utc().format("hh:mm"))
                     if (day == dayFromParams) {
                         if (meeting.status == "started"
