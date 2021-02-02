@@ -90,15 +90,15 @@ exports.createmeeting = async (req, res) => {
                 end_time: moment(params.end_time, 'x').toDate()
             };
 
-            console.log("Create Meeting Params : ", createmeetingparams)
+            // console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
-            console.log("Created Meeting: ", createdMeeting.meeting_id);
+            // console.log("Created Meeting: ", createdMeeting.meeting_id);
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
             const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
 
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
@@ -133,15 +133,15 @@ exports.createmeeting = async (req, res) => {
             };
 
 
-            console.log("Create Meeting Params : ", createmeetingparams)
+            // console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
-            console.log("Created Meeting: ", createdMeeting);
+            // console.log("Created Meeting: ", createdMeeting);
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
             const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
 
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-            console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
 
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
@@ -198,6 +198,8 @@ exports.startMeeting = async (req, res) => {
                         }
                     });
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)    
+                } else {
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             // if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
             //     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
@@ -224,12 +226,19 @@ exports.startMeeting = async (req, res) => {
                 {
                     console.log("If Meeting ID: ", meeting.meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                } else if (meeting.status == "ended") {
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
                 }
             }
 
+            if (meeting && meeting.meeting_type == "periodic") {
+                if (!moment().utc().toDate().valueOf() > meeting.repeat_end_date) {
+
+                }
+            }
             // if (meeting && meeting.status == "started" 
             //         && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
             //       meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
