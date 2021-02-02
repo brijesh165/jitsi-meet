@@ -80,11 +80,11 @@ exports.createmeeting = async (req, res) => {
             const currentTimeStamp = moment().utc().unix().toString();
 
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: params.application,
                 meeting_host: params.meeting_host,
                 subject: params.subject,
-                status: params.meeting_status ? params.meeting_status :"pending",
+                status: params.meeting_status ? params.meeting_status : "pending",
                 meeting_type: params.meeting_type,
                 start_time: moment(params.start_time, 'x').toDate(),
                 end_time: moment(params.end_time, 'x').toDate()
@@ -102,7 +102,7 @@ exports.createmeeting = async (req, res) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            res.send({ 
+            res.send({
                 status: "ok",
                 message: {
                     meeting_id: createmeetingparams.meeting_id,
@@ -114,10 +114,10 @@ exports.createmeeting = async (req, res) => {
             let response = {};
             console.log("Params: ", params)
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0,3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: params.application,
                 meeting_host: params.meeting_host,
-                status: params.meeting_status ? params.meeting_status :"pending",
+                status: params.meeting_status ? params.meeting_status : "pending",
                 meeting_type: params.meeting_type,
                 subject: params.subject,
                 start_time: moment(params.start_time, 'x').toDate(),
@@ -162,8 +162,50 @@ exports.createmeeting = async (req, res) => {
         console.log("Meeting Controller || Create Meeting", error);
         // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
         res.send({
-            status: "error", 
+            status: "error",
             message: "Internal Server Error"
+        })
+    }
+}
+
+/**
+ * @param {*} meeting
+ */
+exports.meetingStatusCheck = async (params) => {
+    try {
+        console.log("Params: ", params);
+        const difference = moment(params.start_time).diff(moment().utc(), 'days')
+        if (params.repeat_event_until == "every_week") {
+            if (difference % 7 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (params.repeat_event_until == "every_2_week") {
+            if (difference % 14 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (params.repeat_event_until == "month") {
+            if (moment(params.start_time).date() == moment().utc().date()) {
+                return true;
+            } else {
+                return false;
+            }
+        } else if (params.repeat_event_until == "year") {
+            if (moment(params.start_time).date() == moment().utc().date()
+                && moment(params.start_time).month() == moment().utc().month()) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    } catch (error) {
+        console.log("Meeting Controller || Meeting status check", error);
+        return res.json({
+            code: 401,
+            message: "Something went wrong! Please try again."
         })
     }
 }
@@ -172,12 +214,12 @@ exports.startMeeting = async (req, res) => {
     try {
         console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
-        const meeting_id = 
-        appUtil.decryptMeetingId(queryParams).split("-")[0]+"-"+appUtil.decryptMeetingId(queryParams).split("-")[1]+"-"+appUtil.decryptMeetingId(queryParams).split("-")[2];
+        const meeting_id =
+            appUtil.decryptMeetingId(queryParams).split("-")[0] + "-" + appUtil.decryptMeetingId(queryParams).split("-")[1] + "-" + appUtil.decryptMeetingId(queryParams).split("-")[2];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[3];
-        console.log("Meeting Id: ", meeting_id);
-        console.log("User Status: ", userstatus);
-        console.log("Today Day Position: ", moment().weekday());
+        // console.log("Meeting Id: ", meeting_id);
+        // console.log("User Status: ", userstatus);
+        // console.log("Today Day Position: ", moment().weekday());
 
         const meeting = await models.meeting.findOne({
             where: {
@@ -185,9 +227,9 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting: ", meeting.dataValues);
-        console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
-        console.log("Current time: ", moment().utc().format("HHmm"));
+        // console.log("Meeting: ", meeting.dataValues);
+        // console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
+        // console.log("Current time: ", moment().utc().format("HHmm"));
 
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
@@ -197,33 +239,33 @@ exports.startMeeting = async (req, res) => {
                             meeting_id: meeting_id
                         }
                     });
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)    
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
-            // if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
-            //     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-            //         where: {
-            //             id: meeting.id
-            //         }
-            //     });
-            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
-            // } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
-            //     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-            //         where: {
-            //             id: meeting.id
-            //         }
-            //     });
-            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
+            } else if (meeting && meeting.meeting_type == "periodic") {
+                console.log("In Periodic meeting");
+                if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
+                    console.log("Repeat event until: ", meeting.repeat_event_until)
+                    const check = meetingStatusCheck(meeting)
+
+                    if (check) {
+                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                    } else {
+                        return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                    }
+                } else {
+                    return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                }
             } else {
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
+
         } else if (userstatus == "join") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("In Non periodic meeting");
-                if (meeting.status == "started" 
-                && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) 
-                {
+                if (meeting.status == "started"
+                    && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("If Meeting ID: ", meeting.meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
@@ -236,73 +278,21 @@ exports.startMeeting = async (req, res) => {
 
             if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
-                console.log("Add 14 days", moment(meeting.start_time).add(14, 'days'));
-                console.log("Add months", moment(meeting.start_time).add(1, 'months'));
-                console.log("Add years", moment(meeting.start_time).add(1, 'years'));
-                // console.log("1: ", moment().utc().toDate().valueOf())
-                // console.log("2: ", meeting.repeat_end_date.getTime().valueOf())
-                if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
+                if (meeting.status == "started" && meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
-                    if (meeting.repeat_event_until == "every_week") {
-                        const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
+                    const check = meetingStatusCheck(meeting.meeting_id, meeting.start_time, meeting)
 
-                        if (meeting.status == "started" && difference % 7 == 0) {
-                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
-                        } else {
-                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                        }
-                        // const day = moment().isoWeekday();
-                        // const dayFromParams = moment(meeting.start_time).isoWeekday();
-                        // const time = moment().utc();
-                        // if (day == dayFromParams) {
-                        //     if (meeting.status == "started"
-                        //     && moment(time).isAfter(meeting.start_time)
-                        //     && moment(time).isBefore(meeting.end_time)) {
-                        //         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
-                        //     } else {
-                        //         return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                        //     }
-                        // } 
-                    } else if (meeting.repeat_event_until == "every_2_week") {
-                        const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
-                        
-                        if (meeting.status == "started" && difference % 14 == 0) {
-                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
-                        } else {
-                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                        }
-                    } else if (meeting.repeat_event_until == "month") {
-                        if (meeting.status == "started" && 
-                            moment(meeting.start_time).isoWeekday() == moment().utc().isoWeekday() &&
-                            moment(meeting.start_time).year() == moment().utc().year()) {
-                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
-                        } else {
-                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                        }
-                    } else if (meeting.repeat_event_until == "year") {
-                        if (meeting.status == "started" 
-                            && moment(meeting.start_time).isoWeekday() == moment().utc().isoWeekday()
-                            && moment(meeting.start_time).month() == moment().utc().month()) {
-                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
-                        } else {
-                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
-                        }
+                    if (check) {
+                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                    } else {
+                        return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                     }
+
                 } else {
-                    console.log("Else Periodic meeting.")
+                    return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                 }
-            
-            // if (meeting && meeting.status == "started" 
-            //         && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-            //       meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
-            // } else if (meeting && meeting.status == "ended") {
-            //     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
-            // } else {
-            //     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
-            // }
+            }
         }
-    }
 
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
