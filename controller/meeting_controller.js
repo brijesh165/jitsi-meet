@@ -240,12 +240,15 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
                     const day = moment().isoWeekday();
                     const dayFromParams = moment(meeting.start_time).isoWeekday();
-                    console.log("Day: " + day + ": Day From Params: " + dayFromParams);
-                    console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
-                    console.log("Current Time: ", moment().utc().format("hh:mm"))
+                    const time = moment().utc().format("hh:mm");
+                    const timeFromParams = moment(meeting.start_time).format("hh:mm");
+                    // console.log("Day: " + day + ": Day From Params: " + dayFromParams);
+                    // console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
+                    // console.log("Current Time: ", moment().utc().format("hh:mm"))
                     if (day == dayFromParams) {
                         if (meeting.status == "started"
-                        && meeting.start_time.valueOf() > moment().utc().toTime().valueOf()) {
+                        && time.isAfter(timeFromParams)
+                        && time.isBefore(timeFromParams)) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
