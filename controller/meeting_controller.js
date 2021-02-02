@@ -247,7 +247,7 @@ exports.startMeeting = async (req, res) => {
                         const a = moment(meeting.start_time).format("MM-DD-YYYY");
                         const b = moment().utc().format("MM-DD-YYYY");
                         console.log("A: " + a + " b: " + b);
-                        console.log("Diff: ", a.diff(b));
+                        console.log("Diff: ", a.diff(b, 'days'));
 
                         const day = moment().isoWeekday();
                         const dayFromParams = moment(meeting.start_time).isoWeekday();
