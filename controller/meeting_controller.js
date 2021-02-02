@@ -241,6 +241,18 @@ exports.startMeeting = async (req, res) => {
                     const day = moment().isoWeekday();
                     const dayFromParams = moment(meeting.start_time).isoWeekday();
                     console.log("Day: " + day + ": Day From Params: " + dayFromParams);
+                    console.log("Time: ", meeting.start_time.toTime().valueOf());
+                    if (day == dayFromParams) {
+                        if (meeting.status == "started"
+                        && meeting.start_time.toTime().valueOf() > moment().utc().toTime().valueOf()) {
+                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                        } else {
+                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                        }
+                    } 
+                    } else {
+
+                    }
                 } else {
                     console.log("Else Periodic meeting.")
                 }
