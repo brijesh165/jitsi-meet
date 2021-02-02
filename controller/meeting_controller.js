@@ -249,8 +249,8 @@ exports.startMeeting = async (req, res) => {
                     // console.log("Current Time: ", moment().utc().format("hh:mm"))
                     if (day == dayFromParams) {
                         if (meeting.status == "started"
-                        && time.isAfter(timeFromParams)
-                        && time.isBefore(timeFromParams)) {
+                        && moment(time).isAfter(meeting.start_time)
+                        && moment(time).isBefore(meeting.end_time)) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
