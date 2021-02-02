@@ -324,7 +324,7 @@ exports.changeMeetingStatus = async (params, cb) => {
                 status: params.status
             }
 
-            await models.meeting.update({ status: params.status, actual_end_time: moment(params.actual_end_time, 'x').toDate() }, {
+            await models.meeting.update({ status: params.status }, {
                 where: {
                     meeting_id: params.meeting_id
                 }
