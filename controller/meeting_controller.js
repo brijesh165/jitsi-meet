@@ -238,7 +238,7 @@ exports.startMeeting = async (req, res) => {
                 console.log("In Periodic meeting");
                 console.log("Add 14 days", moment(meeting.start_time).add(14, 'days'));
                 console.log("Add months", moment(meeting.start_time).add(1, 'months'));
-                console.log("Add years", moment(meeting.start_time).add(14, 'years'));
+                console.log("Add years", moment(meeting.start_time).add(1, 'years'));
                 // console.log("1: ", moment().utc().toDate().valueOf())
                 // console.log("2: ", meeting.repeat_end_date.getTime().valueOf())
                 if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
