@@ -235,30 +235,28 @@ exports.startMeeting = async (req, res) => {
             }
 
             if (meeting && meeting.meeting_type == "periodic") {
-                console.log("1: ", moment().utc().toDate().valueOf())
-                console.log("2: ", meeting.repeat_end_date.getTime().valueOf())
+                // console.log("1: ", moment().utc().toDate().valueOf())
+                // console.log("2: ", meeting.repeat_end_date.getTime().valueOf())
                 if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
-                    const day = moment().isoWeekday();
-                    const dayFromParams = moment(meeting.start_time).isoWeekday();
-                    const time = moment().utc();
-                    const timeFromParams = moment(meeting.start_time).format("hh:mma");
-                    console.log("1", moment(time).isAfter(meeting.start_time));
-                    console.log("2", moment(time).isBefore(meeting.end_time))
-                    // console.log("Day: " + day + ": Day From Params: " + dayFromParams);
-                    // console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
-                    // console.log("Current Time: ", moment().utc().format("hh:mm"))
-                    if (day == dayFromParams) {
-                        if (meeting.status == "started"
-                        && moment(time).isAfter(meeting.start_time)
-                        && moment(time).isBefore(meeting.end_time)) {
-                            return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                    console.log("Repeat event until: ", meeting.repeat_event_until)
+                    if (meeting.repeat_event_until == "every_week") {
+                        const day = moment().isoWeekday();
+                        const dayFromParams = moment(meeting.start_time).isoWeekday();
+                        const time = moment().utc();
+                        if (day == dayFromParams) {
+                            if (meeting.status == "started"
+                            && moment(time).isAfter(meeting.start_time)
+                            && moment(time).isBefore(meeting.end_time)) {
+                                return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                            } else {
+                                return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                            }
+                        } 
                         } else {
-                            return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+    
                         }
-                    } 
-                    } else {
-
                     }
+
                 } else {
                     console.log("Else Periodic meeting.")
                 }
