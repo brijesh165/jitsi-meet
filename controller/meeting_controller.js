@@ -213,7 +213,7 @@ exports.startMeeting = async (req, res) => {
             //     });
             //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
-                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
+                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.meeting_type == "non-periodic") {
