@@ -18,14 +18,14 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
-        // response.meeting_details = meeting;
-        // const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
-        // const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
+        response.meeting_details = meeting;
+        const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
+        const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
 
-        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-        // response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-        // response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+        response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+        response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
         if (!meeting.length) {
             return cb(null, appUtil.createErrorResponse({
@@ -295,7 +295,7 @@ exports.changeMeetingStatus = async (params, cb) => {
 
             await models.meeting.update({ status: params.status, actual_start_time: moment(params.actual_start_time, 'x').toDate() }, {
                 where: {
-                    id: params.meeting_id
+                    meeting_id: params.meeting_id
                 }
             });
 
@@ -311,7 +311,22 @@ exports.changeMeetingStatus = async (params, cb) => {
 
             await models.meeting.update({ status: params.status, actual_end_time: moment(params.actual_end_time, 'x').toDate() }, {
                 where: {
-                    id: params.meeting_id
+                    meeting_id: params.meeting_id
+                }
+            });
+
+            // const query = "UPDATE meetings SET stauts=?, actual_end_time=? where meeting_id=?";
+            // await dbManager.executeUpdate('meetings', param, {'id': params.id});
+            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+        }
+        if (params.status == "pending") {
+            const param = {
+                status: params.status
+            }
+
+            await models.meeting.update({ status: params.status, actual_end_time: moment(params.actual_end_time, 'x').toDate() }, {
+                where: {
+                    meeting_id: params.meeting_id
                 }
             });
 
