@@ -246,7 +246,7 @@ exports.startMeeting = async (req, res) => {
                     if (meeting.repeat_event_until == "every_week") {
                         const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
 
-                        if (difference % 7 == 0) {
+                        if (meeting.status == "started" && difference % 7 == 0) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
