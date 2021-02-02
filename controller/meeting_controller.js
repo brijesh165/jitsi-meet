@@ -49,7 +49,7 @@ exports.getMeetingInfo = async (params, cb) => {
 
         const meetingInfo = await models.meeting.findOne({
             where: {
-                id: params.meeting_id
+                meeting_id: params.meeting_id
             }
         });
         // console.log("Meeting Info: ", meetingInfo);
