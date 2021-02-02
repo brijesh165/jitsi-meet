@@ -12,7 +12,7 @@ exports.openIO = function (io) {
             if (data.meeting_id != null && data.meeting_id.length > 0) {
                 await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
                     where: {
-                        id: data.meeting_id
+                        meeting_id: data.meeting_id
                     }
                 });
                 socketIO.emit("end_meeting", { "meeting_id": data.meeting_id });

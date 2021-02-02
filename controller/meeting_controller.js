@@ -378,7 +378,7 @@ exports.editmeeting = async (params, cb) => {
         let response;
         let meeting = await models.meeting.findAll({
             where: {
-                id: params.meeting_id
+                meeting_id: params.meeting_id
             }
         });
 
@@ -392,7 +392,7 @@ exports.editmeeting = async (params, cb) => {
         if (meeting.length > 0) {
             await models.meeting.update(params.body, {
                 where: {
-                    id: params.meeting_id
+                    meeting_id: params.meeting_id
                 }
             })
             response = {
@@ -418,7 +418,7 @@ exports.deletemeeting = async (params, cb) => {
 
         await models.meeting.destroy({
             where: {
-                id: params.meeting_id
+                meeting_id: params.meeting_id
             }
         });
 
