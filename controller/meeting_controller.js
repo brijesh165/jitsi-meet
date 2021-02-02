@@ -217,10 +217,14 @@ exports.startMeeting = async (req, res) => {
             }
         } else if (userstatus == "join") {
             if (meeting && meeting.meeting_type == "non-periodic") {
+                console.log("In Non periodic meeting");
                 if (meeting.status == "started" 
-                && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+                && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) 
+                {
+                    console.log("If Meeting ID: ", meeting.meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else {
+                    console.log("Else Meeting ID: ", meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
                 }
             }
