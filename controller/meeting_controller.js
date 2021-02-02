@@ -243,7 +243,7 @@ exports.startMeeting = async (req, res) => {
                     const time = moment().utc();
                     const timeFromParams = moment(meeting.start_time).format("hh:mma");
                     console.log("1", moment(time).isAfter(meeting.start_time));
-                    console.log("2", time.isBefore(timeFromParams))
+                    console.log("2", moment(time).isBefore(meeting.end_time))
                     // console.log("Day: " + day + ": Day From Params: " + dayFromParams);
                     // console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
                     // console.log("Current Time: ", moment().utc().format("hh:mm"))
