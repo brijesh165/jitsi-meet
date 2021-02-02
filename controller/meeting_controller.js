@@ -188,7 +188,7 @@ exports.startMeeting = async (req, res) => {
         console.log("Current time: ", moment().utc().format("HHmm"));
 
         if (userstatus == "start") {
-            if (meeting && meeting.meeting_type == "non-periodic") {
+            if (meeting && meeting.meeting_type == "nonperiodic") {
                 if (meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                         where: {
@@ -215,7 +215,7 @@ exports.startMeeting = async (req, res) => {
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
         } else if (userstatus == "join") {
-            if (meeting && meeting.meeting_type == "non-periodic") {
+            if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("In Non periodic meeting");
                 if (meeting.status == "started" 
                 && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) 
