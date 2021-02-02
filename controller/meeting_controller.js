@@ -10,6 +10,7 @@ const models = require('./../models');
 exports.getMeeting = async (params, cb) => {
     try {
         console.log("Get Meeting Params : ", params);
+        let response = {};
         // let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
 
         const meeting = await models.meeting.findAll({
