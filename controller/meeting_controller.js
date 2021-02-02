@@ -189,33 +189,51 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting Days: ", meeting.meeting_days);
 
         if (userstatus == "start") {
-            if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
-                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-                    where: {
-                        id: meeting.id
-                    }
-                });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
-            } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
-                await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
-                    where: {
-                        id: meeting.id
-                    }
-                });
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
+            if (meeting && meeting.meeting_type == "non-periodic") {
+                if (meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                        where: {
+                            meeting_id: meeting_id
+                        }
+                    });
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)    
+                }
+            // if (meeting && meeting.meeting_type == "daily" && meeting.end_time.getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
+            //     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+            //         where: {
+            //             id: meeting.id
+            //         }
+            //     });
+            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`)
+            // } else if (meeting && meeting.meeting_type == "weekly" && meeting.meeting_days.includes(moment().weekday()) && moment(meeting.end_time).format("HHmm") > moment().utc().format("HHmm")) {
+            //     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+            //         where: {
+            //             id: meeting.id
+            //         }
+            //     });
+            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}?host=true`);
             } else {
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.id}`);
             }
         } else if (userstatus == "join") {
-            if (meeting && meeting.status == "started" 
-                    && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-                //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-                return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
-            } else if (meeting && meeting.status == "ended") {
-                return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
-            } else {
-                return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
+            if (meeting && meeting.meeting_type == "non-periodic") {
+                if (meeting.status == "started" 
+                && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                } else {
+                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
+                }
             }
+
+            // if (meeting && meeting.status == "started" 
+            //         && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+            //       meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+            //     return res.redirect(`https://meet.teamlocus.com/${meeting.id}`)
+            // } else if (meeting && meeting.status == "ended") {
+            //     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.id}`)
+            // } else {
+            //     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
+            // }
         }
 
     } catch (error) {
