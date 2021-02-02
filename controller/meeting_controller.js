@@ -236,7 +236,9 @@ exports.startMeeting = async (req, res) => {
 
             if (meeting && meeting.meeting_type == "periodic") {
                 if (!moment().utc().toDate().valueOf() > meeting.repeat_end_date) {
-
+                    const day = moment().isoWeekday();
+                    const dayFromParams = moment(meeting.start_time).isoWeekday();
+                    console.log("Day: " + day + ": Day From Params: " + dayFromParams);
                 }
             }
             // if (meeting && meeting.status == "started" 
