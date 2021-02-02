@@ -171,7 +171,7 @@ exports.createmeeting = async (req, res) => {
 /**
  * @param {*} meeting
  */
-exports.meetingStatusCheck = async (params) => {
+function meetingStatusCheck(params) {
     try {
         console.log("Params: ", params);
         const difference = moment(params.start_time).diff(moment().utc(), 'days')
@@ -280,7 +280,7 @@ exports.startMeeting = async (req, res) => {
                 console.log("In Periodic meeting");
                 if (meeting.status == "started" && meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
-                    const check = meetingStatusCheck(meeting.meeting_id, meeting.start_time, meeting)
+                    const check = meetingStatusCheck(meeting)
 
                     if (check) {
                         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
