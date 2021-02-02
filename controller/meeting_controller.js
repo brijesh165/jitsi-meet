@@ -266,19 +266,23 @@ exports.startMeeting = async (req, res) => {
                     } else if (meeting.repeat_event_until == "every_2_week") {
                         const difference = moment(meeting.start_time).diff(moment().utc(), 'days')
                         
-                        if (difference % 14 == 0) {
+                        if (meeting.status == "started" && difference % 14 == 0) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                         }
                     } else if (meeting.repeat_event_until == "month") {
-                        if (meeting.status == "started" && moment(meeting.start_time).add(1, 'months') == moment().utc().toDate.valueOf()) {
+                        if (meeting.status == "started" && 
+                            moment(meeting.start_time).isoWeekday() == moment().utc().isoWeekday() &&
+                            moment(meeting.start_time).year() == moment().utc().year()) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                         }
                     } else if (meeting.repeat_event_until == "year") {
-                        if (meeting.status == "started" && moment(meeting.start_time).add(1, 'years') == moment().utc().toDate.valueOf()) {
+                        if (meeting.status == "started" 
+                            && moment(meeting.start_time).isoWeekday() == moment().utc().isoWeekday()
+                            && moment(meeting.start_time).month() == moment().utc().month()) {
                             return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`);
                         } else {
                             return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
