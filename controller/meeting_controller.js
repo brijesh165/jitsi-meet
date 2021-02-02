@@ -244,7 +244,10 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     if (meeting.repeat_event_until == "every_week") {
-                        console.log("Diff: ",moment(meeting.start_time).format("MM-DD-YYYY").diff(moment().unix().format("MM-DD-YYYY")));
+                        const a = moment(meeting.start_time).format("MM-DD-YYYY");
+                        const b = moment().unix().toDate().format("MM-DD-YYYY");
+                        console.log("A: " + a + " b: " + b);
+                        console.log("Diff: ", a.diff(b));
 
                         const day = moment().isoWeekday();
                         const dayFromParams = moment(meeting.start_time).isoWeekday();
