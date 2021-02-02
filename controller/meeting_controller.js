@@ -240,9 +240,9 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
                     const day = moment().isoWeekday();
                     const dayFromParams = moment(meeting.start_time).isoWeekday();
-                    const time = moment().utc().format("hh:mma");
+                    const time = moment().utc();
                     const timeFromParams = moment(meeting.start_time).format("hh:mma");
-                    console.log("1", time.isAfter(timeFromParams));
+                    console.log("1", moment(time).isAfter(meeting.start_time));
                     console.log("2", time.isBefore(timeFromParams))
                     // console.log("Day: " + day + ": Day From Params: " + dayFromParams);
                     // console.log("Time: ", moment(meeting.start_time).format("hh:mm"));
