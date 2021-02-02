@@ -289,6 +289,7 @@ exports.startMeeting = async (req, res) => {
             //     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
             // }
         }
+    }
 
     } catch (error) {
         console.log("Meeting Controller || Start Meeting", error);
