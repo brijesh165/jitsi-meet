@@ -19,6 +19,7 @@ exports.getMeeting = async (params, cb) => {
             }
         });
 
+        console.log("Meeting: ", meeting);
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.id, "join");
