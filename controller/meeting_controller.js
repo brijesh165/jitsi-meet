@@ -250,6 +250,11 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
+                        await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                            where: {
+                                meeting_id: meeting_id
+                            }
+                        });
                         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                     } else {
                         return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
