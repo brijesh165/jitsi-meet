@@ -202,7 +202,7 @@ function meetingStatusCheck(params) {
             }
         } else if (params.repeat_event_until == "custom") {
             if (params.repeat_frequency == "daily") {
-                if (moment(meeting.start_time).getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                if (moment(params.start_time).getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     return true;
                 } else {
                     return false;
