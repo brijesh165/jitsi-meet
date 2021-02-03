@@ -15,4 +15,8 @@ const models = require('./../models');
 //                 where: {
 //                     meeting_id: allendedmeetings[i].meeting_id
 //                 }
-//     
+//             })
+//         }
+//     }
+
+// });
