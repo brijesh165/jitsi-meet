@@ -15,23 +15,31 @@ module.exports = function(app) {
   //   })
   // })
 
+  // app.post('/get-meeting', [
+  //   check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
+  // ], formValidationMiddleware, function(req, res) {
+  //   meetingController.getMeeting(req.body, function(err, response) {
+  //     if (err) return res.json(err);
+  //     return res.json(response);
+  //   })
+  // })
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
-  ], formValidationMiddleware, function(req, res) {
-    meetingController.getMeeting(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  ], formValidationMiddleware, meetingController.getMeeting)
+
+  // app.post('/get-meeting-info', [
+  //   check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
+  // ], formValidationMiddleware, function(req, res) {
+  //   meetingController.getMeetingInfo(req.body, function(err, response) {
+  //     if (err) return res.json(err);
+  //     return res.json(response);
+  //   })
+  // });
 
   app.post('/get-meeting-info', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
-  ], formValidationMiddleware, function(req, res) {
-    meetingController.getMeetingInfo(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  });
+  ], formValidationMiddleware, meetingController.getMeetingInfo);
 
   app.post('/create-meeting', [
     check('application').not().isEmpty().isIn(['teamlocus', 'tlchat']).withMessage('Please provide application name or application name should be teamlocus/tlchat'),
@@ -42,35 +50,15 @@ module.exports = function(app) {
     check('end_time').not().isEmpty().withMessage('End Time is required.')
   ], formValidationMiddleware, meetingController.createmeeting)
 
-  app.post('/change-meeting-status', function (req, res) {
-    meetingController.changeMeetingStatus(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  app.post('/change-meeting-status', meetingController.changeMeetingStatus)
 
-  app.post('/add-logs', function (req, res) {
-    meetingController.addlogs(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  app.post('/add-logs', meetingController.addlogs)
 
   app.post('/edit-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
-  ], formValidationMiddleware, function (req, res) {
-    meetingController.editmeeting(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  ], formValidationMiddleware, meetingController.editmeeting)
 
   app.post('/delete-meeting', [
     check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
-  ], formValidationMiddleware, function(req, res) {
-    meetingController.deletemeeting(req.body, function(err, response) {
-      if (err) return res.json(err);
-      return res.json(response);
-    })
-  })
+  ], formValidationMiddleware, meetingController.deletemeeting)
 }

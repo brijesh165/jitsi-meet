@@ -7,15 +7,15 @@ const models = require('./../models');
  * 
  * @param {*} meeting_id 
  */
-exports.getMeeting = async (params, cb) => {
+exports.getMeeting = async (req, res) => {
     try {
-        console.log("Get Meeting Params : ", params);
+        console.log("Get Meeting Params : ", req.body);
         let response = {};
         // let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
 
         const meeting = await models.meeting.findAll({
             where: {
-                meeting_id: params.meeting_id
+                meeting_id: req.body.meeting_id
             }
         });
 
@@ -30,33 +30,47 @@ exports.getMeeting = async (params, cb) => {
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
         if (!meeting.length) {
-            return cb(null, appUtil.createErrorResponse({
-                code: 400,
+            return res.send({ 
+                status: "error",
                 message: "Invalid meeting id. Please try with valid meeting id."
-            }))
+            })
         }
 
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meeting));
+        return res.send({
+            status: "ok",
+            response: meeting
+        })
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
 
-exports.getMeetingInfo = async (params, cb) => {
+exports.getMeetingInfo = async (req, res) => {
     try {
-        console.log("Params: ", params);
+
+        console.log("Params: ", req.body);
 
         const meetingInfo = await models.meeting.findOne({
             where: {
-                meeting_id: params.meeting_id
+                meeting_id: req.body.meeting_id
             }
         });
         // console.log("Meeting Info: ", meetingInfo);
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, meetingInfo));
+        return res.send({
+            status: "ok",
+            response: meetingInfo
+        })
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
 
@@ -72,22 +86,21 @@ exports.getMeetingInfo = async (params, cb) => {
  * @param {*} meeting_schedule
  */
 exports.createmeeting = async (req, res) => {
-    const params = req.body;
     const currentTimeStamp = moment().utc().unix().toString();
     try {
-        if (params.meeting_type == 'nonperiodic') {
+        if (req.body.meeting_type == 'nonperiodic') {
             let response = {};
             const currentTimeStamp = moment().utc().unix().toString();
 
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
-                application: params.application,
-                meeting_host: params.meeting_host,
-                subject: params.subject,
-                status: params.meeting_status ? params.meeting_status : "pending",
-                meeting_type: params.meeting_type,
-                start_time: moment(params.start_time, 'x').toDate(),
-                end_time: moment(params.end_time, 'x').toDate()
+                application: req.body.application,
+                meeting_host: req.body.meeting_host,
+                subject: req.body.subject,
+                status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                meeting_type: req.body.meeting_type,
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate()
             };
 
             // console.log("Create Meeting Params : ", createmeetingparams)
@@ -102,34 +115,34 @@ exports.createmeeting = async (req, res) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            res.send({
+            return res.send({
                 status: "ok",
-                message: {
+                response: {
                     meeting_id: createmeetingparams.meeting_id,
                     start_url: response.start_url,
                     join_url: response.join_url
                 }
             })
-        } else if (params.meeting_type == 'periodic') {
+        } else if (req.body.meeting_type == 'periodic') {
             let response = {};
-            console.log("Params: ", params)
+            console.log("Params: ", req.body)
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
-                application: params.application,
-                meeting_host: params.meeting_host,
-                status: params.meeting_status ? params.meeting_status : "pending",
-                meeting_type: params.meeting_type,
-                subject: params.subject,
-                start_time: moment(params.start_time, 'x').toDate(),
-                end_time: moment(params.end_time, 'x').toDate(),
-                repeat_event_until: params.meeting_schedule.repeat_event_until,
-                repeat_interval: params.meeting_schedule.repeat_interval,
-                repeat_start_date: moment(params.start_time, 'x').toDate(),
-                repeat_end_date: moment(params.meeting_schedule.repeat_end_time, 'x').toDate(),
-                repeat_frequency: params.meeting_schedule.repeat_frequency,
-                occurance: params.meeting_schedule.occurance ? params.meeting_schedule.occurance : '',
-                occurance_on_week_no: params.meeting_schedule.occurance_on_week_no ? params.meeting_schedule.occurance_on_week_no : '',
-                occurance_year_month_date: params.meeting_schedule.occurance_year_month_date ? params.meeting_schedule.occurance_year_month_date : ''
+                application: req.body.application,
+                meeting_host: req.body.meeting_host,
+                status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                meeting_type: req.body.meeting_type,
+                subject: req.body.subject,
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate(),
+                repeat_event_until: req.body.meeting_schedule.repeat_event_until,
+                repeat_interval: req.body.meeting_schedule.repeat_interval,
+                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
+                repeat_frequency: req.body.meeting_schedule.repeat_frequency,
+                occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
+                occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
+                occurance_year_month_date: req.body.meeting_schedule.occurance_year_month_date ? req.body.meeting_schedule.occurance_year_month_date : ''
             };
 
 
@@ -146,16 +159,14 @@ exports.createmeeting = async (req, res) => {
             response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-            res.send({
-                code: "ok",
-                message: {
+            return res.send({
+                status: "ok",
+                response: {
                     meeting_id: createdMeeting.meeting_id,
                     start_url: response.start_url,
                     join_url: response.join_url
                 }
             })
-
-            // return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response));
         }
 
     } catch (error) {
@@ -213,7 +224,7 @@ function meetingStatusCheck(params) {
     } catch (error) {
         console.log("Meeting Controller || Meeting status check", error);
         return res.json({
-            code: 401,
+            status: "error",
             message: "Something went wrong! Please try again."
         })
     }
@@ -248,8 +259,10 @@ exports.startMeeting = async (req, res) => {
                             meeting_id: meeting_id
                         }
                     });
+
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
+                
                     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
@@ -264,14 +277,18 @@ exports.startMeeting = async (req, res) => {
                                 meeting_id: meeting_id
                             }
                         });
+
                         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                     } else {
+                        
                         return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                     }
                 } else {
+
                     return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                 }
             } else {
+
                 return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
 
@@ -281,8 +298,10 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.status == "started"
                     && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("If Meeting ID: ", meeting.meeting_id)
+
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
+                    
                     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
@@ -353,62 +372,59 @@ exports.joinMeeting = async (params, cb) => {
  * @param {*} actual_start_time(Status == "started")
  * @param {*} actual_end_time(Status == "ended")
  */
-exports.changeMeetingStatus = async (params, cb) => {
+exports.changeMeetingStatus = async (req, res) => {
     try {
-        console.log("Params : ", params);
-        if (params.status == "started") {
-            const param = {
-                status: params.status,
-                actual_start_time: moment(params.actual_start_time, 'x').toDate()
-            }
-
-            await models.meeting.update({ status: params.status, actual_start_time: moment(params.actual_start_time, 'x').toDate() }, {
+        console.log("Params : ", req.body);
+        if (req.body.status == "started") {
+            await models.meeting.update({ status: req.body.status, actual_start_time: moment(req.body.actual_start_time, 'x').toDate() }, {
                 where: {
-                    meeting_id: params.meeting_id
+                    meeting_id: req.body.meeting_id
                 }
             });
 
             // const query = "UPDATE meetings SET stauts=?, actual_start_time=? where meeting_id=?";
             // await dbManager.executeUpdate('meetings', param, {'id': params.id});
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+            
+            return res.send({
+                status: "ok",
+            })
         }
-        if (params.status == "ended") {
-            const param = {
-                status: params.status,
-                actual_end_time: moment(params.actual_end_time, 'x').toDate()
-            }
-
-            await models.meeting.update({ status: params.status, actual_end_time: moment(params.actual_end_time, 'x').toDate() }, {
+        if (req.body.status == "ended") {
+            await models.meeting.update({ status: req.body.status, actual_end_time: moment(req.body.actual_end_time, 'x').toDate() }, {
                 where: {
-                    meeting_id: params.meeting_id
+                    meeting_id: req.body.meeting_id
                 }
             });
 
             // const query = "UPDATE meetings SET stauts=?, actual_end_time=? where meeting_id=?";
             // await dbManager.executeUpdate('meetings', param, {'id': params.id});
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
-        }
-        if (params.status == "pending") {
-            const param = {
-                status: params.status
-            }
 
-            await models.meeting.update({ status: params.status }, {
+            return res.send({
+                status: "ok"
+            })
+        }
+        if (req.body.status == "pending") {
+            await models.meeting.update({ status: req.body.status }, {
                 where: {
-                    meeting_id: params.meeting_id
+                    meeting_id: req.body.meeting_id
                 }
             });
 
             // const query = "UPDATE meetings SET stauts=?, actual_end_time=? where meeting_id=?";
             // await dbManager.executeUpdate('meetings', param, {'id': params.id});
-            return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+
+            return res.send({
+                status: "ok"
+            })
         }
     } catch (error) {
         console.log("Meeting Controller || Change Meeting Status", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
-
 
 /**
  * 
@@ -416,82 +432,96 @@ exports.changeMeetingStatus = async (params, cb) => {
  * @param {*} log_type
  * @param {*} log_description 
  */
-exports.addlogs = async (params, cb) => {
+exports.addlogs = async (req, res) => {
     try {
-        console.log("All Logs Params : ", params);
+        console.log("All Logs Params : ", req.body);
         const logsParams = {
-            meeting_id: params.meeting_id,
-            log_type: params.log_type,
-            log_description: params.log_description
+            meeting_id: req.body.meeting_id,
+            log_type: req.body.log_type,
+            log_description: req.body.log_description
         };
 
         await models.meeting_logs.create(logsParams);
-        return cb(null, appUtil.createSuccessResponse(appUtil.createSuccessResponse(constants.responseCode.SUCCESS)));
+
+        return res.send({
+            status: "ok"
+        })
     } catch (error) {
         console.log("Meeting Controller || Add Logs", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
-
 
 /**
  * 
  * @param {*} meeting_id 
  * @param {*} body 
  */
-exports.editmeeting = async (params, cb) => {
+exports.editmeeting = async (req, res) => {
     try {
-        console.log("Edit Meeting Params : ", params);
-        let response;
+        console.log("Edit Meeting Params : ", req.body);
         let meeting = await models.meeting.findAll({
             where: {
-                meeting_id: params.meeting_id
+                meeting_id: req.body.meeting_id
             }
         });
 
-        if ('start_time' in params.body) {
-            params.body.start_time = moment(params.body.start_time, 'x').toDate()
+        if ('start_time' in req.body) {
+            req.body.start_time = moment(req.body.start_time, 'x').toDate()
         }
-        if ('end_time' in params.body) {
-            params.body.end_time = moment(params.body.end_time, 'x').toDate()
+        if ('end_time' in req.body) {
+            req.body.end_time = moment(req.body.end_time, 'x').toDate()
         }
-        console.log("Params Body: ", params.body)
+        console.log("Params Body: ", req.body)
         if (meeting.length > 0) {
-            await models.meeting.update(params.body, {
+            await models.meeting.update(req.body, {
                 where: {
-                    meeting_id: params.meeting_id
+                    meeting_id: req.body.meeting_id
                 }
             })
-            response = {
-                code: 200,
-                message: "success"
-            }
+
+            return res.send({
+                status: "ok"
+            })
         } else {
-            response = {
-                code: 501,
+            return res.send({
+                status: "error",
                 message: "Invalid meeting id. Please try again with valid meeting ID."
-            }
+            })
         }
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS), response)
+
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
 
-exports.deletemeeting = async (params, cb) => {
+exports.deletemeeting = async (req, res) => {
     try {
-        console.log("Delete Meeting Params: ", params);
+        console.log("Delete Meeting Params: ", req.body);
 
         await models.meeting.destroy({
             where: {
-                meeting_id: params.meeting_id
+                meeting_id: req.body.meeting_id
             }
         });
 
-        return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS))
+        return res.send({
+            status: "ok"
+        })
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again."
+        })
     }
 }
