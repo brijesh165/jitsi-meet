@@ -104,7 +104,7 @@ exports.createmeeting = async (req, res) => {
             const currentTimeStamp = moment().utc().unix().toString();
 
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 subject: req.body.subject,
@@ -140,7 +140,7 @@ exports.createmeeting = async (req, res) => {
             let response = {};
             console.log("Params: ", req.body)
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0, 3) + "-" + currentTimeStamp.slice(3, 6) + "-" + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
