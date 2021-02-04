@@ -146,12 +146,12 @@ exports.createmeeting = async (req, res) => {
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
                 meeting_type: req.body.meeting_type,
                 subject: req.body.subject,
-                start_time: moment(req.body.start_time, 'x').toDate(),
-                end_time: moment(req.body.end_time, 'x').toDate(),
+                start_time: moment(req.body.start_time * 1000, 'x').toDate(),
+                end_time: moment(req.body.end_time * 1000, 'x').toDate(),
                 repeat_event_until: req.body.meeting_schedule.repeat_event_until,
                 repeat_interval: req.body.meeting_schedule.repeat_interval,
-                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
-                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
+                repeat_start_date: moment(req.body.start_time * 1000, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time * 1000, 'x').toDate(),
                 repeat_frequency: req.body.meeting_schedule.repeat_frequency,
                 occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
                 occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
@@ -242,7 +242,9 @@ function meetingStatusCheck(params) {
         console.log("Meeting Controller || Meeting status check", error);
         return res.json({
             status: "error",
-            message: "Something went wrong! Please try again."
+            message: "Something went wrong! Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -348,7 +350,9 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting Controller || Start Meeting", error);
         return res.json({
             code: 401,
-            message: "Something went wrong! Please try again."
+            message: "Something went wrong! Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -405,6 +409,7 @@ exports.changeMeetingStatus = async (req, res) => {
             return res.send({
                 status: "ok",
                 message: "",
+                webpage: "",
                 response: ""
             })
         }
@@ -421,6 +426,7 @@ exports.changeMeetingStatus = async (req, res) => {
             return res.send({
                 status: "ok",
                 message: "",
+                webpage: "",
                 response: ""
             })
         }
@@ -437,6 +443,7 @@ exports.changeMeetingStatus = async (req, res) => {
             return res.send({
                 status: "ok",
                 message: "",
+                webpage: "",
                 response: ""
             })
         }
@@ -444,7 +451,9 @@ exports.changeMeetingStatus = async (req, res) => {
         console.log("Meeting Controller || Change Meeting Status", error);
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -467,13 +476,18 @@ exports.addlogs = async (req, res) => {
         await models.meeting_logs.create(logsParams);
 
         return res.send({
-            status: "ok"
+            status: "ok",
+            message: "",
+            webpage: "",
+            response: ""
         })
     } catch (error) {
         console.log("Meeting Controller || Add Logs", error);
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -493,10 +507,10 @@ exports.editmeeting = async (req, res) => {
         });
 
         if ('start_time' in req.body) {
-            req.body.start_time = moment(req.body.start_time, 'x').toDate()
+            req.body.start_time = moment(req.body.start_time * 1000, 'x').toDate()
         }
         if ('end_time' in req.body) {
-            req.body.end_time = moment(req.body.end_time, 'x').toDate()
+            req.body.end_time = moment(req.body.end_time * 1000, 'x').toDate()
         }
         console.log("Params Body: ", req.body)
         if (meeting.length > 0) {
@@ -507,12 +521,17 @@ exports.editmeeting = async (req, res) => {
             })
 
             return res.send({
-                status: "ok"
+                status: "ok",
+                message: "",
+                webpage: "",
+                response: ""
             })
         } else {
             return res.send({
                 status: "error",
-                message: "Invalid meeting id. Please try again with valid meeting ID."
+                message: "Invalid meeting id. Please try again with valid meeting ID.",
+                webpage: "",
+                response: ""
             })
         }
 
@@ -521,7 +540,9 @@ exports.editmeeting = async (req, res) => {
 
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -537,14 +558,19 @@ exports.deletemeeting = async (req, res) => {
         });
 
         return res.send({
-            status: "ok"
+            status: "ok",
+            message: "",
+            webpage: "",
+            response: ""
         })
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
 
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }

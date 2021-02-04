@@ -15,27 +15,9 @@ module.exports = function(app) {
   //   })
   // })
 
-  // app.post('/get-meeting', [
-  //   check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
-  // ], formValidationMiddleware, function(req, res) {
-  //   meetingController.getMeeting(req.body, function(err, response) {
-  //     if (err) return res.json(err);
-  //     return res.json(response);
-  //   })
-  // })
-
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting)
-
-  // app.post('/get-meeting-info', [
-  //   check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
-  // ], formValidationMiddleware, function(req, res) {
-  //   meetingController.getMeetingInfo(req.body, function(err, response) {
-  //     if (err) return res.json(err);
-  //     return res.json(response);
-  //   })
-  // });
 
   app.post('/get-meeting-info', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
