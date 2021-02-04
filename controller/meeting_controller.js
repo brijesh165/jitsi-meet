@@ -256,8 +256,8 @@ exports.startMeeting = async (req, res) => {
         const meeting_id =
             appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
-        console.log("Meeting Id: ", meeting_id);
-        console.log("User Status: ", userstatus);
+        // console.log("Meeting Id: ", meeting_id);
+        // console.log("User Status: ", userstatus);
         // console.log("Today Day Position: ", moment().weekday());
 
         const meeting = await models.meeting.findOne({
@@ -272,9 +272,6 @@ exports.startMeeting = async (req, res) => {
 
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
-                console.log("In 1", moment(meeting.end_time).valueOf());
-                console.log("In 2", moment().utc().toDate().getTime().valueOf());
-                console.log("In 3", moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf())
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                         where: {
@@ -289,7 +286,7 @@ exports.startMeeting = async (req, res) => {
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
-                if (meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
+                if (moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
 
@@ -318,7 +315,7 @@ exports.startMeeting = async (req, res) => {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("In Non periodic meeting");
                 if (meeting.status == "started"
-                    && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+                    && moment(meeting.end_time).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("If Meeting ID: ", meeting.meeting_id)
 
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
@@ -333,7 +330,8 @@ exports.startMeeting = async (req, res) => {
 
             if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
-                if (meeting.status == "started" && meeting.repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
+                if (meeting.status == "started" 
+                    && moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
 
@@ -496,28 +494,57 @@ exports.addlogs = async (req, res) => {
 }
 
 /**
- * 
+ *
  * @param {*} meeting_id 
- * @param {*} body 
+ * @param {*} application(teamlocus, tlchat) 
+ * @param {*} meeting_host
+ * @param {*} status
+ * @param {*} meeting_type(non-periodic, periodic)
+ * @param {*} subject
+ * @param {*} start_time(UTC)
+ * @param {*} end_time(UTC)
+ * @param {*} meeting_schedule
  */
 exports.editmeeting = async (req, res) => {
     try {
         console.log("Edit Meeting Params : ", req.body);
-        let meeting = await models.meeting.findAll({
-            where: {
-                meeting_id: req.body.meeting_id
-            }
-        });
+        let editParams = {};
+        if (req.body.meeting_type == "nonperiodic") {
+            editparams = {
+                application: req.body.application,
+                meeting_host: req.body.meeting_host,
+                subject: req.body.subject,
+                status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                meeting_type: req.body.meeting_type,
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate()
+            };
 
-        if ('start_time' in req.body) {
-            req.body.start_time = moment(req.body.start_time, 'x').toDate()
+            console.log("Non Periodic params: ", editParams);
+        } else if (req.body.meeting_type == "periodic") {
+            editParams = { 
+                application: req.body.application,
+                meeting_host: req.body.meeting_host,
+                status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                meeting_type: req.body.meeting_type,
+                subject: req.body.subject,
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate(),
+                repeat_event_until: req.body.meeting_schedule.repeat_event_until,
+                repeat_interval: req.body.meeting_schedule.repeat_interval,
+                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
+                repeat_frequency: req.body.meeting_schedule.repeat_frequency,
+                occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
+                occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
+                occurance_year_month_date: req.body.meeting_schedule.occurance_year_month_date ? req.body.meeting_schedule.occurance_year_month_date : ''
+            }
+
+            console.log("Periodic params: ", editParams);
         }
-        if ('end_time' in req.body) {
-            req.body.end_time = moment(req.body.end_time, 'x').toDate()
-        }
-        console.log("Params Body: ", req.body)
-        if (meeting.length > 0) {
-            await models.meeting.update(req.body, {
+
+        if (req.body.meeting_id) {
+            await models.meeting.update(editParams, {
                 where: {
                     meeting_id: req.body.meeting_id
                 }
