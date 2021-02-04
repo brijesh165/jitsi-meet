@@ -32,19 +32,25 @@ exports.getMeeting = async (req, res) => {
         if (!meeting.length) {
             return res.send({ 
                 status: "error",
-                message: "Invalid meeting id. Please try with valid meeting id."
+                message: "Invalid meeting id. Please try with valid meeting id.",
+                webpage: "",
+                response: ""
             })
         }
 
         return res.send({
             status: "ok",
+            message: "",
+            webpade: "",
             response: meeting
         })
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -62,6 +68,8 @@ exports.getMeetingInfo = async (req, res) => {
         // console.log("Meeting Info: ", meetingInfo);
         return res.send({
             status: "ok",
+            message: "",
+            webpage: "",
             response: meetingInfo
         })
     } catch (error) {
@@ -69,7 +77,9 @@ exports.getMeetingInfo = async (req, res) => {
         
         return res.send({
             status: "error",
-            message: "Internal server error. Please try again."
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -88,6 +98,7 @@ exports.getMeetingInfo = async (req, res) => {
 exports.createmeeting = async (req, res) => {
     const currentTimeStamp = moment().utc().unix().toString();
     try {
+        console.log("Params: ", req.body);
         if (req.body.meeting_type == 'nonperiodic') {
             let response = {};
             const currentTimeStamp = moment().utc().unix().toString();
@@ -117,6 +128,8 @@ exports.createmeeting = async (req, res) => {
 
             return res.send({
                 status: "ok",
+                message: "",
+                webpage: "",
                 response: {
                     meeting_id: createmeetingparams.meeting_id,
                     start_url: response.start_url,
@@ -161,6 +174,8 @@ exports.createmeeting = async (req, res) => {
 
             return res.send({
                 status: "ok",
+                message: "",
+                webpage: "",
                 response: {
                     meeting_id: createdMeeting.meeting_id,
                     start_url: response.start_url,
@@ -174,7 +189,9 @@ exports.createmeeting = async (req, res) => {
         // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
         res.send({
             status: "error",
-            message: "Internal Server Error"
+            message: "Internal Server Error",
+            webpage: "",
+            response: ""
         })
     }
 }
@@ -387,6 +404,8 @@ exports.changeMeetingStatus = async (req, res) => {
             
             return res.send({
                 status: "ok",
+                message: "",
+                response: ""
             })
         }
         if (req.body.status == "ended") {
@@ -400,7 +419,9 @@ exports.changeMeetingStatus = async (req, res) => {
             // await dbManager.executeUpdate('meetings', param, {'id': params.id});
 
             return res.send({
-                status: "ok"
+                status: "ok",
+                message: "",
+                response: ""
             })
         }
         if (req.body.status == "pending") {
@@ -414,7 +435,9 @@ exports.changeMeetingStatus = async (req, res) => {
             // await dbManager.executeUpdate('meetings', param, {'id': params.id});
 
             return res.send({
-                status: "ok"
+                status: "ok",
+                message: "",
+                response: ""
             })
         }
     } catch (error) {
