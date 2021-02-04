@@ -110,8 +110,8 @@ exports.createmeeting = async (req, res) => {
                 subject: req.body.subject,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
                 meeting_type: req.body.meeting_type,
-                start_time: moment(req.body.start_time * 1000, 'x').toDate(),
-                end_time: moment(req.body.end_time * 1000, 'x').toDate()
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate()
             };
 
             // console.log("Create Meeting Params : ", createmeetingparams)
@@ -146,12 +146,12 @@ exports.createmeeting = async (req, res) => {
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
                 meeting_type: req.body.meeting_type,
                 subject: req.body.subject,
-                start_time: moment(req.body.start_time * 1000, 'x').toDate(),
-                end_time: moment(req.body.end_time * 1000, 'x').toDate(),
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate(),
                 repeat_event_until: req.body.meeting_schedule.repeat_event_until,
                 repeat_interval: req.body.meeting_schedule.repeat_interval,
-                repeat_start_date: moment(req.body.start_time * 1000, 'x').toDate(),
-                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time * 1000, 'x').toDate(),
+                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
                 repeat_frequency: req.body.meeting_schedule.repeat_frequency,
                 occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
                 occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
@@ -507,10 +507,10 @@ exports.editmeeting = async (req, res) => {
         });
 
         if ('start_time' in req.body) {
-            req.body.start_time = moment(req.body.start_time * 1000, 'x').toDate()
+            req.body.start_time = moment(req.body.start_time, 'x').toDate()
         }
         if ('end_time' in req.body) {
-            req.body.end_time = moment(req.body.end_time * 1000, 'x').toDate()
+            req.body.end_time = moment(req.body.end_time, 'x').toDate()
         }
         console.log("Params Body: ", req.body)
         if (meeting.length > 0) {
