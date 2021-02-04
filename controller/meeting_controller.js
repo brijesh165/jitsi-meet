@@ -110,8 +110,8 @@ exports.createmeeting = async (req, res) => {
                 subject: req.body.subject,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
                 meeting_type: req.body.meeting_type,
-                start_time: moment(req.body.start_time, 'x').toDate(),
-                end_time: moment(req.body.end_time, 'x').toDate()
+                start_time: moment(req.body.start_time).toDate(),
+                end_time: moment(req.body.end_time).toDate()
             };
 
             // console.log("Create Meeting Params : ", createmeetingparams)
