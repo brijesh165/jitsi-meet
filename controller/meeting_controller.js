@@ -554,7 +554,7 @@ exports.editmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
-                response: ""
+                response: "sucess"
             })
         } else {
             return res.send({
