@@ -275,7 +275,7 @@ exports.startMeeting = async (req, res) => {
                 console.log("In 1", moment(meeting.end_time).valueOf());
                 console.log("In 2", moment().utc().toDate().getTime().valueOf());
                 console.log("In 3", moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf())
-                if (moment(meeting.end_time).getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                         where: {
                             meeting_id: meeting_id
