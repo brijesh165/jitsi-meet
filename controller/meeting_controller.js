@@ -521,7 +521,7 @@ exports.editmeeting = async (req, res) => {
 
             console.log("Non Periodic params: ", editParams);
         } else if (req.body.meeting_type == "periodic") {
-            editParams = { 
+            editParams = {
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
@@ -529,14 +529,14 @@ exports.editmeeting = async (req, res) => {
                 subject: req.body.subject,
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate(),
-                repeat_event_until: req.body.meeting_schedule.repeat_event_until,
-                repeat_interval: req.body.meeting_schedule.repeat_interval,
-                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
-                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
-                repeat_frequency: req.body.meeting_schedule.repeat_frequency,
-                occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
-                occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
-                occurance_year_month_date: req.body.meeting_schedule.occurance_year_month_date ? req.body.meeting_schedule.occurance_year_month_date : ''
+                repeat_event_until: req.body.meeting_schedule.repeateveryunit,
+                repeat_interval: req.body.meeting_schedule.repeatinterval,
+                repeat_start_date: moment(req.body.meeting_schedule.startdate, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeatenddate, 'x').toDate(),
+                repeat_frequency: req.body.meeting_schedule.repeatfequency,
+                occurance: req.body.meeting_schedule.occurrence ? req.body.meeting_schedule.occurrence : '',
+                occurance_on_week_no: req.body.meeting_schedule.occurenceonweekno ? req.body.meeting_schedule.occurenceonweekno : '',
+                occurance_year_month_date: req.body.meeting_schedule.occurrenceyearmonthdate ? req.body.meeting_schedule.occurrenceyearmonthdate : ''
             }
 
             console.log("Periodic params: ", editParams);
