@@ -150,7 +150,7 @@ exports.createmeeting = async (req, res) => {
                 end_time: moment(req.body.end_time, 'x').toDate(),
                 repeat_event_until: req.body.meeting_schedule.repeateveryunit,
                 repeat_interval: req.body.meeting_schedule.repeatinterval,
-                repeat_start_date: moment(req.body.startdate, 'x').toDate(),
+                repeat_start_date: moment(req.body.meeting_schedule.startdate, 'x').toDate(),
                 repeat_end_date: moment(req.body.meeting_schedule.repeatenddate, 'x').toDate(),
                 repeat_frequency: req.body.meeting_schedule.repeatfequency,
                 occurance: req.body.meeting_schedule.occurrence ? req.body.meeting_schedule.occurrence : '',
