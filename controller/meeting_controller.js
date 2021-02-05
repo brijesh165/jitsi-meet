@@ -148,14 +148,14 @@ exports.createmeeting = async (req, res) => {
                 subject: req.body.subject,
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate(),
-                repeat_event_until: req.body.meeting_schedule.repeat_event_until,
-                repeat_interval: req.body.meeting_schedule.repeat_interval,
-                repeat_start_date: moment(req.body.start_time, 'x').toDate(),
-                repeat_end_date: moment(req.body.meeting_schedule.repeat_end_time, 'x').toDate(),
-                repeat_frequency: req.body.meeting_schedule.repeat_frequency,
-                occurance: req.body.meeting_schedule.occurance ? req.body.meeting_schedule.occurance : '',
-                occurance_on_week_no: req.body.meeting_schedule.occurance_on_week_no ? req.body.meeting_schedule.occurance_on_week_no : '',
-                occurance_year_month_date: req.body.meeting_schedule.occurance_year_month_date ? req.body.meeting_schedule.occurance_year_month_date : ''
+                repeat_event_until: req.body.meeting_schedule.repeateveryunit,
+                repeat_interval: req.body.meeting_schedule.repeatinterval,
+                repeat_start_date: moment(req.body.startdate, 'x').toDate(),
+                repeat_end_date: moment(req.body.meeting_schedule.repeatenddate, 'x').toDate(),
+                repeat_frequency: req.body.meeting_schedule.repeatfequency,
+                occurance: req.body.meeting_schedule.occurrence ? req.body.meeting_schedule.occurrence : '',
+                occurance_on_week_no: req.body.meeting_schedule.occurenceonweekno ? req.body.meeting_schedule.occurenceonweekno : '',
+                occurance_year_month_date: req.body.meeting_schedule.occurrenceyearmonthdate ? req.body.meeting_schedule.occurrenceyearmonthdate : ''
             };
 
 
@@ -203,33 +203,33 @@ function meetingStatusCheck(params) {
     try {
         console.log("Params: ", params);
         const difference = moment(params.start_time).diff(moment().utc(), 'days')
-        if (params.repeat_event_until == "every_week") {
+        if (params.repeat_event_until == "Every Week") {
             if (difference % 7 == 0) {
                 return true;
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "every_2_week") {
+        } else if (params.repeat_event_until == "Every 2 Week") {
             if (difference % 14 == 0) {
                 return true;
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "month") {
+        } else if (params.repeat_event_until == "Month") {
             if (moment(params.start_time).date() == moment().utc().date()) {
                 return true;
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "year") {
+        } else if (params.repeat_event_until == "Year") {
             if (moment(params.start_time).date() == moment().utc().date()
                 && moment(params.start_time).month() == moment().utc().month()) {
                 return true;
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "custom") {
-            if (params.repeat_frequency == "daily") {
+        } else if (params.repeat_event_until == "Custom") {
+            if (params.repeat_frequency == "Daily") {
                 if (moment(params.start_time).getTime().valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     return true;
                 } else {
