@@ -138,7 +138,6 @@ exports.createmeeting = async (req, res) => {
             })
         } else if (req.body.meeting_type == 'periodic') {
             let response = {};
-            console.log("Params: ", req.body)
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
                 application: req.body.application,
