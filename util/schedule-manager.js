@@ -2,12 +2,13 @@ const schedule = require('node-schedule');
 const moment = require('moment');
 const models = require('./../models');
 
+// Change meeting status at 12:00
 let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () {
     const allendedmeetings = await models.meeting.findAll({
         where: {
             status: 'ended',
             repeat_end_date:{
-                $gt:new Date()
+                $gt: new Date()
             }
         }
     })
