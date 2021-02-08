@@ -7,7 +7,7 @@ let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () 
     const allendedmeetings = await models.meeting.findAll({
         where: {
             status: 'ended',
-            repeat_end_date:{
+            repeat_end_date: {
                 $gt: new Date()
             }
         }

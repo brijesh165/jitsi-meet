@@ -19,7 +19,7 @@ exports.getMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting: ", meeting);
+        console.log("Meeting: ", meeting[0].dataValues.meeting_id);
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.meeting_id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.meeting_id, "join");
@@ -201,7 +201,8 @@ exports.createmeeting = async (req, res) => {
 function meetingStatusCheck(params) {
     try {
         console.log("Params: ", params);
-        const difference = moment(params.start_time).diff(moment().utc(), 'days')
+        const difference = moment(params.start_time).diff(moment().utc(), 'days');
+        console.log("Difference: ", difference)
         if (params.repeat_event_until == "Every Week") {
             if (difference % 7 == 0) {
                 return true;
