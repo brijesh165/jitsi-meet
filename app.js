@@ -17,6 +17,7 @@ const env = require('dotenv').config();
 const cors = require('cors');
 const app = express();
 
+
 let privateKey  = fs.readFileSync('sslcert/ashar_service.key', 'utf8');
 let certificate = fs.readFileSync('sslcert/c1a0e45f99179667.crt', 'utf8');
 let credentials = {key: privateKey, cert: certificate,ca: fs.readFileSync('sslcert/gd_bundle-g2-g1.crt')};
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/users', usersRouter);
 
 require('./routes')(app);
+require('./util/schedule-manager');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
