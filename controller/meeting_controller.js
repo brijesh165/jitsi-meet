@@ -229,13 +229,7 @@ function meetingStatusCheck(params) {
             }
         } else if (params.repeat_event_until == "Custom") {
             if (params.repeat_frequency == "Daily") {
-                console.log("1: ", moment(params.start_time).toDate().getTime().valueOf());
-                console.log("2: ", moment().utc().toDate().getTime().valueOf());
-                if (moment().utc().toDate().getTime().valueOf() > moment(params.start_time).toDate().getTime().valueOf()) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return true;
             }
         }
 
