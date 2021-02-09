@@ -232,6 +232,13 @@ function meetingStatusCheck(params) {
             if (params.repeat_frequency == "Daily") {
                 return true;
             } 
+
+            if (params.repeat_frequency == "Weekly") {
+                const occurrence = params.occurance;
+                
+                console.log("Occurence :", occurrence)
+                return false;
+            }
             
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
