@@ -19,6 +19,17 @@ exports.getMeeting = async (req, res) => {
             }
         });
 
+        console.log("Meeting Length: ", meeting.length, !meeting.length)
+        if (!meeting.length) {
+            return res.send({ 
+                status: "error",
+                message: "Invalid meeting id. Please try with valid meeting id.",
+                webpage: "",
+                response: ""
+            })
+        }
+
+
         console.log("Meeting: ", meeting[0].dataValues.meeting_id);
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.meeting_id, "start");
@@ -29,15 +40,6 @@ exports.getMeeting = async (req, res) => {
         response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
-        console.log("Meeting Length: ", meeting.length, !meeting.length)
-        if (!meeting.length) {
-            return res.send({ 
-                status: "error",
-                message: "Invalid meeting id. Please try with valid meeting id.",
-                webpage: "",
-                response: ""
-            })
-        }
 
         return res.send({
             status: "ok",
