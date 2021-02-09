@@ -234,14 +234,17 @@ function meetingStatusCheck(params) {
             } 
 
             if (params.repeat_frequency == "Weekly") {
-                console.log("Type: ", typeof params.occurance)
                 let occurance = params.occurance;
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function(val){
                     return val.replace(/<\/?w>/g,'');
                 });
-            
-                console.log("Occurance 1:", params.occurance)
-                console.log("Occurence 2:", occurrenceno)
+                const todaysdayposition = moment().day();
+                console.log("Todays day position: ", todaysdayposition);
+
+                let result = occurrenceno.includes(todaysdayposition);
+
+                console.log("Result: ", result);
+
                 return false;
             }
             
