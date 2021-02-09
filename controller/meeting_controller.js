@@ -234,9 +234,10 @@ function meetingStatusCheck(params) {
             } 
 
             if (params.repeat_frequency == "Weekly") {
-                const occurrence = params.occurance;
-                
-                console.log("Occurence :", occurrence)
+                const occurrence = params.occurance.replace(/[^0-9]/g, "");
+            
+                console.log("Occurance 1:", params.occurance)
+                console.log("Occurence 2:", occurrence)
                 return false;
             }
             
