@@ -241,7 +241,7 @@ function meetingStatusCheck(params) {
                 const todaysdayposition = moment().day();
                 console.log("Todays day position: ", todaysdayposition);
 
-                let result = occurrenceno.includes(todaysdayposition);
+                let result = occurrenceno.includes(todaysdayposition.toString());
 
                 console.log("Result: ", result);
 
