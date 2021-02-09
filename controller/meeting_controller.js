@@ -239,9 +239,9 @@ function meetingStatusCheck(params) {
                     return val.replace(/<\/?w>/g,'');
                 });
                 const todaysdayposition = moment().day();
-                console.log("Todays day position: ", todaysdayposition);
+                console.log("Todays day position: ", (todaysdayposition + 1).toString());
 
-                let result = occurrenceno.includes((todaysdayposition + 1));
+                let result = occurrenceno.includes((todaysdayposition + 1).toString());
 
                 console.log("Result: ", result);
 
