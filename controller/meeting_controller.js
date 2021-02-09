@@ -238,14 +238,11 @@ function meetingStatusCheck(params) {
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function(val){
                     return val.replace(/<\/?w>/g,'');
                 });
-                const todaysdayposition = moment().day();
-                console.log("Todays day position: ", (todaysdayposition + 1).toString());
+                const todaysdayposition = moment().utc().day();
 
                 let result = occurrenceno.includes((todaysdayposition + 1).toString());
 
-                console.log("Result: ", result);
-
-                return false;
+                return result;
             }
             
             if (params.repeat_frequency == "Monthly") {
