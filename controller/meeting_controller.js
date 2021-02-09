@@ -231,6 +231,18 @@ function meetingStatusCheck(params) {
         } else if (params.repeat_event_until == "Custom") {
             if (params.repeat_frequency == "Daily") {
                 return true;
+            } 
+            
+            if (params.repeat_frequency == "Monthly") {
+                if (params.occurance.length > 0) {
+                    console.log("Occurence: ", params.occurance)
+                } else if (params.occurance_on_week_no.length > 0) {
+                    console.log("Occurence On Week No: ", params.occurance_on_week_no);
+                }
+
+                return false;
+            } else {
+                return false;
             }
         }
 
