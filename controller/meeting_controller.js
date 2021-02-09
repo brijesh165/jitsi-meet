@@ -239,7 +239,7 @@ function meetingStatusCheck(params) {
                 let occurrenceno = occurance.match(/<b>(.*?)<\/b>/g);
             
                 console.log("Occurance 1:", params.occurance)
-                console.log("Occurence 2:", occurance)
+                console.log("Occurence 2:", occurrenceno)
                 return false;
             }
             
