@@ -29,6 +29,7 @@ exports.getMeeting = async (req, res) => {
         response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
+        console.log("Meeting Length: ", meeting.length, !meeting.length)
         if (!meeting.length) {
             return res.send({ 
                 status: "error",
@@ -247,7 +248,7 @@ function meetingStatusCheck(params) {
             
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
-                    console.log("Occurence: ", params.occurance)
+                    console.log("Occurence: ", params.occurance);
                 } else if (params.occurance_on_week_no.length > 0) {
                     console.log("Occurence On Week No: ", params.occurance_on_week_no);
                 }
