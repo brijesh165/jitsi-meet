@@ -235,10 +235,11 @@ function meetingStatusCheck(params) {
 
             if (params.repeat_frequency == "Weekly") {
                 console.log("Type: ", typeof params.occurance)
-                const occurrence = params.occurance.match(/<b>(.*?)<\/b>/g);
+                let occurance = params.occurance;
+                let occurrenceno = occurance.match(/<b>(.*?)<\/b>/g);
             
                 console.log("Occurance 1:", params.occurance)
-                console.log("Occurence 2:", occurrence)
+                console.log("Occurence 2:", occurance)
                 return false;
             }
             
