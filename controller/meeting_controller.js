@@ -12,10 +12,11 @@ exports.getMeeting = async (req, res) => {
         console.log("Get Meeting Params : ", req.body);
         let response = {};
         // let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
+        const meeting_id = req.body.meeting_id.split("?")[0];
 
         const meeting = await models.meeting.findAll({
             where: {
-                meeting_id: req.body.meeting_id
+                meeting_id: meeting_id
             }
         });
 
