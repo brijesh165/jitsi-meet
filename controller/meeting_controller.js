@@ -306,7 +306,7 @@ exports.startMeeting = async (req, res) => {
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                 
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
@@ -345,7 +345,7 @@ exports.startMeeting = async (req, res) => {
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
                     
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
                     return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
