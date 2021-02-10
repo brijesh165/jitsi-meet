@@ -533,7 +533,7 @@ exports.editmeeting = async (req, res) => {
         console.log("Edit Meeting Params : ", req.body);
         let editParams = {};
         if (req.body.meeting_type == "nonperiodic") {
-            editparams = {
+            editParams = {
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 subject: req.body.subject,
