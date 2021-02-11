@@ -1,5 +1,4 @@
 const schedule = require('node-schedule');
-const moment = require('moment');
 const models = require('./../models');
 
 // Change meeting status at 12:00

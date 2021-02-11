@@ -280,8 +280,8 @@ exports.startMeeting = async (req, res) => {
         const meeting_id =
             appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
-        // console.log("Meeting Id: ", meeting_id);
-        // console.log("User Status: ", userstatus);
+        console.log("Meeting Id: ", meeting_id);
+        console.log("User Status: ", userstatus);
         // console.log("Today Day Position: ", moment().weekday());
 
         const meeting = await models.meeting.findOne({
@@ -382,34 +382,34 @@ exports.startMeeting = async (req, res) => {
     }
 }
 
-exports.joinMeeting = async (params, cb) => {
-    try {
-        console.log("Start Meeting Params: ", params.id);
-        let url;
-        const queryParams = params.id;
-        const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-        const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
+// exports.joinMeeting = async (params, cb) => {
+//     try {
+//         console.log("Start Meeting Params: ", params.id);
+//         let url;
+//         const queryParams = params.id;
+//         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
+//         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
 
-        const meeting = await models.meeting.findOne({
-            where: {
-                id: meeting_id
-            }
-        });
+//         const meeting = await models.meeting.findOne({
+//             where: {
+//                 id: meeting_id
+//             }
+//         });
 
-        console.log("Meeting Id: ", meeting);
-        if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-            //   meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-            url = `https://meet.teamlocus.com/${meeting.id}`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-        } else {
-            url = `https://meet.teamlocus.com/waiting`;
-            return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-        }
-    } catch (error) {
-        console.log("Meeting Controller || Join Meeting", error);
-        return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
-    }
-}
+//         console.log("Meeting Id: ", meeting);
+//         if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
+//               meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
+//             url = `https://meet.teamlocus.com/${meeting.id}`;
+//             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+//         } else {
+//             url = `https://meet.teamlocus.com/waiting`;
+//             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
+//         }
+//     } catch (error) {
+//         console.log("Meeting Controller || Join Meeting", error);
+//         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
+//     }
+// }
 
 /**
  * 
