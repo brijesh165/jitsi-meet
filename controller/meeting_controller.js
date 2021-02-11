@@ -366,7 +366,7 @@ exports.startMeeting = async (req, res) => {
                     }
 
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             }
         }
