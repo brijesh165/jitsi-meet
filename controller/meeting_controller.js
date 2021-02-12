@@ -320,14 +320,11 @@ exports.startMeeting = async (req, res) => {
                                 meeting_id: meeting_id
                             }
                         });
-
                         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                     } else {
-                        
                         return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                     }
                 } else {
-
                     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else {
@@ -343,7 +340,6 @@ exports.startMeeting = async (req, res) => {
 
                     return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
-                    
                     return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
