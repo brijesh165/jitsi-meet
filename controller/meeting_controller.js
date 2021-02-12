@@ -282,9 +282,17 @@ function meetingStatusCheck(params) {
                     // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
                     // console.log(result)
 
+
+                    let end = moment().utc().clone().endOf("month").endOf("isoWeek");
+
                     let indexofweek = weekno.indexOf(currentweekno.toString());
+
+                    if(indexofweek==-1){
+                        return false;
+                    }
+
                     let result = days[indexofweek] == (currentday+1);
-                    console.log(typeof indexofweek + " " + result + " " + typeof result);
+                    console.log(typeof indexofweek + " " + result + " " + end);
 
                 }
 
