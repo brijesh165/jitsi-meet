@@ -272,9 +272,9 @@ function meetingStatusCheck(params) {
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
                         return val.replace(/<\/?D>/g,'');
                     }); 
-                    const currentday = moment().utc().day();
+                    const currentday = moment().utc().weekday();
 
-                    console.log(weekno + " " + days);
+                    console.log(weekno + " " + days+1);
                     console.log(currentweekno + " " + currentday);
                 }
 
