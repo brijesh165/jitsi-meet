@@ -255,6 +255,7 @@ function meetingStatusCheck(params) {
                 } else if (params.occurance_on_week_no.length > 0) {
                     console.log("Occurence On Week No: ", params.occurance_on_week_no);
                     const dates = params.occurance_on_week_no.match(/<DT>(.*?)<\/DT>/g).map(function(val){
+                        console.log("Val: ", val);
                         return val.replace(/<\/?DT>/g,'');
                      });
 
