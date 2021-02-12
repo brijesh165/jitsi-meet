@@ -259,7 +259,7 @@ function meetingStatusCheck(params) {
                      });
 
                     const todaysdayno = moment().utc().date();
-                    let result = dates.includes(todaysdayno).toString();
+                    let result = dates.includes(todaysdayno.toString());
 
                      console.log(todaysdayno + " " + result);
                 } else if (params.occurance_on_week_no.length > 0) {
