@@ -251,19 +251,28 @@ function meetingStatusCheck(params) {
             
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
-                    const occuranceonweekno = params.occurance;
-                    console.log("Occurence On Week No: ", occuranceonweekno + " " + typeof occuranceonweekno);
-                    const dates = occuranceonweekno.match(/<DT>(.*?)<\/DT>/g).map(function(val){
-                        console.log("Val: ", val);
+                    const occurance = params.occurance;
+                    const dates = occurance.match(/<DT>(.*?)<\/DT>/g).map(function(val){
                         return val.replace(/<\/?DT>/g,'');
                      });
 
                     const todaysdayno = moment().utc().date();
                     let result = dates.includes(todaysdayno.toString());
 
-                     console.log(todaysdayno + " " + result);
+                    console.log(todaysdayno + " " + result);
+
+                    return result;
                 } else if (params.occurance_on_week_no.length > 0) {
-                    console.log("Occurence: ", params.occurance);
+                    const occuranceonweekno = params.occurance_on_week_no;
+                    const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function(val){
+                        return val.replace(/<\/?W>/g,'');
+                    });
+
+                    const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
+                        return val.replace(/<\/?D>/g,'');
+                    }); 
+                    
+                    console.log(weekno + " " + days);
                 }
 
                 return false;
