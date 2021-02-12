@@ -282,10 +282,10 @@ function meetingStatusCheck(params) {
                     // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
                     // console.log(result)
 
-                    let indexofweek = weekno.indexOf(currentweekno);
+                    let indexofweek = weekno.indexOf(currentweekno.toString());
                     let result = days.indexOf(indexofweek) == currentday.toString();
                     console.log(indexofweek + " " + result);
-                    
+
                 }
 
                 return false;
