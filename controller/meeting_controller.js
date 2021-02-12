@@ -258,7 +258,10 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?DT>/g,'');
                      });
 
-                     console.log("Dates: ", dates);
+                    const todaysdayno = moment().utc().date();
+                    let result = dates.includes(todaysdayno).toString();
+
+                     console.log(todaysdayno + " " + result);
                 } else if (params.occurance_on_week_no.length > 0) {
                     console.log("Occurence: ", params.occurance);
                 }
