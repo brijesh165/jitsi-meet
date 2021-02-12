@@ -267,15 +267,15 @@ function meetingStatusCheck(params) {
                     const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function(val){
                         return val.replace(/<\/?W>/g,'');
                     });
-                    const currentweekno = moment().utc().isoWeek();
+                    const currentweekno = moment().utc().weeks();
 
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
                         return val.replace(/<\/?D>/g,'');
                     }); 
                     const currentday = moment().utc().weekday();
 
-                    console.log(weekno + " " + days+1);
-                    console.log(currentweekno + " " + currentday);
+                    console.log(weekno + " " + days);
+                    console.log(currentweekno + " " + currentday+1);
                 }
 
                 return false;
