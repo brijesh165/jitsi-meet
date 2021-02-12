@@ -283,7 +283,7 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
                     let indexofweek = weekno.indexOf(currentweekno.toString());
-                    let result = days[indexofweek];
+                    let result = days[indexofweek] ==  currentday.toString();
                     console.log(typeof indexofweek + " " + result + " " + typeof result);
 
                 }
