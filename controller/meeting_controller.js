@@ -315,7 +315,7 @@ exports.startMeeting = async (req, res) => {
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
-                if (meeting.status == "started" && moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
+                if (moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
 
