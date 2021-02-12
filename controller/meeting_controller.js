@@ -283,7 +283,7 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
 
-                    let end = moment("1615558065000").utc().endOf("month").week() - moment(todaysday).startOf('month').week();
+                    let end = moment(1615558065000).utc().endOf("month").week() - moment(todaysday).startOf('month').week();
 
                     let indexofweek = weekno.indexOf(currentweekno.toString());
 
