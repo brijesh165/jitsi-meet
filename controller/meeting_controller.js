@@ -267,9 +267,7 @@ function meetingStatusCheck(params) {
                     const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function(val){
                         return val.replace(/<\/?W>/g,'');
                     });
-                    const todaysdate = moment().utc();
-                    const endOfLastMonth = moment(get(this, 'todaysdate')).startOf('month').subtract(1, 'week');
-                    const currentweekno = todaysdate.diff(endOfLastMonth, 'weeks');
+                    const currentweekno = (moment().week() - (moment().month()*4));;
 
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
                         return val.replace(/<\/?D>/g,'');
