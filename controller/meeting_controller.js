@@ -275,7 +275,7 @@ function meetingStatusCheck(params) {
                     }); 
                     const currentday = moment().utc().weekday();
 
-                    // console.log(weekno + " " + days);
+                    console.log(weekno + " " + days);
                     // console.log(currentweekno + " " + (currentday+1).toString());
                     // console.log(weekno.includes(currentweekno.toString()))
                     // console.log(days.includes((currentday+1).toString()))
@@ -283,7 +283,7 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
                     let indexofweek = weekno.indexOf(currentweekno.toString());
-                    let result = days.indexOf(indexofweek) == currentday.toString();
+                    let result = days.indexOf(indexofweek);
                     console.log(indexofweek + " " + result);
 
                 }
