@@ -277,6 +277,9 @@ function meetingStatusCheck(params) {
 
                     console.log(weekno + " " + days);
                     console.log(currentweekno + " " + (currentday+1).toString());
+
+                    let result = weekno.includes(currentweekno) && days.includes((currentday+1).toString());
+                    console.log(result)
                 }
 
                 return false;
