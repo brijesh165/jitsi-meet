@@ -283,22 +283,29 @@ function meetingStatusCheck(params) {
                     // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
                     // console.log(result)
 
-                    const startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
-                    const endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                    let end = endOfMonth - startOfWeek < "7" ? currentweekno = "10" : "" ;
                     // console.log("2: ", moment(todaysday).startOf('month').week());
                     // console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
                     // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
 
-                    let indexofweek = weekno.indexOf(currentweekno.toString());
+
+                    let result;
+                    for (let i=0; i<weekno.length; i++) {
+                        // let indexofweek = weekno.indexOf(currentweekno.toString());
+                        if (weekno[i] == currentweekno.toString()) {
+                            result = days[i] == (currentday+1);    
+                        } else if (weekno[i] == "10") {
+                            let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
+                            let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
+                            let end = endOfMonth - startOfWeek < "7" ? currentweekno = "10" : "" ;        
+                        }
+                    }
 
                     if(indexofweek==-1){
                         return false;
                     }
 
-                    let result = days[indexofweek] == (currentday+1);
-                    console.log(typeof indexofweek + " " + result + " " + end);
-
+                    // let result = days[indexofweek] == (currentday+1);
+                    console.log(result + " " + end);
                 }
 
                 return false;
