@@ -285,7 +285,7 @@ function meetingStatusCheck(params) {
                     console.log("Todays Day: ", todaysday);
                     console.log("1: ", moment().utc().endOf("month").week() + 1);
                     console.log("2: ", moment(todaysday).startOf('month').week() - 1);
-                    console.log("3: ", moment(1615558065000).endOf("month").week())
+                    console.log("3: ", moment("2021-04-13T06:43:00Z").endOf("month").week())
                     let end = moment().utc().endOf("month").week() - 1 - moment(todaysday).startOf('month').week() + 1;
 
                     let indexofweek = weekno.indexOf(currentweekno.toString());
