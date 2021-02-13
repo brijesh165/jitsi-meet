@@ -282,11 +282,11 @@ function meetingStatusCheck(params) {
                     // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
                     // console.log(result)
 
-                    console.log("Todays Day: ", moment().isoWeekday(1).startOf('week').format("dd"));
-                    console.log("1: ", moment().utc().endOf("month").week());
-                    console.log("2: ", moment(todaysday).startOf('month').week());
-                    console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
-                    let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
+                    console.log("Todays Day: ", moment().utc().isoWeekday(1).startOf('week').format("DD"));
+                    console.log("1: ", moment().utc().isoWeekday(1).endOf("month").format("DD"));
+                    // console.log("2: ", moment(todaysday).startOf('month').week());
+                    // console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
+                    // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
 
                     let indexofweek = weekno.indexOf(currentweekno.toString());
 
@@ -295,7 +295,7 @@ function meetingStatusCheck(params) {
                     }
 
                     let result = days[indexofweek] == (currentday+1);
-                    console.log(typeof indexofweek + " " + result + " " + end);
+                    console.log(typeof indexofweek + " " + result + " ");
 
                 }
 
