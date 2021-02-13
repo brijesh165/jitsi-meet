@@ -275,7 +275,8 @@ function meetingStatusCheck(params) {
                     }); 
                     const currentday = moment().utc().weekday();
 
-                    console.log(weekno + " " + days);
+                    console.log("Week No: ", weekno);
+                    console.log("Days: ", days);
                     // console.log(currentweekno + " " + (currentday+1).toString());
                     // console.log(weekno.includes(currentweekno.toString()))
                     // console.log(days.includes((currentday+1).toString()))
