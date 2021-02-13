@@ -283,8 +283,8 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
                     console.log("Todays Day: ", todaysday);
-                    console.log("1: ", moment().utc().endOf("month").week() + 1);
-                    console.log("2: ", moment(todaysday).startOf('month').week() - 1);
+                    console.log("1: ", moment().utc().endOf("month").week());
+                    console.log("2: ", moment(todaysday).startOf('month').week());
                     console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
                     let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
 
