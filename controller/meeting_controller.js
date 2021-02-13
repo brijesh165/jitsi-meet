@@ -284,7 +284,7 @@ function meetingStatusCheck(params) {
 
                     const startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     const endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                    let end = endOfMonth - startOfWeek;
+                    let end = endOfMonth - startOfWeek < "7" ? currentweekno = "10" : "" ;
                     // console.log("2: ", moment(todaysday).startOf('month').week());
                     // console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
                     // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
