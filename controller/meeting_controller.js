@@ -282,7 +282,7 @@ function meetingStatusCheck(params) {
                     // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
                     // console.log(result)
 
-                    console.log("Todays Day: ", moment(todaysday).startOf('week').isoWeekDay(1));
+                    console.log("Todays Day: ", moment().startOf('week').isoWeekDay(1));
                     console.log("1: ", moment().utc().endOf("month").week());
                     console.log("2: ", moment(todaysday).startOf('month').week());
                     console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
