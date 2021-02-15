@@ -398,7 +398,7 @@ function meetingStatusCheck(params) {
 
                     console.log("Current Schedule: " + currentSchedule);
 
-                    return false;
+                    return currentSchedule == null ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     return false;
                 } else {
