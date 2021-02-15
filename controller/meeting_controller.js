@@ -302,14 +302,14 @@ function meetingStatusCheck(params) {
                             console.log("Result: ", result);
 
                             if (result == true) { 
-                                console.log("Result: ", result);
                                 return result;
                             }
 
                         } else if (weekno[i] == "10") {
                             let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                             let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                            let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;        
+                            let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;
+                            console.log("End: ", end);        
                         }
                     }
 
@@ -318,7 +318,6 @@ function meetingStatusCheck(params) {
                     }
 
                     // let result = days[indexofweek] == (currentday+1);
-                    console.log(result + " " + end);
                 }
 
                 return false;
