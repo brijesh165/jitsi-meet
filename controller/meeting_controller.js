@@ -300,7 +300,11 @@ function meetingStatusCheck(params) {
 
                             result = days[i] == (currentday+1);
                             console.log("Result: ", result);
-                            return result;
+
+                            if (result == true) { 
+                                console.log("Result: ", result);
+                                return result;
+                            }
 
                         } else if (weekno[i] == "10") {
                             let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
