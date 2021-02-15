@@ -408,11 +408,11 @@ exports.startMeeting = async (req, res) => {
                     if (check) {
                         return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                     } else {
-                        return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                        return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
                     }
 
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
                 }
             }
         }
