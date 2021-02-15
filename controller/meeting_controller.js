@@ -396,7 +396,7 @@ function meetingStatusCheck(params) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
 
-                    console.log("Current Schedule: " + currentSchedule);
+                    console.log("Current Schedule: " + currentSchedule == undefined);
 
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
