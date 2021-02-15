@@ -362,7 +362,7 @@ function meetingStatusCheck(params) {
             }
 
             if (params.repeat_frequency == "Yearly") {
-                if (params.occurance && params.occurance_year_month_date) {
+                if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
                     let month = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
                         return val.replace(/<\/?M>/g, '');
                     })
@@ -372,7 +372,7 @@ function meetingStatusCheck(params) {
                     })
 
                     console.log("Months: ", month);
-                    console.log("Dates: ", dates);
+                    console.log("Dates: ", date);
                     return false;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     return false;
