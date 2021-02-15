@@ -2,6 +2,7 @@ const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
+const { all } = require('sequelize/types/lib/operators');
 
 /**
  * 
@@ -284,8 +285,20 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
                     // console.log("2: ", moment(todaysday).startOf('month').week());
-                    // console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
+                    console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
                     // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
+
+                    let i=0;
+                    let allData = [];
+                    for (let item of weekno){
+                        allData.push({ 
+                            week:item, 
+                            data:days[i]
+                        });
+                        i++;
+                    }
+
+                    // const 
 
 
                     let result;
