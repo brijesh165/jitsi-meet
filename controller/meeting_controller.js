@@ -297,12 +297,15 @@ function meetingStatusCheck(params) {
                         if (weekno[i] == currentweekno.toString()) {
                             console.log("Days[i] :", days[i]);
                             console.log("Current Day: ", currentday+1);
-                            
-                            result = days[i] == (currentday+1);    
+
+                            result = days[i] == (currentday+1);
+                            console.log("Result: ", result);
+                            return result;
+
                         } else if (weekno[i] == "10") {
                             let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                             let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                            let end = endOfMonth - startOfWeek < "7" ? currentweekno = "10" : "" ;        
+                            let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;        
                         }
                     }
 
