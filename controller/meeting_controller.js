@@ -204,7 +204,7 @@ exports.createmeeting = async (req, res) => {
  */
 function meetingStatusCheck(params) {
     try {
-        console.log("Params: ", params);
+        // console.log("Params: ", params);
         const difference = moment().utc().diff(moment(params.start_time), 'days');
         console.log("Difference: ", difference)
         if (params.repeat_event_until == "Every Week") {
@@ -396,7 +396,7 @@ function meetingStatusCheck(params) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
 
-                    console.log("Current Schedule: " + currentSchedule == undefined);
+                    console.log("Current Schedule: ", currentSchedule == undefined);
 
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
