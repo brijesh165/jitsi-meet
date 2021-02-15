@@ -373,15 +373,13 @@ function meetingStatusCheck(params) {
 
                     console.log("Months: ", months);
                     console.log("Dates: ", dates);
-                    let allData;
+                    let allData = [];
                     let i=0;
                     for (let month of months) {
-                        allData = [
-                            {
-                                month: month,
-                                date: dates[i]
-                            }
-                        ]
+                        allData.push({
+                            month: month,
+                            date: dates[i]
+                        })
                         i++;
                     }
 
