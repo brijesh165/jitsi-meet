@@ -309,7 +309,11 @@ function meetingStatusCheck(params) {
                             let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                             let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                             let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;
-                            console.log("End: ", end);        
+
+                            if (days[i] == (currentday+1)) {
+                                return true;
+                            }
+                            
                         }
                     }
 
