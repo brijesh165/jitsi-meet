@@ -233,6 +233,7 @@ function meetingStatusCheck(params) {
                 return false;
             }
         } else if (params.repeat_event_until == "Custom") {
+            console.log("Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
                 return true;
             } 
