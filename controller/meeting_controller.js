@@ -383,8 +383,8 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
-                    let currentMonthNo = moment().utc().month();
-                    let currentDay = moment().utc().weekday();
+                    let currentMonthNo = moment().utc().month() + 1;
+                    let currentDay = moment().utc().date();
                     console.log("Current Month No: ", currentMonthNo);
                     console.log("Current Day: ", currentDay+1);
                     console.log("All Data: ", allData);
