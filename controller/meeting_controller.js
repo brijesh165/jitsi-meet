@@ -405,11 +405,13 @@ function meetingStatusCheck(params) {
                     console.log("Months: ", months);
                     console.log("Weeks: ", weeks);
                     console.log("Days: ", days);
-                    
+
                     return false;
                 } else {
                     return false;
                 }
+            } else {
+                return false;
             }
         }
 
