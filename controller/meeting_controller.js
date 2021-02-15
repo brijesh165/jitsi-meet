@@ -2,7 +2,6 @@ const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
-const { all } = require('sequelize/types/lib/operators');
 
 /**
  * 
