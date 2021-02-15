@@ -299,20 +299,21 @@ function meetingStatusCheck(params) {
 
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                   
+                    let currentSchedule;
+
                     if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
 
-                        const currentSchedule = allData.find(function(item){
+                        currentSchedule = allData.find(function(item){
                             return item.week=="10" && item.day == currentday+1;
                         });
 
                     }else{
-                        const currentSchedule = allData.find(function(item){
+                        currentSchedule = allData.find(function(item){
                             return item.week==currentweekno && item.day == currentday+1;
                         });
                     }
       
-
+                    console.log("Current Schedule: ", currentSchedule);
                     return currentSchedule == null ? false : true;
 
                     // const 
