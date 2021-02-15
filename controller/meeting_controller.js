@@ -383,7 +383,20 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
+                    let currentMonthNo = moment().utc().month();
+                    let currentDay = moment().utc().weekday();
+                    console.log("Current Month No: ", currentMonthNo);
+                    console.log("Current Day: ", currentDay+1);
                     console.log("All Data: ", allData);
+
+                    let currentSchedule = allData.find(function(item, index) {
+                        return item.month == currentMonthNo && item.dates.find(function(item) {
+                            return item.dates = (currentDay+1)
+                        })
+                    })
+
+                    console.log("Current Schedule: " + currentSchedule);
+
                     return false;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     return false;
