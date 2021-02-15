@@ -358,8 +358,6 @@ function meetingStatusCheck(params) {
 
                     // let result = days[indexofweek] == (currentday+1);
                 }
-            } else {
-                return false;
             }
 
             if (params.repeat_frequency == "Yearly") {
