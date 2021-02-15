@@ -378,7 +378,7 @@ function meetingStatusCheck(params) {
                     for (let month of months) {
                         allData.push({
                             month: month,
-                            date: dates[i]
+                            date: dates
                         })
                         i++;
                     }
