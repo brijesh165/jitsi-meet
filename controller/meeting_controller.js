@@ -284,7 +284,7 @@ function meetingStatusCheck(params) {
                     // console.log(result)
 
                     // console.log("2: ", moment(todaysday).startOf('month').week());
-                    console.log("3: ", moment("2021-12-13T06:43:00Z").endOf("month").week())
+                    console.log("3: ", moment("2021-02-13T06:43:00Z").endOf("month").week())
                     // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
 
                     let i=0;
@@ -292,48 +292,66 @@ function meetingStatusCheck(params) {
                     for (let item of weekno){
                         allData.push({ 
                             week:item, 
-                            data:days[i]
+                            day:days[i]
                         });
                         i++;
                     }
 
+                    let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
+                    let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
+                   
+                    if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
+
+                        const currentSchedule = allData.find(function(item){
+                            return item.week=="10" && item.day == currentday+1;
+                        });
+
+                    }else{
+                        const currentSchedule = allData.find(function(item){
+                            return item.week==currentweekno && item.day == currentday+1;
+                        });
+                    }
+      
+
+                    return currentSchedule == null ? false : true;
+
                     // const 
 
 
-                    let result;
-                    for (let i=0; i<weekno.length; i++) {
-                        // let indexofweek = weekno.indexOf(currentweekno.toString());
-                        console.log("Week No: ", weekno[i]);
-                        console.log("Current Week No: ", currentweekno.toString());
+                    // let result;
+                    // for (let i=0; i<weekno.length; i++) {
+                    //     let indexofweek = weekno.indexOf(currentweekno.toString());
+                    //     console.log("Week No: ", weekno[i]);
+                    //     console.log("Current Week No: ", currentweekno.toString());
     
-                        if (weekno[i] == currentweekno.toString()) {
-                            console.log("Days[i] :", days[i]);
-                            console.log("Current Day: ", currentday+1);
+                    //     if (weekno[i] == currentweekno.toString()) {
+                    //         console.log("Days[i] :", days[i]);
+                    //         console.log("Current Day: ", currentday+1);
 
-                            result = days[i] == (currentday+1);
-                            console.log("Result: ", result);
+                    //         result = days[i] == (currentday+1);
+                    //         console.log("Result: ", result);
 
-                            if (result == true) { 
-                                return result;
-                            }
+                    //         if (result == true) { 
+                    //             return result;
+                    //         }
 
-                        } else if (weekno[i] == "10") {
-                            let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
-                            let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                            let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;
+                    //     } else if (weekno[i] == "10") {
+                    //         let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
+                    //         let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
+                    //         let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;
 
-                            console.log("Week No when its 10: ", days[i])
+                    //         console.log("Week No when its 10: ", days[i])
 
-                            if (days[i] == (currentday+1)) {
-                                return true;
-                            }
+                    //         if (days[i] == (currentday+1)) {
+                    //             return true;
+                    //         }
 
-                        }
-                    }
+                    //     }
+                    // }
 
-                    if(indexofweek==-1){
-                        return false;
-                    }
+                    // if(indexofweek==-1){
+                    //     return false;
+                    // }
 
                     // let result = days[indexofweek] == (currentday+1);
                 }
