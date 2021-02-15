@@ -297,6 +297,7 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
+                    console.log("All Data: ", allData);
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
@@ -356,8 +357,6 @@ function meetingStatusCheck(params) {
 
                     // let result = days[indexofweek] == (currentday+1);
                 }
-
-                return false;
             } else {
                 return false;
             }
