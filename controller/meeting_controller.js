@@ -362,6 +362,7 @@ function meetingStatusCheck(params) {
             }
 
             if (params.repeat_frequency == "Yearly") {
+                console.log("Custom Yearly meeting")
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
                     let month = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
                         return val.replace(/<\/?M>/g, '');
