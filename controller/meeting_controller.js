@@ -306,12 +306,12 @@ function meetingStatusCheck(params) {
                     if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
 
                         currentSchedule = allData.find(function(item){
-                            return item.week=="10" && item.day == currentday+1;
+                            return item.week == "10" && item.day == currentday+1;
                         });
 
                     }else{
                         currentSchedule = allData.find(function(item){
-                            return item.week==currentweekno && item.day == currentday+1;
+                            return item.week == currentweekno && item.day == currentday+1;
                         });
                     }
       
@@ -389,7 +389,7 @@ function meetingStatusCheck(params) {
                     console.log("Current Day: ", currentDay);
                     console.log("All Data: ", allData);
 
-                    let currentSchedule = allData.find(function(item, index) {
+                    let currentSchedule = allData.find(function(item) {
                         console.log("Item 1: ", item);
                         console.log("1. ", item.month == currentMonthNo);
                         console.log("2. ", item.dates.includes((currentDay).toString()))
