@@ -385,21 +385,27 @@ function meetingStatusCheck(params) {
 
                     let currentMonthNo = moment().utc().month() + 1;
                     let currentDay = moment().utc().date();
-                    console.log("Current Month No: ", currentMonthNo);
-                    console.log("Current Day: ", currentDay);
-                    console.log("All Data: ", allData);
 
                     let currentSchedule = allData.find(function(item) {
-                        console.log("Item 1: ", item);
-                        console.log("1. ", item.month == currentMonthNo);
-                        console.log("2. ", item.dates.includes((currentDay).toString()))
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
 
-                    console.log("Current Schedule: ", currentSchedule == undefined);
-
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
+                    const months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) { 
+                        return val.replace(/<\/?M>/g, '');
+                    })
+                    const weeks = params.occurance_on_week_no.match(/<W>(.*?)<\/W>/g).map(function (val) { 
+                        return val.replace(/<\/?W>/g, '');
+                    })
+                    const days = params.occurance_on_week_no.match(/<D>(.*?)<\/D>/g).map(function (val) { 
+                        return val.replace(/<\/?D>/g, '');
+                    })
+
+                    console.log("Months: ", months);
+                    console.log("Weeks: ", weeks);
+                    console.log("Days: ", days);
+                    
                     return false;
                 } else {
                     return false;
