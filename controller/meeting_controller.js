@@ -363,16 +363,29 @@ function meetingStatusCheck(params) {
             if (params.repeat_frequency == "Yearly") {
                 console.log("Custom Yearly meeting")
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
-                    let month = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
+                    let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
                         return val.replace(/<\/?M>/g, '');
                     })
 
-                    let date = params.occurance_year_month_date.match(/<DT>(.*?)<\/DT>/g).map(function(val) {
+                    let dates = params.occurance_year_month_date.match(/<DT>(.*?)<\/DT>/g).map(function(val) {
                         return val.replace(/<\/?DT>/g, '');
                     })
 
-                    console.log("Months: ", month);
-                    console.log("Dates: ", date);
+                    console.log("Months: ", months);
+                    console.log("Dates: ", dates);
+                    let allData;
+                    let i=0;
+                    for (let month of months) {
+                        allData = [
+                            {
+                                month: month,
+                                date: dates[i]
+                            }
+                        ]
+                        i++;
+                    }
+
+                    console.log("All Data: ", allData);
                     return false;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     return false;
