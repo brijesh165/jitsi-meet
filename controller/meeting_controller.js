@@ -390,6 +390,7 @@ function meetingStatusCheck(params) {
                     console.log("All Data: ", allData);
 
                     let currentSchedule = allData.find(function(item, index) {
+                        console.log("Item 1: ", item);
                         return item.month == currentMonthNo && item.dates.find(function(item) {
                             return item.dates = (currentDay+1)
                         })
