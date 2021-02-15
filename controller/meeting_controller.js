@@ -329,8 +329,7 @@ exports.startMeeting = async (req, res) => {
     try {
         console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
-        const meeting_id =
-            appUtil.decryptMeetingId(queryParams).split("-")[0];
+        const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
         console.log("Meeting Id: ", meeting_id);
         console.log("User Status: ", userstatus);
@@ -413,7 +412,7 @@ exports.startMeeting = async (req, res) => {
                     }
 
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/waiting?${meeting.meeting_id}`)
                 }
             }
         }
