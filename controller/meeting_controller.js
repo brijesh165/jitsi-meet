@@ -291,7 +291,13 @@ function meetingStatusCheck(params) {
                     let result;
                     for (let i=0; i<weekno.length; i++) {
                         // let indexofweek = weekno.indexOf(currentweekno.toString());
+                        console.log("Week No: ", weekno[i]);
+                        console.log("Current Week No: ", currentweekno.toString());
+    
                         if (weekno[i] == currentweekno.toString()) {
+                            console.log("Days[i] :", days[i]);
+                            console.log("Current Day: ", currentday+1);
+                            
                             result = days[i] == (currentday+1);    
                         } else if (weekno[i] == "10") {
                             let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
