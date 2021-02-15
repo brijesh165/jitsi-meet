@@ -386,12 +386,14 @@ function meetingStatusCheck(params) {
                     let currentMonthNo = moment().utc().month() + 1;
                     let currentDay = moment().utc().date();
                     console.log("Current Month No: ", currentMonthNo);
-                    console.log("Current Day: ", currentDay+1);
+                    console.log("Current Day: ", currentDay);
                     console.log("All Data: ", allData);
 
                     let currentSchedule = allData.find(function(item, index) {
                         console.log("Item 1: ", item);
-                        return item.month == currentMonthNo && item.dates.includes((currentDay+1).toString())
+                        console.log("1. ", item.month == currentMonthNo);
+                        console.log("2. ", item.dates.includes((currentDay).toString()))
+                        return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
 
                     console.log("Current Schedule: " + currentSchedule);
