@@ -6,13 +6,6 @@ const scheduleManager = require('../util/schedule-manager');
 module.exports = function(app) {
   app.get('/join/:id', meetingController.startMeeting);
 
-  // app.get('/join-meeting/:id', async function(req, res) {
-  //   meetingController.joinMeeting(req.params, function(err, response) {
-  //     if (err) return res.json(err);
-  //     return res.redirect(response.data);
-  //   })
-  // })
-
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting)
@@ -42,5 +35,5 @@ module.exports = function(app) {
     check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
 
-  app.post('/run-schedule', scheduleManager.meetingStatusChange);
+  // app.post('/run-schedule', scheduleManager.meetingStatusChange);
 }
