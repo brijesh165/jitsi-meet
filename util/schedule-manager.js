@@ -54,21 +54,30 @@ let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () 
     try {
 
         // Will change all the meetings status from started to ended
-        const allstartedmeetings = await models.meeting.findAll({
+        // const allstartedmeetings = await models.meeting.findAll({
+        //     where: {
+        //         status: 'started'
+        //     }
+        // });
+        // for (let i = 0; i < allstartedmeetings.length; i++) {
+        await models.meeting.update({ status: 'ended' }, {
             where: {
                 status: 'started'
             }
-        });
-        for (let i = 0; i < allstartedmeetings.length; i++) {
-            await models.meeting.update({ status: 'ended' }, {
-                where: {
-                    meeting_id: allstartedmeetings[i].meeting_id
-                }
-            })
-        }
+        })
+        // }
 
         // Will change all the meetings status from ended to pending
-        const allendedmeetings = await models.meeting.findAll({
+        // const allendedmeetings = await models.meeting.findAll({
+        //     where: {
+        //         status: 'ended',
+        //         repeat_end_date: {
+        //             [Op.gt]: new Date()
+        //         }
+        //     }
+        // })
+        // for (let i = 0; i < allendedmeetings.length; i++) {
+        await models.meeting.update({ status: 'pending' }, {
             where: {
                 status: 'ended',
                 repeat_end_date: {
@@ -76,13 +85,7 @@ let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () 
                 }
             }
         })
-        for (let i = 0; i < allendedmeetings.length; i++) {
-            await models.meeting.update({ status: 'pending' }, {
-                where: {
-                    meeting_id: allendedmeetings[i].meeting_id
-                }
-            })
-        }
+        // }
     } catch (error) {
         console.log("Schedule Manager | Meeting Status Change", error);
     }
