@@ -12,18 +12,31 @@ exports.meetingStatusChange = async function (req, res) {
                 }
             }
         })
+
+        const allstartedmeetings = await models.meeting.findAll({
+            where: {
+                status: 'started',
+                repeat_end_date: {
+                    [Op.gt]: new Date()
+                }
+            }
+        });
     
         console.log("All Ended Meetings: ", allendedmeetings)
+        for (let i=0; i < allstartedmeetings.length; i++) {
+            await models.meeting.update({status: 'ended'}, {
+                where: {
+                    meeting_id: allstartedmeetings[i].meeting_id
+                }
+            })
+        }
 
         for (let i=0; i < allendedmeetings.length; i++) {
-            // if (allendedmeetings[i].repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
-                console.log("Meeting Id: ", allendedmeetings[i].meeting_id);
-                await models.meeting.update({status: 'pending'}, {
-                    where: {
-                        meeting_id: allendedmeetings[i].meeting_id
-                    }
-                })
-            // }
+            await models.meeting.update({status: 'pending'}, {
+                where: {
+                    meeting_id: allendedmeetings[i].meeting_id
+                }
+            })
         }
 
         return res.send({
