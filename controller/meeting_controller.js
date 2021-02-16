@@ -443,7 +443,7 @@ function meetingStatusCheck(params) {
       
                     console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
 
-                    return false;
+                    return currentSchedule == undefined ? false : true;
                 } else {
                     return false;
                 }
