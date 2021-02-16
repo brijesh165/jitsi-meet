@@ -428,16 +428,16 @@ function meetingStatusCheck(params) {
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
 
-                    if( months.includes(currentMonth.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
+                    if( months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
                         console.log("Week no is 10")
                         currentSchedule = allData.find(function(item){
-                            return item.week == "10" && item.day == currentday;
+                            return item.week == "10" && item.day == currentDayNo;
                         });
 
-                    } else if ( months.includes(currentMonth.toString())) {
+                    } else if ( months.includes(currentMonthNo.toString())) {
                         console.log("Week no is not 10")
                         currentSchedule = allData.find(function(item){
-                            return item.week == currentweekno && item.day == currentday;
+                            return item.week == currentWeekNo && item.day == currentDayNo;
                         });
                     }
       
