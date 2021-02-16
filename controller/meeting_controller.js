@@ -405,7 +405,7 @@ function meetingStatusCheck(params) {
                     const currentMonthNo = moment().utc().month() + 1;
                     const todaysday = moment().utc();
                     const currentWeekNo = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
-                    const currentDayNo = moment().utc().weekday();
+                    const currentDayNo = moment().utc().weekday() + 1;
 
                     console.log("Months: ", months, " Current Month: ", currentMonthNo);
                     console.log("Weeks: ", weeks, " Current Week: ", currentWeekNo);
