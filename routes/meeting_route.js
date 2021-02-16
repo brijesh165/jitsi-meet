@@ -42,5 +42,5 @@ module.exports = function(app) {
     check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
 
-  app.post('/run-schedule', scheduleManager.meetingstatuschange);
+  app.post('/run-schedule', scheduleManager.meetingStatusChange);
 }
