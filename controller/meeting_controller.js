@@ -233,7 +233,7 @@ function meetingStatusCheck(params) {
                 return false;
             }
         } else if (params.repeat_event_until == "Custom") {
-            console.log("Repeat Event until: ", params.repeat_event_until)
+            console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
                 return true;
             } 
@@ -402,9 +402,13 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?D>/g, '');
                     })
 
-                    console.log("Months: ", months);
-                    console.log("Weeks: ", weeks);
-                    console.log("Days: ", days);
+                    const currentMonthNo = moment().utc().month() + 1;
+                    const currentWeekNo = moment().utc().week();
+                    const currentDayNo = moment().utc().weekday();
+
+                    console.log("Months: ", months, " Current Month: ", currentMonthNo);
+                    console.log("Weeks: ", weeks, " Current Week: ", currentWeekNo);
+                    console.log("Days: ", days, " Current Day: ", currentDayNo);
 
                     return false;
                 } else {
