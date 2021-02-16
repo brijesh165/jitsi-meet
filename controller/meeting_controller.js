@@ -274,19 +274,7 @@ function meetingStatusCheck(params) {
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
                         return val.replace(/<\/?D>/g,'');
                     }); 
-                    const currentday = moment().utc().weekday();
-
-                    console.log("Week No: ", weekno);
-                    console.log("Days: ", days);
-                    // console.log(currentweekno + " " + (currentday+1).toString());
-                    // console.log(weekno.includes(currentweekno.toString()))
-                    // console.log(days.includes((currentday+1).toString()))
-                    // let result = weekno.includes(currentweekno.toString()) && days.includes((currentday+1).toString());
-                    // console.log(result)
-
-                    // console.log("2: ", moment(todaysday).startOf('month').week());
-                    console.log("3: ", moment("2021-02-13T06:43:00Z").endOf("month").week())
-                    // let end = moment().utc().endOf("month").week() - moment(todaysday).startOf('month').week();
+                    const currentday = moment().utc().weekday() + 1;
 
                     let i=0;
                     let allData = [];
@@ -298,7 +286,6 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
-                    console.log("All Data: ", allData);
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
@@ -315,53 +302,11 @@ function meetingStatusCheck(params) {
                         });
                     }
       
-                    console.log("Current Schedule: ", currentSchedule);
                     return currentSchedule == null ? false : true;
-
-                    // const 
-
-
-                    // let result;
-                    // for (let i=0; i<weekno.length; i++) {
-                    //     let indexofweek = weekno.indexOf(currentweekno.toString());
-                    //     console.log("Week No: ", weekno[i]);
-                    //     console.log("Current Week No: ", currentweekno.toString());
-    
-                    //     if (weekno[i] == currentweekno.toString()) {
-                    //         console.log("Days[i] :", days[i]);
-                    //         console.log("Current Day: ", currentday+1);
-
-                    //         result = days[i] == (currentday+1);
-                    //         console.log("Result: ", result);
-
-                    //         if (result == true) { 
-                    //             return result;
-                    //         }
-
-                    //     } else if (weekno[i] == "10") {
-                    //         let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
-                    //         let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                    //         let end = endOfMonth - startOfWeek < "7" ? currentweekno : "" ;
-
-                    //         console.log("Week No when its 10: ", days[i])
-
-                    //         if (days[i] == (currentday+1)) {
-                    //             return true;
-                    //         }
-
-                    //     }
-                    // }
-
-                    // if(indexofweek==-1){
-                    //     return false;
-                    // }
-
-                    // let result = days[indexofweek] == (currentday+1);
                 }
             }
 
             if (params.repeat_frequency == "Yearly") {
-                console.log("Custom Yearly meeting")
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
                     let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
                         return val.replace(/<\/?M>/g, '');
@@ -371,8 +316,6 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?DT>/g, '');
                     })
 
-                    console.log("Months: ", months);
-                    console.log("Dates: ", dates);
                     let allData = [];
                     let i=0;
                     for (let month of months) {
@@ -406,13 +349,9 @@ function meetingStatusCheck(params) {
                     const todaysday = moment().utc();
                     const currentWeekNo = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentDayNo = moment().utc().weekday() + 1;
-
-                    console.log("Months: ", months, " Current Month: ", currentMonthNo);
-                    console.log("Weeks: ", weeks, " Current Week: ", currentWeekNo);
-                    console.log("Days: ", days, " Current Day: ", currentDayNo);
-                    console.log("1: ", months.includes(currentMonthNo.toString()))
-                    console.log("2: ", weeks.includes(currentWeekNo.toString()))
-                    console.log("3: ", days.includes(currentDayNo.toString()))
+                    let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
+                    let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
+                    let currentSchedule;
 
                     let i = 0;
                     let allData = [];
@@ -424,21 +363,16 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
-                    let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
-                    let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                    let currentSchedule;
-
                     if( months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
-                        console.log("Week no is 10")
                         currentSchedule = allData.find(function(item){
                             return item.week == "10" && item.day == currentDayNo;
                         });
-
                     } else if ( months.includes(currentMonthNo.toString())) {
-                        console.log("Week no is not 10")
                         currentSchedule = allData.find(function(item){
                             return item.week == currentWeekNo && item.day == currentDayNo;
                         });
+                    } else {
+                        return false;
                     }
       
                     console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
@@ -566,34 +500,6 @@ exports.startMeeting = async (req, res) => {
     }
 }
 
-// exports.joinMeeting = async (params, cb) => {
-//     try {
-//         console.log("Start Meeting Params: ", params.id);
-//         let url;
-//         const queryParams = params.id;
-//         const meeting_id = appUtil.decryptMeetingId(queryParams).split(" ")[0];
-//         const userstatus = appUtil.decryptMeetingId(queryParams).split(" ")[1];
-
-//         const meeting = await models.meeting.findOne({
-//             where: {
-//                 id: meeting_id
-//             }
-//         });
-
-//         console.log("Meeting Id: ", meeting);
-//         if (meeting && meeting.status == "started" && meeting.end_time.valueOf() > moment().utc().toDate().valueOf()) {
-//               meetingController.addlogs(meeting.id, "meeting_start", "Host started meeting.");
-//             url = `https://meet.teamlocus.com/${meeting.id}`;
-//             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-//         } else {
-//             url = `https://meet.teamlocus.com/waiting`;
-//             return cb(null, appUtil.createSuccessResponse(constants.responseCode.SUCCESS, url))
-//         }
-//     } catch (error) {
-//         console.log("Meeting Controller || Join Meeting", error);
-//         return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
-//     }
-// }
 
 /**
  * 
@@ -612,8 +518,6 @@ exports.changeMeetingStatus = async (req, res) => {
                 }
             });
 
-            // const query = "UPDATE meetings SET stauts=?, actual_start_time=? where meeting_id=?";
-            // await dbManager.executeUpdate('meetings', param, {'id': params.id});
             
             return res.send({
                 status: "ok",
@@ -629,9 +533,6 @@ exports.changeMeetingStatus = async (req, res) => {
                 }
             });
 
-            // const query = "UPDATE meetings SET stauts=?, actual_end_time=? where meeting_id=?";
-            // await dbManager.executeUpdate('meetings', param, {'id': params.id});
-
             return res.send({
                 status: "ok",
                 message: "",
@@ -645,9 +546,6 @@ exports.changeMeetingStatus = async (req, res) => {
                     meeting_id: req.body.meeting_id
                 }
             });
-
-            // const query = "UPDATE meetings SET stauts=?, actual_end_time=? where meeting_id=?";
-            // await dbManager.executeUpdate('meetings', param, {'id': params.id});
 
             return res.send({
                 status: "ok",
