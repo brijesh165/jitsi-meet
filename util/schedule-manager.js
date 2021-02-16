@@ -15,11 +15,8 @@ exports.meetingStatusChange = async function (req, res) {
 
         const allstartedmeetings = await models.meeting.findAll({
             where: {
-                status: 'started',
-                repeat_end_date: {
-                    [Op.gt]: new Date()
-                }
-            }
+                status: 'started'
+             }
         });
     
         console.log("All Ended Meetings: ", allendedmeetings)
