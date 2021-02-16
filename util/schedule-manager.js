@@ -52,25 +52,38 @@ exports.meetingStatusChange = async function (req, res) {
 // Change meeting status at 12:00
 let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () {
     try {
+
+        // Will change all the meetings status from started to ended
+        const allstartedmeetings = await models.meeting.findAll({
+            where: {
+                status: 'started'
+             }
+        });
+        for (let i=0; i < allstartedmeetings.length; i++) {
+            await models.meeting.update({status: 'ended'}, {
+                where: {
+                    meeting_id: allstartedmeetings[i].meeting_id
+                }
+            })
+        }
+
+        // Will change all the meetings status from ended to pending
         const allendedmeetings = await models.meeting.findAll({
             where: {
                 status: 'ended',
                 repeat_end_date: {
-                    $gt: new Date()
+                    [Op.gt]: new Date()
                 }
             }
         })
-    
         for (let i=0; i < allendedmeetings.length; i++) {
-            // if (allendedmeetings[i].repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
-                await models.meeting.update({status: 'pending'}, {
-                    where: {
-                        meeting_id: allendedmeetings[i].meeting_id
-                    }
-                })
-            // }
+            await models.meeting.update({status: 'pending'}, {
+                where: {
+                    meeting_id: allendedmeetings[i].meeting_id
+                }
+            })
         }
     } catch (error) {
-        return true;
+        console.log("Schedule Manager | Meeting Status Change", error);
     }
 });
