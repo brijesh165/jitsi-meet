@@ -416,11 +416,12 @@ function meetingStatusCheck(params) {
 
                     let i = 0;
                     let allData = [];
-                    for (let month of months) {
+                    for (let week of weeks) {
                         allData.push({ 
-                            month: month,
-                            days: days,
+                            week: week, 
+                            day: days[i]
                         })
+                        i++;
                     }
 
                     console.log("All Data: ", allData)
