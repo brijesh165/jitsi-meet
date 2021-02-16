@@ -410,9 +410,9 @@ function meetingStatusCheck(params) {
                     console.log("Months: ", months, " Current Month: ", currentMonthNo);
                     console.log("Weeks: ", weeks, " Current Week: ", currentWeekNo);
                     console.log("Days: ", days, " Current Day: ", currentDayNo);
-                    console.log("1: ", months.includes(currentMonthNo))
-                    console.log("2: ", weeks.includes(currentWeekNo))
-                    console.log("3: ", days.includes(currentDayNo))
+                    console.log("1: ", months.includes(currentMonthNo.toString()))
+                    console.log("2: ", weeks.includes(currentWeekNo.toString()))
+                    console.log("3: ", days.includes(currentDayNo.toString()))
 
                     return false;
                 } else {
