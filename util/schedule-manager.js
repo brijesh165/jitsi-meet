@@ -12,8 +12,11 @@ exports.meetingStatusChange = async function (req, res) {
             }
         })
     
+        console.log("All Ended Meetings: ", allendedmeetings)
+
         for (let i=0; i < allendedmeetings.length; i++) {
             // if (allendedmeetings[i].repeat_end_date.getTime().valueOf() > moment().utc().toDate().valueOf()) {
+                console.log("Meeting Id: ", allendedmeetings[i].meeting_id);
                 await models.meeting.update({status: 'pending'}, {
                     where: {
                         meeting_id: allendedmeetings[i].meeting_id
@@ -21,9 +24,14 @@ exports.meetingStatusChange = async function (req, res) {
                 })
             // }
         }
+
+        return res.send({
+            code: 200,
+            message: "Success"
+        })
     } catch (error) {
         console.log("Schedule Manager | Meeting Status Change", error);
-        res.send({
+        return res.send({
             code: 501,
             message: "Internal Server Error."
         })
