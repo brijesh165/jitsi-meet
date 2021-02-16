@@ -4,6 +4,21 @@ const { Op } = require('sequelize');
 
 exports.meetingStatusChange = async function (req, res) {
     try {
+
+        const allstartedmeetings = await models.meeting.findAll({
+            where: {
+                status: 'started'
+             }
+        });
+    
+        for (let i=0; i < allstartedmeetings.length; i++) {
+            await models.meeting.update({status: 'ended'}, {
+                where: {
+                    meeting_id: allstartedmeetings[i].meeting_id
+                }
+            })
+        }
+
         const allendedmeetings = await models.meeting.findAll({
             where: {
                 status: 'ended',
@@ -12,21 +27,6 @@ exports.meetingStatusChange = async function (req, res) {
                 }
             }
         })
-
-        const allstartedmeetings = await models.meeting.findAll({
-            where: {
-                status: 'started'
-             }
-        });
-    
-        console.log("All Ended Meetings: ", allendedmeetings)
-        for (let i=0; i < allstartedmeetings.length; i++) {
-            await models.meeting.update({status: 'ended'}, {
-                where: {
-                    meeting_id: allstartedmeetings[i].meeting_id
-                }
-            })
-        }
 
         for (let i=0; i < allendedmeetings.length; i++) {
             await models.meeting.update({status: 'pending'}, {
