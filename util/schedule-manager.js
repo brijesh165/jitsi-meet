@@ -7,7 +7,7 @@ exports.meetingStatusChange = async function (req, res) {
             where: {
                 status: 'ended',
                 repeat_end_date: {
-                    $gt: new Date()
+                    [Op.gt]: new Date()
                 }
             }
         })
