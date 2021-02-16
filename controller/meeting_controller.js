@@ -414,6 +414,17 @@ function meetingStatusCheck(params) {
                     console.log("2: ", weeks.includes(currentWeekNo.toString()))
                     console.log("3: ", days.includes(currentDayNo.toString()))
 
+                    let i = 0;
+                    let allData = [];
+                    for (let month of months) {
+                        allData.push({ 
+                            month: month,
+                            days: days,
+                        })
+                    }
+
+                    console.log("All Data: ", allData)
+
                     return false;
                 } else {
                     return false;
