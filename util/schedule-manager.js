@@ -1,5 +1,6 @@
 const schedule = require('node-schedule');
 const models = require('./../models');
+const { Op } = require('sequelize');
 
 exports.meetingStatusChange = async function (req, res) {
     try {
