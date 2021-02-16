@@ -243,9 +243,9 @@ function meetingStatusCheck(params) {
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function(val){
                     return val.replace(/<\/?w>/g,'');
                 });
-                const todaysdayposition = moment().utc().day();
+                const todaysdayposition = moment().utc().day() + 1;
 
-                let result = occurrenceno.includes((todaysdayposition + 1).toString());
+                let result = occurrenceno.includes(todaysdayposition.toString());
 
                 return result;
             }
@@ -291,14 +291,13 @@ function meetingStatusCheck(params) {
                     let currentSchedule;
 
                     if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
-
                         currentSchedule = allData.find(function(item){
-                            return item.week == "10" && item.day == currentday+1;
+                            return (item.week == "10" || item.week == currentweekno) && item.day == currentday;
                         });
 
                     }else{
                         currentSchedule = allData.find(function(item){
-                            return item.week == currentweekno && item.day == currentday+1;
+                            return item.week == currentweekno && item.day == currentday;
                         });
                     }
       
@@ -365,7 +364,7 @@ function meetingStatusCheck(params) {
 
                     if( months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
                         currentSchedule = allData.find(function(item){
-                            return item.week == "10" && item.day == currentDayNo;
+                            return (item.week == "10" || item.week == currentWeekNo) && item.day == currentDayNo;
                         });
                     } else if ( months.includes(currentMonthNo.toString())) {
                         currentSchedule = allData.find(function(item){

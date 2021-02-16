@@ -8,11 +8,11 @@ exports.meetingStatusChange = async function (req, res) {
         const allstartedmeetings = await models.meeting.findAll({
             where: {
                 status: 'started'
-             }
+            }
         });
-    
-        for (let i=0; i < allstartedmeetings.length; i++) {
-            await models.meeting.update({status: 'ended'}, {
+
+        for (let i = 0; i < allstartedmeetings.length; i++) {
+            await models.meeting.update({ status: 'ended' }, {
                 where: {
                     meeting_id: allstartedmeetings[i].meeting_id
                 }
@@ -28,8 +28,8 @@ exports.meetingStatusChange = async function (req, res) {
             }
         })
 
-        for (let i=0; i < allendedmeetings.length; i++) {
-            await models.meeting.update({status: 'pending'}, {
+        for (let i = 0; i < allendedmeetings.length; i++) {
+            await models.meeting.update({ status: 'pending' }, {
                 where: {
                     meeting_id: allendedmeetings[i].meeting_id
                 }
@@ -57,10 +57,10 @@ let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () 
         const allstartedmeetings = await models.meeting.findAll({
             where: {
                 status: 'started'
-             }
+            }
         });
-        for (let i=0; i < allstartedmeetings.length; i++) {
-            await models.meeting.update({status: 'ended'}, {
+        for (let i = 0; i < allstartedmeetings.length; i++) {
+            await models.meeting.update({ status: 'ended' }, {
                 where: {
                     meeting_id: allstartedmeetings[i].meeting_id
                 }
@@ -76,8 +76,8 @@ let meetingstatuschange = schedule.scheduleJob('00 00 * * *', async function () 
                 }
             }
         })
-        for (let i=0; i < allendedmeetings.length; i++) {
-            await models.meeting.update({status: 'pending'}, {
+        for (let i = 0; i < allendedmeetings.length; i++) {
+            await models.meeting.update({ status: 'pending' }, {
                 where: {
                     meeting_id: allendedmeetings[i].meeting_id
                 }
