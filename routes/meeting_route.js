@@ -23,9 +23,9 @@ module.exports = function(app) {
     check('end_time').not().isEmpty().withMessage('End Time is required.')
   ], formValidationMiddleware, meetingController.createmeeting)
 
-  app.post('/change-meeting-status', meetingController.changeMeetingStatus)
-
-  app.post('/add-logs', meetingController.addlogs)
+  app.post('/change-meeting-status', [
+    check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
+  ], formValidationMiddleware,meetingController.changeMeetingStatus)
 
   app.post('/edit-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
@@ -34,6 +34,8 @@ module.exports = function(app) {
   app.post('/delete-meeting', [
     check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
+
+  app.post('/add-logs', meetingController.addlogs)
 
   // app.post('/run-schedule', scheduleManager.meetingStatusChange);
 }

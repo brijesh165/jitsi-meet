@@ -11,7 +11,6 @@ exports.getMeeting = async (req, res) => {
     try {
         console.log("Get Meeting Params : ", req.body);
         let response = {};
-        // let meeting_id = appUtil.decryptMeetingId(params.meeting_id).split("-")[0];
         const meeting_id = req.body.meeting_id.split("?")[0];
         
         const meeting = await models.meeting.findAll({
@@ -20,7 +19,6 @@ exports.getMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting Length: ", meeting.length, !meeting.length)
         if (!meeting.length) {
             return res.send({ 
                 status: "error",
@@ -31,13 +29,12 @@ exports.getMeeting = async (req, res) => {
         }
 
 
-        console.log("Meeting: ", meeting[0].dataValues.meeting_id);
         response.meeting_details = meeting;
         const encryptedMeetingforstart = appUtil.encryptMeetingId(meeting[0].dataValues.meeting_id, "start");
         const encryptedMeetingforjoin = appUtil.encryptMeetingId(meeting[0].dataValues.meeting_id, "join");
 
-        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
-        console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
         response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
@@ -59,6 +56,10 @@ exports.getMeeting = async (req, res) => {
     }
 }
 
+/**
+ * 
+ * @param {*} meeting_id
+ */
 exports.getMeetingInfo = async (req, res) => {
     try {
 
@@ -189,7 +190,6 @@ exports.createmeeting = async (req, res) => {
 
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
-        // return cb(null, appUtil.createErrorResponse(constants.responseCode.INTERNAL_SERVER_ERROR))
         res.send({
             status: "error",
             message: "Internal Server Error",
@@ -240,10 +240,10 @@ function meetingStatusCheck(params) {
 
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
+                const todaysdayposition = moment().utc().day() + 1;
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function(val){
                     return val.replace(/<\/?w>/g,'');
                 });
-                const todaysdayposition = moment().utc().day() + 1;
 
                 let result = occurrenceno.includes(todaysdayposition.toString());
 
@@ -253,14 +253,12 @@ function meetingStatusCheck(params) {
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
                     const occurance = params.occurance;
+                    const todaysdayno = moment().utc().date();
                     const dates = occurance.match(/<DT>(.*?)<\/DT>/g).map(function(val){
                         return val.replace(/<\/?DT>/g,'');
                      });
 
-                    const todaysdayno = moment().utc().date();
                     let result = dates.includes(todaysdayno.toString());
-
-                    console.log(todaysdayno + " " + result);
 
                     return result;
                 } else if (params.occurance_on_week_no.length > 0) {
@@ -268,16 +266,19 @@ function meetingStatusCheck(params) {
                     const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function(val){
                         return val.replace(/<\/?W>/g,'');
                     });
-                    const todaysday = moment().utc();
-                    const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
-
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
                         return val.replace(/<\/?D>/g,'');
-                    }); 
+                    });
+                    
+                    const todaysday = moment().utc();
+                    const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
-
                     let i=0;
                     let allData = [];
+                    let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
+                    let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
+                    let currentSchedule;
+
                     for (let item of weekno){
                         allData.push({ 
                             week:item, 
@@ -285,10 +286,6 @@ function meetingStatusCheck(params) {
                         });
                         i++;
                     }
-
-                    let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
-                    let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
-                    let currentSchedule;
 
                     if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
                         currentSchedule = allData.find(function(item){
@@ -307,6 +304,11 @@ function meetingStatusCheck(params) {
 
             if (params.repeat_frequency == "Yearly") {
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
+                    let allData = [];
+                    let i=0;
+                    let currentMonthNo = moment().utc().month() + 1;
+                    let currentDay = moment().utc().date();
+
                     let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
                         return val.replace(/<\/?M>/g, '');
                     })
@@ -315,8 +317,6 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?DT>/g, '');
                     })
 
-                    let allData = [];
-                    let i=0;
                     for (let month of months) {
                         allData.push({
                             month: month,
@@ -324,9 +324,6 @@ function meetingStatusCheck(params) {
                         })
                         i++;
                     }
-
-                    let currentMonthNo = moment().utc().month() + 1;
-                    let currentDay = moment().utc().date();
 
                     let currentSchedule = allData.find(function(item) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
@@ -412,10 +409,6 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        // console.log("Meeting: ", meeting.dataValues);
-        // console.log("Database time: ", moment(meeting.end_time).format("HHmm"));
-        // console.log("Current time: ", moment().utc().format("HHmm"));
-
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
@@ -433,7 +426,6 @@ exports.startMeeting = async (req, res) => {
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
                 if (moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
-                    console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
@@ -624,9 +616,7 @@ exports.editmeeting = async (req, res) => {
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate()
             };
-
-            console.log("Non Periodic params: ", editParams);
-        } else if (req.body.meeting_type == "periodic") {
+       } else if (req.body.meeting_type == "periodic") {
             editParams = {
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
@@ -644,8 +634,6 @@ exports.editmeeting = async (req, res) => {
                 occurance_on_week_no: req.body.meeting_schedule.occurenceonweekno ? req.body.meeting_schedule.occurenceonweekno : '',
                 occurance_year_month_date: req.body.meeting_schedule.occurrenceyearmonthdate ? req.body.meeting_schedule.occurrenceyearmonthdate : ''
             }
-
-            console.log("Periodic params: ", editParams);
         }
 
         if (req.body.meeting_id) {
@@ -682,6 +670,10 @@ exports.editmeeting = async (req, res) => {
     }
 }
 
+/**
+ * 
+ * @param {*} meeting_id
+ */
 exports.deletemeeting = async (req, res) => {
     try {
         console.log("Delete Meeting Params: ", req.body);
