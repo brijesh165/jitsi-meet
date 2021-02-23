@@ -330,7 +330,8 @@ function meetingStatusCheck(params) {
                     let currentSchedule = allData.find(function(item) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
-
+                    
+                    console.log("Current Schedule 1: ", currentSchedule);
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     const months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) { 
