@@ -103,7 +103,7 @@ exports.getMeetingInfo = async (req, res) => {
 exports.createmeeting = async (req, res) => {
     const currentTimeStamp = moment().utc().unix().toString();
     try {
-        console.log("Params: ", req.body);
+        console.log("Create Meeting Params: ", req.body);
         if (req.body.meeting_type == 'nonperiodic') {
             let response = {};
             const currentTimeStamp = moment().utc().unix().toString();
