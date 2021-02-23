@@ -221,13 +221,13 @@ function meetingStatusCheck(params) {
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "Month") {
+        } else if (params.repeat_event_until == "Every Month") {
             if (moment(params.start_time).date() == moment().utc().date()) {
                 return true;
             } else {
                 return false;
             }
-        } else if (params.repeat_event_until == "Year") {
+        } else if (params.repeat_event_until == "Every Year") {
             if (moment(params.start_time).date() == moment().utc().date()
                 && moment(params.start_time).month() == moment().utc().month()) {
                 return true;
