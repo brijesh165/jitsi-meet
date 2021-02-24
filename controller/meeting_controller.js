@@ -79,7 +79,6 @@ exports.getMeetingInfo = async (req, res) => {
         })
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
-        
         return res.send({
             status: "error",
             message: "Internal server error. Please try again.",
@@ -511,7 +510,6 @@ exports.changeMeetingStatus = async (req, res) => {
                     meeting_id: req.body.meeting_id
                 }
             });
-
             
             return res.send({
                 status: "ok",
@@ -581,7 +579,7 @@ exports.addlogs = async (req, res) => {
             message: "",
             webpage: "",
             response: ""
-        })
+        });
     } catch (error) {
         console.log("Meeting Controller || Add Logs", error);
         return res.send({
@@ -589,7 +587,7 @@ exports.addlogs = async (req, res) => {
             message: "Internal server error. Please try again.",
             webpage: "",
             response: ""
-        })
+        });
     }
 }
 
@@ -651,25 +649,23 @@ exports.editmeeting = async (req, res) => {
                 message: "",
                 webpage: "",
                 response: "sucess"
-            })
+            });
         } else {
             return res.send({
                 status: "error",
                 message: "Invalid meeting id. Please try again with valid meeting ID.",
                 webpage: "",
                 response: ""
-            })
+            });
         }
-
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
-
         return res.send({
             status: "error",
             message: "Internal server error. Please try again.",
             webpage: "",
             response: ""
-        })
+        });
     }
 }
 
@@ -692,15 +688,14 @@ exports.deletemeeting = async (req, res) => {
             message: "",
             webpage: "",
             response: ""
-        })
+        });
     } catch (error) {
         console.log("Meeting Controller || Edit Meeting", error);
-
         return res.send({
             status: "error",
             message: "Internal server error. Please try again.",
             webpage: "",
             response: ""
-        })
+        });
     }
 }
