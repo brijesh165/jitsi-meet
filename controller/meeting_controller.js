@@ -413,6 +413,7 @@ exports.startMeeting = async (req, res) => {
 
         console.log("Meeting: ", meeting == null);
         if (meeting == null) {
+            console.log("Condition True");
             return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`)
         }
 
