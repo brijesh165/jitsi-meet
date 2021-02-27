@@ -411,6 +411,11 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
+        console.log("Meeting: ", meeting);
+        if (meeting) {
+            return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`)
+        }
+
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
