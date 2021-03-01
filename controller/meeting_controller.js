@@ -35,8 +35,8 @@ exports.getMeeting = async (req, res) => {
 
         // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
         // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-        response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-        response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+        response.start_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+        response.join_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
 
         return res.send({
@@ -127,8 +127,8 @@ exports.createmeeting = async (req, res) => {
 
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             return res.send({
                 status: "ok",
@@ -172,8 +172,8 @@ exports.createmeeting = async (req, res) => {
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
 
-            response.start_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            response.start_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            response.join_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
             return res.send({
                 status: "ok",
@@ -414,7 +414,7 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting: ", meeting == null);
         if (meeting == null) {
             console.log("Condition True");
-            return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting_id}`)
+            return res.redirect(`https://betameet.teamlocus.com/errorpage?${meeting_id}`)
         }
 
         if (userstatus == "start") {
@@ -427,10 +427,10 @@ exports.startMeeting = async (req, res) => {
                         }
                     });
 
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                    return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                     console.log("Non periodic else");
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
@@ -443,15 +443,15 @@ exports.startMeeting = async (req, res) => {
                                 meeting_id: meeting_id
                             }
                         });
-                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                        return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}?host=true`)
                     } else {
-                        return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                        return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                     }
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else {
-                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
+                return res.redirect(`https://betameet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
 
         } else if (userstatus == "join") {
@@ -461,12 +461,12 @@ exports.startMeeting = async (req, res) => {
                     && moment(meeting.end_time).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("If Meeting ID: ", meeting.meeting_id)
 
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
-                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
-                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
+                    return res.redirect(`https://betameet.teamlocus.com/waiting/${meeting_id}`);
                 }
             }
 
@@ -478,13 +478,13 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
-                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                        return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}`)
                     } else {
-                        return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                        return res.redirect(`https://betameet.teamlocus.com/waiting/${meeting.meeting_id}`)
                     }
 
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/waiting/${meeting.meeting_id}`)
                 }
             }
         }
