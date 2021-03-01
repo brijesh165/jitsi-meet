@@ -31,7 +31,11 @@ module.exports = function(app) {
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
   ], formValidationMiddleware, meetingController.editmeeting)
 
-  app.post('/delete-meeting', [
+  // app.post('/delete-meeting', [
+  //   check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
+  // ], formValidationMiddleware, meetingController.deletemeeting)
+
+  app.delete('/delete-meeting', [
     check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
 
