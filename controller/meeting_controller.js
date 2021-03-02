@@ -420,7 +420,7 @@ exports.startMeeting = async (req, res) => {
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("Non periodic meeting")
-                if (meeting.status == "started" || moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
                         where: {
                             meeting_id: meeting_id
@@ -457,8 +457,7 @@ exports.startMeeting = async (req, res) => {
         } else if (userstatus == "join") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("In Non periodic meeting");
-                if (meeting.status == "started"
-                    && moment(meeting.end_time).valueOf() > moment().utc().toDate().valueOf()) {
+                if (meeting.status == "started") {
                     console.log("If Meeting ID: ", meeting.meeting_id)
 
                     return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}`)
