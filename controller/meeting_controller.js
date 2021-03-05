@@ -71,7 +71,7 @@ exports.getMeetingInfo = async (req, res) => {
                 meeting_id: req.body.meeting_id
             }
         });
-        console.log("Meeting Info: ", meetingInfo[0]);
+        // console.log("Meeting Info: ", meetingInfo);
         return res.send({
             status: "ok",
             message: "",
