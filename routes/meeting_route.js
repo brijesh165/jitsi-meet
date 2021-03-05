@@ -8,7 +8,7 @@ module.exports = function(app) {
 
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
-  ], formValidationMiddleware, meetingController.getMeetingInfo)
+  ], formValidationMiddleware, meetingController.getMeeting)
 
   app.post('/get-meeting-info', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
