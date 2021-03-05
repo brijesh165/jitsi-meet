@@ -39,6 +39,7 @@ exports.getMeeting = async (req, res) => {
         response.join_url = `https://meet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
 
 
+        console.log("Get meeting response: ", response);
         return res.send({
             status: "ok",
             message: "",
