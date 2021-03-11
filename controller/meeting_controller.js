@@ -79,7 +79,7 @@ exports.getMeetingInfo = async (req, res) => {
                 response: ""
             })
         }
-        
+
         return res.send({
             status: "ok",
             message: "",
