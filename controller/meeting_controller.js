@@ -70,7 +70,10 @@ exports.getMeetingInfo = async (req, res) => {
                 meeting_id: req.body.meeting_id
             }
         });
-        // console.log("Meeting Info: ", meetingInfo);
+        console.log("Meeting Info: ", meetingInfo);
+        console.log("Meeting Type: ", typeof meetingInfo);
+        console.log("Meeting Length: ", meetingInfo.length);
+
         if (!meetingInfo.length) {
             return res.send({ 
                 status: "error",
