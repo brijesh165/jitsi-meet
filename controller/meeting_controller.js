@@ -71,9 +71,6 @@ exports.getMeetingInfo = async (req, res) => {
             }
         });
         console.log("Meeting Info: ", meetingInfo);
-        console.log("Meeting Type: ", typeof meetingInfo);
-        console.log("Meeting Length: ", meetingInfo.length);
-
         if (meetingInfo == null) {
             return res.send({ 
                 status: "error",
