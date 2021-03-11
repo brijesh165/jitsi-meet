@@ -74,7 +74,7 @@ exports.getMeetingInfo = async (req, res) => {
         console.log("Meeting Type: ", typeof meetingInfo);
         console.log("Meeting Length: ", meetingInfo.length);
 
-        if (!meetingInfo.length) {
+        if (meetingInfo == null) {
             return res.send({ 
                 status: "error",
                 message: "Invalid meeting id. Please try with valid meeting id.",
