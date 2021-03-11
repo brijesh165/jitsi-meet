@@ -71,6 +71,15 @@ exports.getMeetingInfo = async (req, res) => {
             }
         });
         // console.log("Meeting Info: ", meetingInfo);
+        if (!meetingInfo.length) {
+            return res.send({ 
+                status: "error",
+                message: "Invalid meeting id. Please try with valid meeting id.",
+                webpage: "",
+                response: ""
+            })
+        }
+        
         return res.send({
             status: "ok",
             message: "",
