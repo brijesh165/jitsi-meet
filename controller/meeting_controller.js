@@ -70,7 +70,8 @@ exports.getMeetingInfo = async (req, res) => {
                 meeting_id: req.body.meeting_id
             }
         });
-        console.log("Meeting Info: ", meetingInfo);
+        // console.log("Meeting Info: ", meetingInfo);
+
         if (meetingInfo == null) {
             return res.send({ 
                 status: "error",
@@ -423,7 +424,7 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting: ", meeting == null);
         if (meeting == null) {
             console.log("Condition True");
-            return res.redirect(`https://betameet.teamlocus.com:8000/errorpage?${meeting_id}`)
+            return res.redirect(`https://betameet.teamlocus.com/errorpage?${meeting_id}`)
         }
 
         if (userstatus == "start") {
@@ -436,10 +437,10 @@ exports.startMeeting = async (req, res) => {
                         }
                     });
 
-                    return res.redirect(`https://betameet.teamlocus.com:8000/${meeting.meeting_id}?host=true`)
+                    return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                     console.log("Non periodic else");
-                    return res.redirect(`https://betameet.teamlocus.com:8000/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
