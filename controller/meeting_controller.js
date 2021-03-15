@@ -519,7 +519,7 @@ exports.startMeeting = async (req, res) => {
  */
 exports.changeMeetingStatus = async (req, res) => {
     try {
-        console.log("Params : ", req.body);
+        console.log("Change Meeting Status Params : ", req.body);
         if (req.body.status == "started") {
             await models.meeting.update({ 
                 status: req.body.status, 
