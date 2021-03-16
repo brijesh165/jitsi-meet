@@ -5,8 +5,7 @@ module.exports = {
       user_id: {
         type: Sequelize.STRING(155),
         allowNull: false,
-        primaryKey: true,
-        unique: true
+        primaryKey: true
       },
       user_name: {
         type: Sequelize.STRING(255),
