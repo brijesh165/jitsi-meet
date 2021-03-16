@@ -38,7 +38,7 @@ exports.login = async (req, res) => {
 
         const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
         console.log("Response: ", loginReq);
-        
+
         if (loginReq.data.status == "ok") {
             // console.log("Response: ", loginReq.data.response.table1);
             // console.log("User Id: ", loginReq.data.response.table1[0].userid)
@@ -67,6 +67,11 @@ exports.login = async (req, res) => {
             return res.send({
                 status: 200,
                 message: "User login successful"
+            })
+        } else if (loginReq.data.status == "error") {
+            return res.send({
+                status: 404,
+                message: loginReq.data.message
             })
         } else {
             return res.send({
