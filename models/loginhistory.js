@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   LoginHistory.associate = function (models) {
-    LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id', targetKey: 'user_id', foreignKeyConstraint: true})
+    LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id', keyType: DataTypes.STRING(255)})
   }
   return LoginHistory;
 };
