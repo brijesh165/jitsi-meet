@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: DataTypes.INTEGER
     },
     status: {
       type: DataTypes.STRING(255),
@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'LoginHistory',
   });
 
-  // LoginHistory.associate = function (models) {
-  //   LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id', keyType: DataTypes.STRING(255)})
-  // }
+  LoginHistory.associate = function (models) {
+    LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id'})
+  }
   return LoginHistory;
 };
