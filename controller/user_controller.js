@@ -41,7 +41,7 @@ exports.login = async (req, res) => {
         if (loginReq.data.status == "ok") {
             console.log("Response: ", loginReq.data.response.table1);
 
-            const userAlreadyExist = await models.user.findAll({
+            const userAlreadyExist = await models.User.findAll({
                 where: {
                     user_id: loginReq.data.response.table1.userid
                 }
