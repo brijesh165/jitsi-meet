@@ -1,4 +1,8 @@
 const appUtil = require('./../util/app-util');
+const models = require('./../models');
+
+const Client = requrie('node-rest-client').Client;
+let client = new Client();
 
 /**
  * 
@@ -23,7 +27,7 @@ exports.login = async (req, res) => {
             "password": req.body.password,
             "gmtoffset": req.body.gmtoffset,
             "deviceinfo": JSON.stringify({
-                "deviceid": "jitsiWeb - " + guid,
+                "deviceid": "jitsiWeb-" + guid,
                 "devicetype": "",
                 "deviceimieuuid": "0123456789",
                 "locationinfo": JSON.stringify(req.body.locationinfo)
@@ -31,6 +35,16 @@ exports.login = async (req, res) => {
         }
 
         console.log("Params: ", params);
+
+        client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params, async function(response, clientRes) {
+            console.log("TeamLocus Login Response: ", response);
+
+            await model.LoginHistory({
+                status: "active",
+                auth_key: response.auth_key,
+                user_id: response.user_id
+            })
+        })
 
         return res.send({
             status: 200

@@ -22,6 +22,7 @@
     "morgan": "~1.9.1",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "node-rest-client": "^3.1.0",
     "node-schedule": "^2.0.0",
     "nodeman": "^1.1.2",
     "pm2": "^4.5.4",
