@@ -43,7 +43,7 @@ exports.login = async (req, res) => {
                 console.log("Error");
                 return res.send({
                     code: 400,
-                    message: "Looks like your gateway is not connected to the internet. Please connect it to internet to login."
+                    message: "Something went wrong. Please try again."
                 })
             }else{
                 await models.LoginHistory({
