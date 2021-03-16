@@ -18,6 +18,20 @@ exports.login = async (req, res) => {
     
         const guid = (guidScript() + guidScript() + "-" + guidScript() + "-4" + guidScript().substr(0, 3) + "-" + guidScript() + "-" + guidScript() + guidScript() + guidScript()).toLowerCase();
         
+        const params = {
+            "username": req.body.username,
+            "password": req.body.password,
+            "gmtoffset": req.body.gmtoffset,
+            "deviceinfo": JSON.stringify({
+                "deviceid": "jitsiWeb - " + guid,
+                "devicetype": "",
+                "deviceimieuuid": "0123456789",
+                "locationinfo": JSON.stringify(req.body.locationinfo)
+            })
+        }
+
+        console.log("Params: ", params);
+
         return res.send({
             status: 200
         });
