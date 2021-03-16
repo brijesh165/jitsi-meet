@@ -37,6 +37,7 @@ exports.login = async (req, res) => {
         console.log("Params: ", params);
 
         const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
+        console.log("Response: ", loginReq);
         
         if (loginReq.data.status == "ok") {
             // console.log("Response: ", loginReq.data.response.table1);
@@ -62,11 +63,19 @@ exports.login = async (req, res) => {
                 auth_key: loginReq.data.response.table1[0].key,
                 user_id: loginReq.data.response.table1[0].userid
             })
+
+            return res.send({
+                status: 200,
+                message: "User login successful"
+            })
+        } else {
+            return res.send({
+                status: 404,
+                message: "Something went wrong!"
+            })
         }
 
-        return res.send({
-            status: 200
-        })
+
     } catch (err) {
         console.log("User Controller | Login ", err);
     }
