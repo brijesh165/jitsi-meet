@@ -35,9 +35,14 @@ exports.login = async (req, res) => {
             })
         }
 
+        let args = {
+            data: params,
+            headers: { "Content-Type": "application/json" }
+        }
+
         console.log("Params: ", params);
 
-        client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params, async function(response, clientRes) {
+        client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", args, async function(response, clientRes) {
             console.log("TeamLocus Login Response: ", response);
 
             if (Buffer.isBuffer(response)) {
