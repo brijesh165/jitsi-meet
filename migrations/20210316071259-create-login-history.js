@@ -17,14 +17,14 @@ module.exports = {
         allowNull: false
       },
       user_id: {
-        type: Sequelize.STRING(155),
+        type: Sequelize.STRING(255),
         allowNull: false,
-        references: {
-          model: 'User',
-          key: 'user_id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
+        // references: {
+        //   model: 'User',
+        //   key: 'user_id',
+        // },
+        // onUpdate: 'CASCADE',
+        // onDelete: 'CASCADE',
       },
       createdAt: {
         allowNull: false,

@@ -30,7 +30,7 @@ module.exports = (sequelize, DataTypes) => {
       unique: true,
     },
     user_id: {
-      type: DataTypes.STRING(155),
+      type: DataTypes.STRING(255),
       allowNull: false
     },
   }, {
@@ -38,8 +38,8 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'LoginHistory',
   });
 
-  LoginHistory.associate = function (models) {
-    LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id'})
-  }
+  // LoginHistory.associate = function (models) {
+  //   LoginHistory.belongsTo(models.User, {as: 'user', foreignKey: 'user_id'})
+  // }
   return LoginHistory;
 };
