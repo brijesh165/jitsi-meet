@@ -1,8 +1,7 @@
 const appUtil = require('./../util/app-util');
 const models = require('./../models');
 
-const Client = require('node-rest-client').Client;
-let client = new Client();
+const axios = require('axios');
 
 /**
  * 
@@ -42,27 +41,12 @@ exports.login = async (req, res) => {
 
         console.log("Params: ", params);
 
-        client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", args, async function(response, clientRes) {
-            console.log("TeamLocus Login Response: ", JSON.parse(response));
+        const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", args);
+        
+        console.log("Response: ", loginReq);
 
-            if (Buffer.isBuffer(response)) {
-                console.log("Error");
-                return res.send({
-                    code: 400,
-                    message: "Something went wrong. Please try again."
-                })
-            }else{
-                console.log("Response: ", JSON.parse(response).status)
-                await models.LoginHistory({
-                    status: "active",
-                    auth_key: response.auth_key,
-                    user_id: response.user_id
-                })
-                
-                return res.send({
-                    status: 200
-                });
-            }
+        return res.send({
+            status: 200
         })
     } catch (err) {
         console.log("User Controller | Login ", err);
