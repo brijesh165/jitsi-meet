@@ -1,7 +1,7 @@
 const appUtil = require('./../util/app-util');
 const models = require('./../models');
 
-const Client = requrie('node-rest-client').Client;
+const Client = require('node-rest-client').Client;
 let client = new Client();
 
 /**
