@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
         
         if (loginReq.data.status == "ok") {
             console.log("Response: ", loginReq.data.response.table1);
-            console.log("User Id: ", loginReq.data.response.table1[userid])
+            console.log("User Id: ", loginReq.data.response.table1[0].userid)
             const userAlreadyExist = await models.User.findAll({
                 where: {
                     user_id: loginReq.data.response.table1["userid"]
@@ -53,7 +53,7 @@ exports.login = async (req, res) => {
                 await models.User({
                     user_id: loginReq.data.response.table1.userid,
                     user_name: loginReq.data.response.table1.username,
-                    full_name: loginReq.data.response.table1.username
+                    full_name: loginReq.data.response.table1.userdisplayname
                 })                
             }
 
