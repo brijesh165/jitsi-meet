@@ -39,16 +39,24 @@ exports.login = async (req, res) => {
         client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params, async function(response, clientRes) {
             console.log("TeamLocus Login Response: ", response);
 
-            await model.LoginHistory({
-                status: "active",
-                auth_key: response.auth_key,
-                user_id: response.user_id
-            })
+            if (Buffer.isBuffer(response)) {
+                console.log("Error");
+                return res.send({
+                    code: 400,
+                    message: "Looks like your gateway is not connected to the internet. Please connect it to internet to login."
+                })
+            }else{
+                await models.LoginHistory({
+                    status: "active",
+                    auth_key: response.auth_key,
+                    user_id: response.user_id
+                })
+                
+                return res.send({
+                    status: 200
+                });
+            }
         })
-
-        return res.send({
-            status: 200
-        });
     } catch (err) {
         console.log("User Controller | Login ", err);
     }
