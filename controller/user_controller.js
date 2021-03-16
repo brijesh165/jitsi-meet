@@ -39,11 +39,11 @@ exports.login = async (req, res) => {
         const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
         
         if (loginReq.data.status == "ok") {
-            console.log("Response: ", loginReq.data.response.table1);
-            console.log("User Id: ", loginReq.data.response.table1[0].userid)
+            // console.log("Response: ", loginReq.data.response.table1);
+            // console.log("User Id: ", loginReq.data.response.table1[0].userid)
             const userAlreadyExist = await models.User.findAll({
                 where: {
-                    user_id: loginReq.data.response.table1["userid"]
+                    user_id: loginReq.data.response.table1[0].userid
                 }
             });
 
@@ -51,16 +51,16 @@ exports.login = async (req, res) => {
 
             if (!userAlreadyExist.length > 0) {
                 await models.User({
-                    user_id: loginReq.data.response.table1.userid,
-                    user_name: loginReq.data.response.table1.username,
-                    full_name: loginReq.data.response.table1.userdisplayname
+                    user_id: loginReq.data.response.table1[0].userid,
+                    user_name: loginReq.data.response.table1[0].username,
+                    full_name: loginReq.data.response.table1[0].userdisplayname
                 })                
             }
 
             await models.LoginHistory({
                 status: "active",
-                auth_key: loginReq.data.response.table1.key,
-                user_id: loginReq.data.response.table1.userid
+                auth_key: loginReq.data.response.table1[0].key,
+                user_id: loginReq.data.response.table1[0].userid
             })
         }
 
