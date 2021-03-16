@@ -50,14 +50,14 @@ exports.login = async (req, res) => {
             console.log("User Already Exist: ", userAlreadyExist);
 
             if (!userAlreadyExist.length > 0) {
-                await models.loginHistory({
+                await models.User({
                     user_id: loginReq.data.response.table1.userid,
                     user_name: loginReq.data.response.table1.username,
                     full_name: loginReq.data.response.table1.username
                 })                
             }
 
-            await models.loginHistory({
+            await models.LoginHistory({
                 status: "active",
                 auth_key: loginReq.data.response.table1.key,
                 user_id: loginReq.data.response.table1.userid
