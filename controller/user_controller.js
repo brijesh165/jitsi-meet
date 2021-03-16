@@ -52,6 +52,7 @@ exports.login = async (req, res) => {
                     message: "Something went wrong. Please try again."
                 })
             }else{
+                console.log("Response: ", JSON.parse(response).status)
                 await models.LoginHistory({
                     status: "active",
                     auth_key: response.auth_key,
