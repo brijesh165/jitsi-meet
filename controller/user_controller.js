@@ -38,6 +38,7 @@ exports.login = async (req, res) => {
 
         client.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params, async function(response, clientRes) {
             console.log("TeamLocus Login Response: ", response);
+            console.log("Client Response: ", clientRes);
 
             if (Buffer.isBuffer(response)) {
                 console.log("Error");
