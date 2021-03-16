@@ -34,14 +34,9 @@ exports.login = async (req, res) => {
             })
         }
 
-        let args = {
-            data: params,
-            headers: { "Content-Type": "application/json" }
-        }
-
         console.log("Params: ", params);
 
-        const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", args);
+        const loginReq = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
         
         console.log("Response: ", loginReq);
 
