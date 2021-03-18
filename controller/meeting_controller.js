@@ -10,11 +10,11 @@ exports.getAllMeetings = async (req, res) => {
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
 
         console.log("Meetings: ", meetings.data.response.tblmymeetings);
-        console.log("Meetings: ", meetings.data.response.tblrecentmeetings);
 
         return res.send({
             status: 200,
             message: "",
+            meetings: meetings.data.response.tblmymeetings
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
