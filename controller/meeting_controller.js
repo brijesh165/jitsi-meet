@@ -18,9 +18,9 @@ exports.getAllMeetings = async (req, res) => {
                             });
 
         const userMeetings = await models.meeting.findAll({
-            include: [{
+            where: {
                 "meeting_id": [meetings]
-            }]
+            }
         });
       
         return res.send({
