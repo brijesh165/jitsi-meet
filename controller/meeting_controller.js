@@ -17,6 +17,8 @@ exports.getAllMeetings = async (req, res) => {
                                                 meeting_id: item.meeting_video
                                             }
                                         })
+
+                                        return resp;
                                 } else {
                                     return;
                                 }
