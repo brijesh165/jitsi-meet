@@ -9,17 +9,7 @@ exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
-
-
-                            // .then((data) => {
-                            //     if (data.data.status == "ok") {
-                            //         return data.data.response.tblmymeetings.map(item=> item.meeting_video)
-                            //     } else {
-                            //         return;
-                            //     }
-                            // });
-                            console.log(meetings.data.response.tblmymeetings.map(item=> item.meeting_video));
-
+        
         const userMeetings = await models.meeting.findAll({
             where: {
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item=> item.meeting_video)]
