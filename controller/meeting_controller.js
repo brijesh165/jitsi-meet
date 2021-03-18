@@ -11,7 +11,7 @@ exports.getAllMeetings = async (req, res) => {
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body)
                             .then((data) => {
                                 if (data.data.status == "ok") {
-                                    return data.data.response.tblmymeetings.map(item=> {"meeting_id", item.meeting_video})
+                                    return data.data.response.tblmymeetings.map(item=> {meeting_id: item.meeting_video})
                                 } else {
                                     return;
                                 }
