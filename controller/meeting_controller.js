@@ -3,6 +3,7 @@ const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
 const axios = require('axios');
+const { Op } = require("sequelize");
 
 exports.getAllMeetings = async (req, res) => {
     try {
@@ -14,13 +15,22 @@ exports.getAllMeetings = async (req, res) => {
                                 } else {
                                     return;
                                 }
-                            })
+                            });
 
+        const userMeetings = await models.meeting.findAll({
+            where: {
+                [Op.not]: [
+                    {
+                        "meeting_id": [meetings]
+                    }
+                ]
+            }
+        });
       
         return res.send({
             status: 200,
             message: "",
-            meetings: meetings
+            meetings: userMeetings
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
