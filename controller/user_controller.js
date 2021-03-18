@@ -48,7 +48,7 @@ exports.login = async (req, res) => {
                 }
             });
 
-            console.log("User Already Exist: ", userAlreadyExist);
+            // console.log("User Already Exist: ", userAlreadyExist);
 
             if (!userAlreadyExist.length > 0) {
                 await models.User.create({
