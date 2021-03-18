@@ -9,10 +9,13 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body)
                             .then((data) => {
-                                return data.data.response.tblmymeetings.map(item=>item.meeting_video)
+                                if (data.data.status == "ok") {
+                                    return data.data.response.tblmymeetings.map(item=>item.meeting_video)
+                                } else {
+                                    return;
+                                }
                             })
 
-        console.log("Meetings: ", meetings);
       
         return res.send({
             status: 200,
