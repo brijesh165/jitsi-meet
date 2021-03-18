@@ -67,7 +67,7 @@ exports.login = async (req, res) => {
             return res.send({
                 status: 200,
                 message: "User login successful",
-                data: loginReq.data
+                data: loginReq.data.response.table1[0]
             })
         } else if (loginReq.data.status == "error") {
             return res.send({
