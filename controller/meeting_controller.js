@@ -19,9 +19,7 @@ exports.getAllMeetings = async (req, res) => {
 
         const userMeetings = await models.meeting.findAll({
             where: {
-                [Op.in]: {
                     meeting_id: [meetings]
-                }
             }
         });
       
