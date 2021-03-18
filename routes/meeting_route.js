@@ -6,6 +6,8 @@ const scheduleManager = require('../util/schedule-manager');
 module.exports = function(app) {
   app.get('/join/:id', meetingController.startMeeting);
 
+  app.get('/get-all-meetings', meetingController.getAllMeetings);
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting);

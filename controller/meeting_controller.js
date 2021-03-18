@@ -2,6 +2,23 @@ const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
+const axios = require('axios');
+
+exports.getAllMeetings = async (req, res) => {
+    try {
+        console.log(req.body);
+        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
+
+        console.log("Meetings: ", meetings);
+
+        return res.send({
+            status: 200,
+            message: "",
+        })
+    } catch (error) {
+        console.log("Meeting Controller | Get All Meetings Error", error);
+    }
+}
 
 /**
  * 
