@@ -7,14 +7,17 @@ const axios = require('axios');
 exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
+        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body)
+                            .then((data) => {
+                                return data.response.tblmymeetings.map(item=>item.meeting_video)
+                            })
 
-        console.log("Meetings: ", meetings.data.response.tblmymeetings);
-
+        console.log("Meetings: ", meetings);
+      
         return res.send({
             status: 200,
             message: "",
-            meetings: meetings.data.response.tblmymeetings
+            meetings: meetings
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
