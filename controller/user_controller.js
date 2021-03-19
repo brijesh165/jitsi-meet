@@ -95,11 +95,11 @@ exports.logout = async (req, res) => {
 
         const logout = await models.LoginHistory.update({ status: "inactive"}, { 
             where: { 
-                user_id: req.body.user_id
+                userid: req.body.user_id
             }
         });
         console.log("Logout: ", logout);
-        
+
         return res.send({
             status: 200,
             message: "success"
