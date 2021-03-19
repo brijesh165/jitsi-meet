@@ -80,9 +80,31 @@ exports.login = async (req, res) => {
                 message: "Something went wrong!"
             })
         }
-
-
     } catch (err) {
         console.log("User Controller | Login ", err);
+    }
+}
+
+/**
+ * 
+ * @param {*} user_id 
+ */
+exports.logout = async (req, res) => {
+    try {
+        console.log("User Id: ", user_id);
+
+        const logout = await models.LoginHistory.update({ status: "inactive"}, { 
+            where: { 
+                user_id: req.body.user_id
+            }
+        });
+        console.log("Logout: ", logout);
+        
+        return res.send({
+            status: 200,
+            message: "success"
+        })
+    } catch (err) {
+        console.log("User Controller | Logout", err);
     }
 }
