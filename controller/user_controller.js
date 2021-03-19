@@ -91,7 +91,7 @@ exports.login = async (req, res) => {
  */
 exports.logout = async (req, res) => {
     try {
-        console.log("User Id: ", user_id);
+        console.log("User Id: ", req.body.user_id);
 
         const logout = await models.LoginHistory.update({ status: "inactive"}, { 
             where: { 
