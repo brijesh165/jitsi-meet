@@ -100,6 +100,13 @@ exports.logout = async (req, res) => {
         });
         console.log("Logout: ", logout);
 
+        if (!logout) {
+            return res.send({
+                status: 404,
+                message: "Something went wrong!"
+            })
+        }
+
         return res.send({
             status: 200,
             message: "success"
