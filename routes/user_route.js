@@ -8,4 +8,8 @@ module.exports = function (app) {
         check("username").not().isEmpty().withMessage('User Name is required.'),
         check("password").not().isEmpty().withMessage('Password is required.')
     ], formValidationMiddleware, userController.login);
+
+    app.post("/logout", [
+        check("user_id").not().isEmpty().withMessage("User Id is required.")
+    ], formValidationMiddleware, userController.logout);
 }
