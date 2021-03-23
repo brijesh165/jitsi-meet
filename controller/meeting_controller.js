@@ -9,8 +9,15 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
 
-        console.log("Response: ", meetings.data.response.tblmymeetings);
+        const allmeetings = meetings.data.response.tblmymeetings;
 
+        if (!allmeetings) {
+            return res.send({
+                status: "200",
+                message: "No upcoming meetings!"
+            })            
+        }
+        
         const userMeetings = await models.meeting.findAll({
             where: {
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item=> item.meeting_video)]                
