@@ -551,10 +551,14 @@ exports.startMeeting = async (req, res) => {
  * @param {*} status
  * @param {*} actual_start_time(Status == "started")
  * @param {*} actual_end_time(Status == "ended")
+ * @param {*} authkey (optional)
  */
 exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
+        const keyStatus = await axios.post("https://dummyservice.teamlocus.com/chatbotservice.svc/chatbotauthorize", {authkey: req.body.authkey});
+        console.log("Key Statys", keyStatus.data);
+        
         if (req.body.status == "started") {
             await models.meeting.update({ 
                 status: req.body.status, 
