@@ -3,14 +3,13 @@ const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
 const axios = require('axios');
-const { Op } = require("sequelize");
 
 exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
 
-        // console.log("Response: ", meetings.data.response);
+        console.log("Response: ", meetings.data.response);
 
         const userMeetings = await models.meeting.findAll({
             where: {
