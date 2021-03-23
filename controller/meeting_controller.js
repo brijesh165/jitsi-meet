@@ -10,7 +10,7 @@ exports.getAllMeetings = async (req, res) => {
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
 
         const allmeetings = meetings.data.response.tblmymeetings;
-        console.log("All Meetings: ", allMeetings, !allmeetings);
+        console.log("All Meetings: ", allmeetings, !allmeetings);
 
         if (!allmeetings) {
             return res.send({
