@@ -24,7 +24,7 @@ exports.getAllMeetings = async (req, res) => {
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item=> item.meeting_video)]                
             },
             order: [
-                ['meetings', 'start_time', 'DESC']
+                ['meeting', 'start_time', 'DESC']
             ]
         });
       
