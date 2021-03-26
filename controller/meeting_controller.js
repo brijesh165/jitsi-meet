@@ -612,6 +612,14 @@ exports.changeMeetingStatus = async (req, res) => {
                 })
             }
         }
+        else {
+            return res.send({
+                status: keyStatus.data.status,
+                message: keyStatus.data.message,
+                webpage: keyStatus.data.webpage,
+                response: keyStatus.data.response
+            })
+        }
     } catch (error) {
         console.log("Meeting Controller || Change Meeting Status", error);
         return res.send({
