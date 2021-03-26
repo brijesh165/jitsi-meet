@@ -13,15 +13,17 @@ exports.getAllMeetings = async (req, res) => {
         // console.log("Data: ", meetings.data)
         const allmeetings = meetings.data.response.tblmymeetings;
         // console.log("All Meetings: ", allmeetings);
-
+        let filterOptions = [
+            { "application": "jitsi"}
+        ];
+        if (allMeetings) {
+            filterOptions.push({ 
+                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+            })
+        }
         const userMeetings = await models.meeting.findAll({
             where: {
-                
-                [Op.or]: [{
-                    "application": "jitsi"
-                },{
-                    'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-                }]
+                [Op.or]: filterOptions
             },
             order: [
                 ['start_time', 'ASC']
