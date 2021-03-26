@@ -15,6 +15,11 @@ exports.getAllMeetings = async (req, res) => {
         // console.log("All Meetings: ", allmeetings);
         let filterOptions = [
             { "application": "jitsi" },
+            { "application_type": "nonperiodic", 
+                "createdAt": {
+                    [Op.gt]: moment()
+                }
+            }
         ];
         if (allmeetings.length > 0) {
             filterOptions.push({ 
@@ -29,9 +34,6 @@ exports.getAllMeetings = async (req, res) => {
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions,
-                "start_time": {
-                    [Op.gt]: moment()
-                }
             },
             order: [
                 ['start_time', 'ASC']
