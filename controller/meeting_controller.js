@@ -16,18 +16,18 @@ exports.getAllMeetings = async (req, res) => {
             return res.send({
                 status: "200",
                 message: "No upcoming meetings!"
-            })            
+            })
         }
 
         const userMeetings = await models.meeting.findAll({
             where: {
-                'meeting_id': [meetings.data.response.tblmymeetings.map(item=> item.meeting_video)]                
+                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)]
             },
             order: [
                 ['start_time', 'ASC']
             ]
         });
-      
+
         return res.send({
             status: 200,
             message: "",
@@ -47,7 +47,7 @@ exports.getMeeting = async (req, res) => {
         console.log("Get Meeting Params : ", req.body);
         let response = {};
         const meeting_id = req.body.meeting_id.split("?")[0];
-        
+
         const meeting = await models.meeting.findAll({
             where: {
                 meeting_id: meeting_id
@@ -55,7 +55,7 @@ exports.getMeeting = async (req, res) => {
         });
 
         if (!meeting.length) {
-            return res.send({ 
+            return res.send({
                 status: "error",
                 message: "Invalid meeting id. Please try with valid meeting id.",
                 webpage: "",
@@ -108,7 +108,7 @@ exports.getMeetingInfo = async (req, res) => {
         // console.log("Meeting Info: ", meetingInfo);
 
         if (meetingInfo == null) {
-            return res.send({ 
+            return res.send({
                 status: "error",
                 message: "Invalid meeting id. Please try with valid meeting id.",
                 webpage: "",
@@ -282,68 +282,68 @@ function meetingStatusCheck(params) {
             console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
                 return true;
-            } 
+            }
 
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
                 const todaysdayposition = moment().utc().day() + 1;
-                let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function(val){
-                    return val.replace(/<\/?w>/g,'');
+                let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
+                    return val.replace(/<\/?w>/g, '');
                 });
 
                 let result = occurrenceno.includes(todaysdayposition.toString());
 
                 return result;
             }
-            
+
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
                     const occurance = params.occurance;
                     const todaysdayno = moment().utc().date();
-                    const dates = occurance.match(/<DT>(.*?)<\/DT>/g).map(function(val){
-                        return val.replace(/<\/?DT>/g,'');
-                     });
+                    const dates = occurance.match(/<DT>(.*?)<\/DT>/g).map(function (val) {
+                        return val.replace(/<\/?DT>/g, '');
+                    });
 
                     let result = dates.includes(todaysdayno.toString());
 
                     return result;
                 } else if (params.occurance_on_week_no.length > 0) {
                     const occuranceonweekno = params.occurance_on_week_no;
-                    const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function(val){
-                        return val.replace(/<\/?W>/g,'');
+                    const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function (val) {
+                        return val.replace(/<\/?W>/g, '');
                     });
-                    const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function(val){
-                        return val.replace(/<\/?D>/g,'');
+                    const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function (val) {
+                        return val.replace(/<\/?D>/g, '');
                     });
-                    
+
                     const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
-                    let i=0;
+                    let i = 0;
                     let allData = [];
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
 
-                    for (let item of weekno){
-                        allData.push({ 
-                            week:item, 
-                            day:days[i]
+                    for (let item of weekno) {
+                        allData.push({
+                            week: item,
+                            day: days[i]
                         });
                         i++;
                     }
 
-                    if( parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
-                        currentSchedule = allData.find(function(item){
+                    if (parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
+                        currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentweekno) && item.day == currentday;
                         });
 
-                    }else{
-                        currentSchedule = allData.find(function(item){
+                    } else {
+                        currentSchedule = allData.find(function (item) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-      
+
                     return currentSchedule == null ? false : true;
                 }
             }
@@ -351,15 +351,15 @@ function meetingStatusCheck(params) {
             if (params.repeat_frequency == "Yearly") {
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
                     let allData = [];
-                    let i=0;
+                    let i = 0;
                     let currentMonthNo = moment().utc().month() + 1;
                     let currentDay = moment().utc().date();
 
-                    let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function(val) { 
+                    let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) {
                         return val.replace(/<\/?M>/g, '');
                     })
 
-                    let dates = params.occurance_year_month_date.match(/<DT>(.*?)<\/DT>/g).map(function(val) {
+                    let dates = params.occurance_year_month_date.match(/<DT>(.*?)<\/DT>/g).map(function (val) {
                         return val.replace(/<\/?DT>/g, '');
                     })
 
@@ -371,20 +371,20 @@ function meetingStatusCheck(params) {
                         i++;
                     }
 
-                    let currentSchedule = allData.find(function(item) {
+                    let currentSchedule = allData.find(function (item) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
-                    
+
                     console.log("Current Schedule 1: ", currentSchedule);
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
-                    const months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) { 
+                    const months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) {
                         return val.replace(/<\/?M>/g, '');
                     })
-                    const weeks = params.occurance_on_week_no.match(/<W>(.*?)<\/W>/g).map(function (val) { 
+                    const weeks = params.occurance_on_week_no.match(/<W>(.*?)<\/W>/g).map(function (val) {
                         return val.replace(/<\/?W>/g, '');
                     })
-                    const days = params.occurance_on_week_no.match(/<D>(.*?)<\/D>/g).map(function (val) { 
+                    const days = params.occurance_on_week_no.match(/<D>(.*?)<\/D>/g).map(function (val) {
                         return val.replace(/<\/?D>/g, '');
                     })
 
@@ -399,25 +399,25 @@ function meetingStatusCheck(params) {
                     let i = 0;
                     let allData = [];
                     for (let week of weeks) {
-                        allData.push({ 
-                            week: week, 
+                        allData.push({
+                            week: week,
                             day: days[i]
                         })
                         i++;
                     }
 
-                    if( months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7){
-                        currentSchedule = allData.find(function(item){
+                    if (months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
+                        currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentWeekNo) && item.day == currentDayNo;
                         });
-                    } else if ( months.includes(currentMonthNo.toString())) {
-                        currentSchedule = allData.find(function(item){
+                    } else if (months.includes(currentMonthNo.toString())) {
+                        currentSchedule = allData.find(function (item) {
                             return item.week == currentWeekNo && item.day == currentDayNo;
                         });
                     } else {
                         return false;
                     }
-      
+
                     console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
 
                     return currentSchedule == undefined ? false : true;
@@ -454,7 +454,7 @@ exports.startMeeting = async (req, res) => {
             where: {
                 meeting_id: meeting_id
             }
-        }); 
+        });
 
         console.log("Meeting: ", meeting == null);
         if (meeting == null) {
@@ -516,7 +516,7 @@ exports.startMeeting = async (req, res) => {
 
             if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
-                if (meeting.status == "started" 
+                if (meeting.status == "started"
                     && moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
                     console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
@@ -556,53 +556,54 @@ exports.startMeeting = async (req, res) => {
 exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
-        const keyStatus = await axios.post("https://dummyservice.teamlocus.com/chatbotservice.svc/chatbotauthorize", {authkey: req.body.authkey});
-        console.log("Key Statys", keyStatus.data);
-        
-        if (req.body.status == "started") {
-            await models.meeting.update({ 
-                status: req.body.status, 
-                actual_start_time: moment(req.body.actual_start_time, 'x').toDate() 
-            }, {
-                where: {
-                    meeting_id: req.body.meeting_id
-                }
-            });
-            
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: ""
-            })
-        }
-        if (req.body.status == "ended") {
-            await models.meeting.update({ status: req.body.status, actual_end_time: moment(req.body.actual_end_time, 'x').toDate() }, {
-                where: {
-                    meeting_id: req.body.meeting_id
-                }
-            });
+        const keyStatus = await axios.post("https://dummyservice.teamlocus.com/chatbotservice.svc/chatbotauthorize", { authkey: req.body.authkey });
 
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: ""
-            })
-        }
-        if (req.body.status == "pending") {
-            await models.meeting.update({ status: req.body.status }, {
-                where: {
-                    meeting_id: req.body.meeting_id
-                }
-            });
+        if (keyStatus.data.status == "ok") {
+            if (req.body.status == "started") {
+                await models.meeting.update({
+                    status: req.body.status,
+                    actual_start_time: moment(req.body.actual_start_time, 'x').toDate()
+                }, {
+                    where: {
+                        meeting_id: req.body.meeting_id
+                    }
+                });
 
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: ""
-            })
+                return res.send({
+                    status: "ok",
+                    message: "",
+                    webpage: "",
+                    response: ""
+                })
+            }
+            if (req.body.status == "ended") {
+                await models.meeting.update({ status: req.body.status, actual_end_time: moment(req.body.actual_end_time, 'x').toDate() }, {
+                    where: {
+                        meeting_id: req.body.meeting_id
+                    }
+                });
+
+                return res.send({
+                    status: "ok",
+                    message: "",
+                    webpage: "",
+                    response: ""
+                })
+            }
+            if (req.body.status == "pending") {
+                await models.meeting.update({ status: req.body.status }, {
+                    where: {
+                        meeting_id: req.body.meeting_id
+                    }
+                });
+
+                return res.send({
+                    status: "ok",
+                    message: "",
+                    webpage: "",
+                    response: ""
+                })
+            }
         }
     } catch (error) {
         console.log("Meeting Controller || Change Meeting Status", error);
@@ -675,7 +676,7 @@ exports.editmeeting = async (req, res) => {
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate()
             };
-       } else if (req.body.meeting_type == "periodic") {
+        } else if (req.body.meeting_type == "periodic") {
             editParams = {
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
