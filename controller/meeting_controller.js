@@ -16,10 +16,12 @@ exports.getAllMeetings = async (req, res) => {
 
         const userMeetings = await models.meeting.findAll({
             where: {
-                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-                [Op.or]: {
+                
+                [Op.or]: [{
                     "application": "jitsi"
-                }
+                },{
+                    'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+                }]
             },
             order: [
                 ['start_time', 'ASC']
