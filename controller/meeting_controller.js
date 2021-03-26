@@ -7,8 +7,8 @@ const axios = require('axios');
 exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listvideomeeting", req.body);
-
+        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        
         const allmeetings = meetings.data.response.tblmymeetings;
         // console.log("All Meetings: ", allmeetings);
 
