@@ -29,7 +29,7 @@ exports.getAllMeetings = async (req, res) => {
             where: {
                 [Op.or]: filterOptions,
                 "start_time": {
-                    [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
+                    [Op.gt]: moment()
                 }
             },
             order: [
