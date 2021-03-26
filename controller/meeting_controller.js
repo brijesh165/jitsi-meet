@@ -25,7 +25,7 @@ exports.getAllMeetings = async (req, res) => {
             where: {
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
                 [Op.or]: {
-                    "application": "jitsi"
+                    application: "jitsi"
                 },
             },
             order: [
