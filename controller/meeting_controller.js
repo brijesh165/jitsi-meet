@@ -16,11 +16,14 @@ exports.getAllMeetings = async (req, res) => {
         let filterOptions = [
             { "application": "jitsi"}
         ];
-        if (allmeetings) {
+        if (allmeetings.length > 0) {
             filterOptions.push({ 
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
             })
         }
+
+        console.log("Filter Options: ", filterOptions);
+
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions
