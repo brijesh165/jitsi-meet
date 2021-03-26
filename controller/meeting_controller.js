@@ -28,7 +28,7 @@ exports.getAllMeetings = async (req, res) => {
             where: {
                 [Op.or]: filterOptions,
                 [Op.gt]: {
-                    "start_time": moment().utc()
+                    "start_time": moment().utc().toDate()
                 }
             },
             order: [
