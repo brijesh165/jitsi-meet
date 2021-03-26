@@ -9,8 +9,8 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
         
-        console.log("Data: ", meetings.data)
-        const allmeetings = meetings.data.response;
+        // console.log("Data: ", meetings.data)
+        const allmeetings = meetings.data.response.tblmymeetings;
         // console.log("All Meetings: ", allmeetings);
 
         if (allmeetings.length == 0) {
@@ -565,7 +565,7 @@ exports.changeMeetingStatus = async (req, res) => {
             if (req.body.status == "started") {
                 await models.meeting.update({
                     status: req.body.status,
-                    actual_start_time: moment(req.body.actual_start_time, 'x').toDate()
+                    actual_start_time: req.body.actual_start_time ? req.body.actual_start_time : moment(req.body.actual_start_time, 'x').toDate()
                 }, {
                     where: {
                         meeting_id: req.body.meeting_id
@@ -580,7 +580,9 @@ exports.changeMeetingStatus = async (req, res) => {
                 })
             }
             if (req.body.status == "ended") {
-                await models.meeting.update({ status: req.body.status, actual_end_time: moment(req.body.actual_end_time, 'x').toDate() }, {
+                await models.meeting.update({ 
+                    status: req.body.status, 
+                    actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate() }, {
                     where: {
                         meeting_id: req.body.meeting_id
                     }
