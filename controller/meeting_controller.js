@@ -23,7 +23,7 @@ exports.getAllMeetings = async (req, res) => {
         }
 
         console.log("Filter Options: ", filterOptions);
-        console.log("Date: ", new Date(), momemt())
+        console.log("Date: ", new Date(), momemt().toDate())
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions,
