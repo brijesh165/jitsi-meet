@@ -24,6 +24,7 @@ exports.getAllMeetings = async (req, res) => {
 
         console.log("Filter Options: ", filterOptions);
         console.log("Date: ", new Date());
+
         console.log("Moment: ", moment())
         const userMeetings = await models.meeting.findAll({
             where: {
@@ -572,7 +573,7 @@ exports.startMeeting = async (req, res) => {
 exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
-        const keyStatus = await axios.post("https://dummyservice.teamlocus.com/chatbotservice.svc/chatbotauthorize", { authkey: req.body.authkey });
+        const keyStatus = await axios.post("http://192.168.75.131:91/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         console.log("Key Status: ", keyStatus.data);
 
         if (keyStatus.data.status == "ok") {
