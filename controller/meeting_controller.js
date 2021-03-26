@@ -8,7 +8,7 @@ const { Op } = require('sequelize');
 exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("http://192.168.75.131:91/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("https://dummyservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
         
         console.log("Data: ", meetings.data.response)
         const allmeetings = meetings.data.response.tblmymeetings;
