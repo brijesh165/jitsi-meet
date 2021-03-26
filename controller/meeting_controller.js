@@ -12,10 +12,11 @@ exports.getAllMeetings = async (req, res) => {
         
         // console.log("Data: ", meetings.data)
         const allmeetings = meetings.data.response.tblmymeetings;
-        // console.log("All Meetings: ", allmeetings);
+        console.log("All Meetings: ", allmeetings.length);
         let filterOptions = [
             { "application": "jitsi" }
         ];
+
         if (allmeetings.length > 0) {
             filterOptions.push({ 
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
