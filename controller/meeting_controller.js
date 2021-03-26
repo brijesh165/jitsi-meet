@@ -21,7 +21,9 @@ exports.getAllMeetings = async (req, res) => {
 
         const userMeetings = await models.meeting.findAll({
             where: {
-                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)]
+                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+                'start_time': moment().utc().valueOf(),
+                'end_time': moment().utc().add(1, 'days').valueOf()
             },
             order: [
                 ['start_time', 'ASC']
