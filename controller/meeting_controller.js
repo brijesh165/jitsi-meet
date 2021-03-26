@@ -3,6 +3,7 @@ const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
 const axios = require('axios');
+const { Op } = require('sequelize');
 
 exports.getAllMeetings = async (req, res) => {
     try {
