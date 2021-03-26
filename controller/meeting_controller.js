@@ -14,7 +14,7 @@ exports.getAllMeetings = async (req, res) => {
         const allmeetings = meetings.data.response.tblmymeetings;
         // console.log("All Meetings: ", allmeetings);
         let filterOptions = [
-            { "application": "jitsi"}
+            { "application": "jitsi" }
         ];
         if (allmeetings.length > 0) {
             filterOptions.push({ 
@@ -26,7 +26,10 @@ exports.getAllMeetings = async (req, res) => {
 
         const userMeetings = await models.meeting.findAll({
             where: {
-                [Op.or]: filterOptions
+                [Op.or]: filterOptions,
+                [Op.gt]: {
+                    "start_time": moment().utc().valueOf()
+                }
             },
             order: [
                 ['start_time', 'ASC']
