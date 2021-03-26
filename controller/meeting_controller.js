@@ -561,6 +561,7 @@ exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
         const keyStatus = await axios.post("https://dummyservice.teamlocus.com/chatbotservice.svc/chatbotauthorize", { authkey: req.body.authkey });
+        console.log("Key Status: ", keyStatus.data);
 
         if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
