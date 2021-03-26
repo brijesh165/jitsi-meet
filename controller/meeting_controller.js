@@ -32,7 +32,7 @@ exports.getAllMeetings = async (req, res) => {
                 [Op.and]: [
                     { "meeting_type": "nonperiodic", 
                     "start_time": {
-                        [Op.lt]: moment()
+                        [Op.gt]: moment().add(30, 'minutes')
                     }
                     }
                 ]
