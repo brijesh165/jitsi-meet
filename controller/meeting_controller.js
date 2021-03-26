@@ -31,7 +31,7 @@ exports.getAllMeetings = async (req, res) => {
                 [Op.or]: filterOptions,
                 [Op.and]: [
                     { "application_type": "nonperiodic", 
-                    "createdAt": {
+                    "end_time": {
                         [Op.gt]: moment()
                     }
                     }
