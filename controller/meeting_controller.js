@@ -16,7 +16,7 @@ exports.getAllMeetings = async (req, res) => {
         let filterOptions = [
             { "application": "jitsi"}
         ];
-        if (allMeetings) {
+        if (allmeetings) {
             filterOptions.push({ 
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
             })
