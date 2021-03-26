@@ -30,7 +30,6 @@ exports.getAllMeetings = async (req, res) => {
                 "start_time": {
                     [Op.gt]: new Date(new Date() - 24 * 60 * 60 * 1000)
                 }
-            }
             },
             order: [
                 ['start_time', 'ASC']
