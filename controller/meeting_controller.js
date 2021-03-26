@@ -14,13 +14,6 @@ exports.getAllMeetings = async (req, res) => {
         const allmeetings = meetings.data.response.tblmymeetings;
         // console.log("All Meetings: ", allmeetings);
 
-        if (allmeetings.length == 0) {
-            return res.send({
-                status: "200",
-                message: "No upcoming meetings!"
-            })
-        }
-
         const userMeetings = await models.meeting.findAll({
             where: {
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
@@ -32,6 +25,13 @@ exports.getAllMeetings = async (req, res) => {
                 ['start_time', 'ASC']
             ]
         });
+
+        if (userMeetings.length == 0) {
+            return res.send({
+                status: "200",
+                message: "No upcoming meetings!"
+            })
+        }
 
         return res.send({
             status: 200,
