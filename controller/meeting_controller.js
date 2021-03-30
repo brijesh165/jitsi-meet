@@ -36,6 +36,9 @@ exports.getAllMeetings = async (req, res) => {
                         [Op.gt]: moment().subtract(60, 'minutes')
                     }
                     }
+                ],
+                [Op.and]: [
+                    { "meeting_type": "periodic"}
                 ]
             },
             order: [
