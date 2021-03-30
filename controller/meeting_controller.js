@@ -55,7 +55,7 @@ exports.getAllMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
-            meetings: userMeetings
+            meetings: meetingsss
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
