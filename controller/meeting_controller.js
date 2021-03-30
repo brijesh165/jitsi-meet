@@ -36,6 +36,15 @@ exports.getAllMeetings = async (req, res) => {
             ]
         });
 
+        let meetings = [];
+        for (let i=0; i<userMeetings.length; i++) {
+            const resp = meetingStatusCheck(userMeetings[i]);
+            if (resp) {
+                meetings.push(userMeetings[i]);
+            }
+        }
+        console.log("Meetings: ", meetings);
+        
         if (userMeetings.length == 0) {
             return res.send({
                 status: "200",
