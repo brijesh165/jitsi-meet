@@ -30,16 +30,6 @@ exports.getAllMeetings = async (req, res) => {
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions,
-                [Op.and]: [
-                    { "meeting_type": "nonperiodic", 
-                    "start_time": {
-                        [Op.gt]: moment().subtract(60, 'minutes')
-                    }
-                    }
-                ],
-                [Op.and]: [
-                    { "meeting_type": "periodic"}
-                ]
             },
             order: [
                 ['start_time', 'ASC']
