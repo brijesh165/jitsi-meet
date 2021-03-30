@@ -43,7 +43,7 @@ exports.getAllMeetings = async (req, res) => {
                 meetingsss.push(userMeetings[i]);
             }
         }
-        console.log("Meetings: ", meetingsss);
+        console.log("Meetingsss: ", meetingsss.dataValues.id);
 
         if (userMeetings.length == 0) {
             return res.send({
