@@ -12,7 +12,7 @@ exports.getAllMeetings = async (req, res) => {
         
         // console.log("Data: ", meetings.data.response)
         const allmeetings = meetings.data.response.tblmymeetings;
-        // console.log("All Meetings: ", allmeetings.length);
+        console.log("All Meetings: ", allmeetings.length);
         let filterOptions = [
             { "application": "jitsi" }
         ];
