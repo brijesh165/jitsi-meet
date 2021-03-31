@@ -31,7 +31,7 @@ exports.getAllMeetings = async (req, res) => {
             where: {
                 [Op.or]: filterOptions,
                 start_time: {
-                    [Op.gte]: moment().utc().toDate()
+                    [Op.gte]: moment().utc().subtract('1', 'hours').toDate()
                 },
                 end_time: {
                     [Op.lte]: moment().utc().add('24', 'hours').toDate()
