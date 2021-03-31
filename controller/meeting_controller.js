@@ -73,8 +73,8 @@ exports.allMeetings = async (req, res) => {
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
-                [Op.gt]: { 
-                    createdAt: new Date(new Date() - 24 * 60 * 60 * 1000)
+                start_date: { 
+                    [Op.gte]: moment().toDate
                 }
             },
             order: [
