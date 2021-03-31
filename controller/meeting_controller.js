@@ -70,6 +70,7 @@ exports.getAllMeetings = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
+        console.log("TOday: ", moment().utc().toDate())
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
