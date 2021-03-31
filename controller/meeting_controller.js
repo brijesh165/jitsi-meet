@@ -77,6 +77,12 @@ exports.allMeetings = async (req, res) => {
                 ['start_time', 'ASC']
             ]
         })
+
+        return res.send({
+            status: 200,
+            message: "",
+            meetings: meetings
+        })
     } catch (error) {
         console.log("Meeting Controller | All Meetings Error", error);
     }
