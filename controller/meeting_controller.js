@@ -43,14 +43,14 @@ exports.getAllMeetings = async (req, res) => {
         });
 
         console.log("User Meetings: ", userMeetings)
-        let meetingsss = [];
-        for (let i=0; i<userMeetings.length; i++) {
-            const resp = meetingStatusCheck(userMeetings[i]);
-            if (resp) {
-                meetingsss.push(userMeetings[i]);
-            }
-        }
-        console.log("Meetingsss: ", meetingsss.length);
+        // let meetingsss = [];
+        // for (let i=0; i<userMeetings.length; i++) {
+        //     const resp = meetingStatusCheck(userMeetings[i]);
+        //     if (resp) {
+        //         meetingsss.push(userMeetings[i]);
+        //     }
+        // }
+        // console.log("Meetingsss: ", meetingsss.length);
 
         if (userMeetings.length == 0) {
             return res.send({
