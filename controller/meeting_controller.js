@@ -73,7 +73,7 @@ exports.allMeetings = async (req, res) => {
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
-                start_date: { 
+                start_time: { 
                     [Op.gte]: moment().subtract('30', 'minutes').toDate()
                 }
             },
