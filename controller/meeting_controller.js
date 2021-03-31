@@ -70,12 +70,12 @@ exports.getAllMeetings = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        console.log("TOday: ", moment().utc().toDate())
+        console.log("TOday: ", moment().utc().toDate().format("yyyy-MM-DD"))
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
                 start_time: { 
-                    [Op.gt]: moment().utc().toDate()
+                    [Op.gte]: moment().utc().toDate().format("yyyy-MM-DD")
                 }
             },
             order: [
