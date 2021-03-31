@@ -73,7 +73,7 @@ exports.allMeetings = async (req, res) => {
             where: {
                 meeting_host: req.body.username, 
                 [Op.gt]: { 
-                    start_time: new Date()
+                    start_time: new Date(new Date() - 24 * 60 * 60 * 1000)
                 }
             },
             order: [
