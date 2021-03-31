@@ -62,7 +62,7 @@ exports.getAllMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
-            meetings: meetingsss
+            meetings: userMeetings
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
@@ -76,7 +76,6 @@ exports.getAllMeetings = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        console.log("TOday: ", moment().utc().format("yyyy-MM-DD"))
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
