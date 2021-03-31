@@ -10,9 +10,9 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("http://192.168.75.131:91/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
         
-        console.log("Data: ", meetings.data.response)
+        // console.log("Data: ", meetings.data.response)
         const allmeetings = meetings.data.response.tblmymeetings;
-        console.log("All Meetings: ", allmeetings.length);
+        // console.log("All Meetings: ", allmeetings.length);
         let filterOptions = [
             { "application": "jitsi" }
         ];
@@ -23,10 +23,10 @@ exports.getAllMeetings = async (req, res) => {
             })
         }
 
-        console.log("Filter Options: ", filterOptions);
-        console.log("Date: ", new Date());
+        // console.log("Filter Options: ", filterOptions);
+        // console.log("Date: ", new Date());
 
-        console.log("Moment: ", moment())
+        // console.log("Moment: ", moment())
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions,
@@ -36,6 +36,7 @@ exports.getAllMeetings = async (req, res) => {
             ]
         });
 
+        console.log("User Meetings: ", userMeetings)
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
             const resp = meetingStatusCheck(userMeetings[i]);
