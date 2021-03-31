@@ -30,6 +30,12 @@ exports.getAllMeetings = async (req, res) => {
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions,
+                start_time: {
+                    [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                },
+                end_time: {
+                    [Op.lte]: moment().utc().format("yyyy-MM-DD")
+                }
             },
             order: [
                 ['start_time', 'ASC']
