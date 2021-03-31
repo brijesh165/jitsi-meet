@@ -34,7 +34,7 @@ exports.getAllMeetings = async (req, res) => {
                     [Op.gte]: moment().utc().toDate()
                 },
                 end_time: {
-                    [Op.lte]: moment().utc().toDate()
+                    [Op.lte]: moment().utc().add('24', 'hours').toDate()
                 }
             },
             order: [
