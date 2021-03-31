@@ -8,6 +8,8 @@ module.exports = function(app) {
 
   app.post('/get-all-meetings', meetingController.getAllMeetings);
 
+  app.post('/all-meetings', meetingController.allMeetings);
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting);

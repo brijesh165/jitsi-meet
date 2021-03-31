@@ -64,6 +64,26 @@ exports.getAllMeetings = async (req, res) => {
 
 /**
  * 
+ * @param {*} username 
+ * @param {*} res 
+ */
+exports.allMeetings = async (req, res) => {
+    try {
+        const meetings = await models.meeting.findAll({ 
+            where: {
+                meeting_host: req.body.username
+            },
+            order: [
+                ['start_time', 'ASC']
+            ]
+        })
+    } catch (error) {
+        console.log("Meeting Controller | All Meetings Error", error);
+    }
+}
+
+/**
+ * 
  * @param {*} meeting_id 
  */
 exports.getMeeting = async (req, res) => {
