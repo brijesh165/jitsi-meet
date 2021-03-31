@@ -74,7 +74,7 @@ exports.allMeetings = async (req, res) => {
             where: {
                 meeting_host: req.body.username, 
                 start_time: { 
-                    [Op.gte]: moment().toDate()
+                    [Op.gt]: moment().utc().toDate()
                 }
             },
             order: [
