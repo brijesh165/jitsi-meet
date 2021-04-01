@@ -2,7 +2,7 @@ const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
-
+const socket = require('./../util/socket-manager');
 /**
  * 
  * @param {*} meeting_id 
@@ -534,6 +534,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     meeting_id: req.body.meeting_id
                 }
             });
+            socket.emit("end_meeting", { "meeting_id": req.body.meeting_id })
 
             return res.send({
                 status: "ok",
