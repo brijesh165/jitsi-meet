@@ -95,6 +95,13 @@ exports.allMeetings = async (req, res) => {
             ]
         })
 
+        if (meetings.length == 0) {
+            return res.send({
+                status: "200",
+                message: "No upcoming meetings!"
+            })
+        }
+
         return res.send({
             status: 200,
             message: "",
