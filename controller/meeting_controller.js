@@ -10,7 +10,7 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("http://192.168.75.131:91/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
         
-        // console.log("Data: ", meetings.data.response)
+        console.log("Data: ", meetings.data)
         const allmeetings = meetings.data.response.tblmymeetings;
         console.log("All Meetings: ", allmeetings.length);
         let filterOptions = [
