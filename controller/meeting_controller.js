@@ -98,7 +98,7 @@ exports.allMeetings = async (req, res) => {
         if (meetings.length == 0) {
             return res.send({
                 status: "200",
-                message: "No upcoming meetings!"
+                message: "You have no meetings at this moment!"
             })
         }
 
@@ -260,6 +260,7 @@ exports.createmeeting = async (req, res) => {
                 }
             })
         } else if (req.body.meeting_type == 'periodic') {
+            console.log("Meeting Schedule: ", req.body.meeting_schedule)
             let response = {};
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
