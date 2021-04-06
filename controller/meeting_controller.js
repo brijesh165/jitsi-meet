@@ -59,8 +59,8 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Meetingsss: ", );
         
         meetingsss.sort((a, b)=> {
-            console.log(a.start_time);
-            console.log(b.start_time);
+            console.log("a: ", new Date(a.start_time));
+            console.log("b: ", new Date(b.start_time));
             a.start_time - b.start_time
         })
 
