@@ -74,7 +74,7 @@ exports.getAllMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
-            meetings: meetingsss.sort((a, b)=>a.start_time - b.start_time)
+            meetings: meetingsss.sort((a, b)=>new Date(a.start_time) - new Date(b.start_time))
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
