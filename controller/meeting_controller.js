@@ -56,14 +56,8 @@ exports.getAllMeetings = async (req, res) => {
                 }    
             }
         }
-        console.log("Meetingsss: ", );
+        console.log("Meetingsss: ", meetingsss);
         
-        meetingsss.sort((a, b)=> {
-            console.log("a: ", new Date(a.start_time));
-            console.log("b: ", new Date(b.start_time));
-            a.start_time - b.start_time
-        })
-
         if (userMeetings.length == 0) {
             return res.send({
                 status: "200",
@@ -74,7 +68,7 @@ exports.getAllMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
-            meetings: meetingsss.sort((a, b)=> new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
+            meetings: meetingsss.sort((a, b)=> new Date(b.start_time).getTime() - new Date(a.start_time).getTime())
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
