@@ -332,7 +332,7 @@ exports.createmeeting = async (req, res) => {
  */
 function meetingStatusCheck(params) {
     try {
-        console.log("Params: ", params);
+        // console.log("Params: ", params);
         const difference = moment().utc().diff(moment(params.start_time), 'days');
         console.log("Difference: ", difference)
         console.log("Meeting Type: ", params.meeting_type)
@@ -370,6 +370,7 @@ function meetingStatusCheck(params) {
 
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
+                console.log("Occurance: ", occurance);
                 const todaysdayposition = moment().utc().day() + 1;
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
                     return val.replace(/<\/?w>/g, '');
