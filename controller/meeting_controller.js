@@ -94,6 +94,9 @@ exports.allMeetings = async (req, res) => {
                     }
                 }, {
                     meeting_type: "periodic",
+                    repeat_end_date: {
+                        [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                    }
                 }
                 ]
             },
