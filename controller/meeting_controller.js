@@ -49,6 +49,7 @@ exports.getAllMeetings = async (req, res) => {
         for (let i=0; i<userMeetings.length; i++) {
             if (userMeetings[i].meeting_type === "nonperiodic") {
                 if (moment().utc().diff(moment(userMeetings[i].start_time), 'days') == 0) {
+                    console.log(moment(userMeetings[i].start_time).format("yyyy-MM-dd"))
                     console.log(moment().utc().diff(moment(userMeetings[i].start_time), 'days'))
                     meetingsss.push(userMeetings[i])
                 }
