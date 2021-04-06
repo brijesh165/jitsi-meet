@@ -91,6 +91,9 @@ exports.allMeetings = async (req, res) => {
                     start_time: { 
                         [Op.gte]: moment().utc().format("yyyy-MM-DD")
                     }
+                },
+                [Op.and]: {
+                    meeting_type: "periodic",
                 }
             },
             order: [
