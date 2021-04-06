@@ -86,8 +86,11 @@ exports.allMeetings = async (req, res) => {
         const meetings = await models.meeting.findAll({ 
             where: {
                 meeting_host: req.body.username, 
-                start_time: { 
-                    [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                [Op.and]: {
+                    meeting_type: "nonperiodic",
+                    start_time: { 
+                        [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                    }
                 }
             },
             order: [
