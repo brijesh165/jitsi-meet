@@ -9,7 +9,7 @@ exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("http://192.168.75.131:91/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
-        
+
         console.log("Data: ", meetings.data)
 
         if (meetings.data.status == "error") {
@@ -25,7 +25,7 @@ exports.getAllMeetings = async (req, res) => {
         ];
 
         if (allmeetings.length > 0) {
-            filterOptions.push({ 
+            filterOptions.push({
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
             })
         }
@@ -83,18 +83,19 @@ exports.getAllMeetings = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        const meetings = await models.meeting.findAll({ 
+        const meetings = await models.meeting.findAll({
             where: {
-                meeting_host: req.body.username, 
-                [Op.and]: {
+                meeting_host: req.body.username,
+                [Op.or]: [
+                    {
                     meeting_type: "nonperiodic",
-                    start_time: { 
+                    start_time: {
                         [Op.gte]: moment().utc().format("yyyy-MM-DD")
                     }
-                },
-                [Op.and]: {
+                }, {
                     meeting_type: "periodic",
                 }
+                ]
             },
             order: [
                 ['start_time', 'ASC']
@@ -659,9 +660,10 @@ exports.changeMeetingStatus = async (req, res) => {
                 })
             }
             if (req.body.status == "ended") {
-                await models.meeting.update({ 
-                    status: req.body.status, 
-                    actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate() }, {
+                await models.meeting.update({
+                    status: req.body.status,
+                    actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
+                }, {
                     where: {
                         meeting_id: req.body.meeting_id
                     }
