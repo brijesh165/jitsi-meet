@@ -56,7 +56,7 @@ exports.getAllMeetings = async (req, res) => {
                 }    
             }
         }
-        console.log("Meetingsss: ", meetingsss);
+        console.log("Meetingsss: ", meetingsss.length);
         
         if (userMeetings.length == 0) {
             return res.send({
