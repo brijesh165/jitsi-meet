@@ -47,9 +47,13 @@ exports.getAllMeetings = async (req, res) => {
         
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
-            const resp = meetingStatusCheck(userMeetings[i]);
-            if (resp) {
-                meetingsss.push(userMeetings[i]);
+            if (userMeetings[i].meeting_type === "nonperiodic") {
+                meetingsss.push(userMeetings[i])
+            } else if (userMeetings[i].meeting_type === "periodic") {
+                const resp = meetingStatusCheck(userMeetings[i]);
+                if (resp) {
+                    meetingsss.push(userMeetings[i]);
+                }    
             }
         }
         console.log("Meetingsss: ", meetingsss.length);
@@ -64,7 +68,7 @@ exports.getAllMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
-            meetings: userMeetings
+            meetings: meetingsss
         })
     } catch (error) {
         console.log("Meeting Controller | Get All Meetings Error", error);
