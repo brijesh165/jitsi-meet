@@ -48,7 +48,9 @@ exports.getAllMeetings = async (req, res) => {
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
             if (userMeetings[i].meeting_type === "nonperiodic") {
-                meetingsss.push(userMeetings[i])
+                if (moment().utc().diff(moment(userMeetings[i].start_time), 'days') == 0) {
+                    meetingsss.push(userMeetings[i])
+                }
             } else if (userMeetings[i].meeting_type === "periodic") {
                 const resp = meetingStatusCheck(userMeetings[i]);
                 if (resp) {
