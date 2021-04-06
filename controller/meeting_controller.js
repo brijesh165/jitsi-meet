@@ -56,7 +56,7 @@ exports.getAllMeetings = async (req, res) => {
                 }    
             }
         }
-        console.log("Meetingsss: ", meetingsss.length);
+        console.log("Meetingsss: ", meetingsss.sort((a, b)=>a.start_time - b.start_time));
 
         if (userMeetings.length == 0) {
             return res.send({
