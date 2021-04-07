@@ -51,7 +51,7 @@ exports.getAllMeetings = async (req, res) => {
                 console.log(moment(userMeetings[i].start_time).format("yyyy-MM-DD"), moment().utc())
                 console.log(moment().utc().diff(moment(userMeetings[i].start_time), 'hours'))
                 console.log("Today: ", moment(userMeetings[i].start_time).isSame(moment(), 'day'))
-                if (moment().utc().diff(moment(userMeetings[i].start_time), 'hours') > 0) {                    
+                if (moment(userMeetings[i].start_time).isSame(moment(), 'day')) {                    
                     meetingsss.push(userMeetings[i])
                 }
             } else if (userMeetings[i].meeting_type === "periodic") {
