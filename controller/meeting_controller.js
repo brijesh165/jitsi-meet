@@ -1,6 +1,5 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
-const constants = require('./../util/constants');
 const models = require('./../models');
 const axios = require('axios');
 const { Op } = require('sequelize');
@@ -8,7 +7,7 @@ const { Op } = require('sequelize');
 exports.getAllMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("http://192.168.75.131:91/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
 
         console.log("Data: ", meetings.data)
 
@@ -43,14 +42,11 @@ exports.getAllMeetings = async (req, res) => {
             ]
         });
 
-        console.log("User Meetings: ", userMeetings.length)
+        // console.log("User Meetings: ", userMeetings.length)
         
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
             if (userMeetings[i].meeting_type === "nonperiodic") {
-                console.log(moment(userMeetings[i].start_time).format("yyyy-MM-DD"), moment().utc())
-                console.log(moment().utc().diff(moment(userMeetings[i].start_time), 'hours'))
-                console.log("Today: ", moment(userMeetings[i].start_time).isSame(moment(), 'day'))
                 if (moment(userMeetings[i].start_time).isSame(moment(), 'day')) {                    
                     meetingsss.push(userMeetings[i])
                 }
@@ -646,7 +642,7 @@ exports.startMeeting = async (req, res) => {
 exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
-        const keyStatus = await axios.post("http://192.168.75.131:91/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
+        const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         console.log("Key Status: ", keyStatus.data);
 
         if (keyStatus.data.status == "ok") {
