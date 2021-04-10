@@ -57,6 +57,7 @@ exports.login = async (req, res) => {
                 })                
             }
 
+            
             await models.LoginHistory.create({
                 status: "active",
                 auth_key: loginReq.data.response.table1[0].key,
