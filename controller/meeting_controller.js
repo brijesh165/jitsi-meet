@@ -59,7 +59,7 @@ exports.getAllMeetings = async (req, res) => {
         }
         console.log("Meetingsss: ", meetingsss.length);
         
-        if (userMeetings.length == 0) {
+        if (meetingsss.length == 0) {
             return res.send({
                 status: "200",
                 message: "No upcoming meetings!"
