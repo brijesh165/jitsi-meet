@@ -28,7 +28,7 @@ let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
 let io = require('socket.io')(httpsServer,{
   cors: {
-    origin: "https://betameet.teamlocus.com:8000",
+    origin: "https://meet.teamlocus.com:8000",
     methods: ["GET", "POST"],
     credentials: true
   }
