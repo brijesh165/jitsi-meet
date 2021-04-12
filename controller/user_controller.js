@@ -37,7 +37,7 @@ exports.login = async (req, res) => {
         console.log("Params: ", params);
 
         const loginReq = await axios.post("http://192.168.75.131:91/webservice_v42.svc/general_webuserlogin", params);
-        // console.log("Response: ", loginReq);
+        console.log("Response: ", loginReq);
 
         if (loginReq.data.status == "ok") {
             // console.log("Response: ", loginReq.data.response.table1);
