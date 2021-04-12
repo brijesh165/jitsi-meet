@@ -334,8 +334,8 @@ exports.createmeeting = async (req, res) => {
 function meetingStatusCheck(params) {
     try {
         // console.log("Params: ", params);
-        const difference = moment().utc().diff(moment(params.start_time).utc(), 'days');
-        console.log("Difference: ", difference)
+        const difference = moment().utc().diff(moment(params.start_time), 'days');
+        console.log("Difference: ", difference, moment().utc())
         console.log("Meeting Type: ", params.meeting_type)
         console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Every Week") {
