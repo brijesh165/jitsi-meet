@@ -22,8 +22,8 @@ exports.login = async (req, res) => {
         const guid = (guidScript() + guidScript() + "-" + guidScript() + "-4" + guidScript().substr(0, 3) + "-" + guidScript() + "-" + guidScript() + guidScript() + guidScript()).toLowerCase();
         
         const params = {
-            "username": req.body.username,
-            "password": req.body.password,
+            "username": req.body.username.value,
+            "password": req.body.password.value,
             "gmtoffset": req.body.gmtoffset,
             "ipaddress": "0123456789",
             "deviceinfo": JSON.stringify({
