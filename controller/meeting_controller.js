@@ -335,7 +335,7 @@ function meetingStatusCheck(params) {
     try {
         // console.log("Params: ", params);
         const difference = moment().startOf('day').diff(moment(params.start_time).startOf('day'), 'days');
-        console.log("Difference: ", difference, moment().utc(), moment(params.start_time))
+        console.log("Difference: ", difference);
         console.log("Meeting Type: ", params.meeting_type)
         console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Every Week") {
