@@ -9,7 +9,7 @@ exports.getAllMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
 
-        console.log("Data: ", meetings.data)
+        // console.log("Data: ", meetings.data)
 
         if (meetings.data.status == "error") {
             return res.send({
@@ -364,14 +364,14 @@ function meetingStatusCheck(params) {
                 return false;
             }
         } else if (params.repeat_event_until == "Custom") {
-            console.log("Params Of Repeat Event until: ", params.repeat_event_until)
+            // console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
                 return true;
             }
 
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
-                console.log("Occurance: ", occurance);
+                // console.log("Occurance: ", occurance);
                 const todaysdayposition = moment().utc().day() + 1;
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
                     return val.replace(/<\/?w>/g, '');
