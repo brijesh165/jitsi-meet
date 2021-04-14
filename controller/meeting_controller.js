@@ -43,14 +43,14 @@ exports.getAllMeetings = async (req, res) => {
             ]
         });
 
-        console.log("User Meetings: ", userMeetings.length)
+        // console.log("User Meetings: ", userMeetings.length)
         
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
             if (userMeetings[i].meeting_type === "nonperiodic") {
-                console.log(moment(userMeetings[i].start_time).format("yyyy-MM-DD"), moment().utc())
-                console.log(moment().utc().diff(moment(userMeetings[i].start_time), 'hours'))
-                console.log("Today: ", moment(userMeetings[i].start_time).isSame(moment(), 'day'))
+                // console.log(moment(userMeetings[i].start_time).format("yyyy-MM-DD"), moment().utc())
+                // console.log(moment().utc().diff(moment(userMeetings[i].start_time), 'hours'))
+                // console.log("Today: ", moment(userMeetings[i].start_time).isSame(moment(), 'day'))
                 if (moment(userMeetings[i].start_time).isSame(moment(), 'day')) {                    
                     meetingsss.push(userMeetings[i])
                 }
@@ -368,14 +368,14 @@ function meetingStatusCheck(params) {
                 return false;
             }
         } else if (params.repeat_event_until == "Custom") {
-            console.log("Params Of Repeat Event until: ", params.repeat_event_until)
+            // console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
                 return true;
             }
 
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
-                console.log("Occurance: ", occurance);
+                // console.log("Occurance: ", occurance);
                 const todaysdayposition = moment().utc().day() + 1;
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
                     return val.replace(/<\/?w>/g, '');
