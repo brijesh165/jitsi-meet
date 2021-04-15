@@ -642,10 +642,10 @@ exports.startMeeting = async (req, res) => {
 exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
-        const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
-        console.log("Key Status: ", keyStatus.data);
+        // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
+        // console.log("Key Status: ", keyStatus.data);
 
-        if (keyStatus.data.status == "ok") {
+        // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
                 await models.meeting.update({
                     status: req.body.status,
@@ -694,7 +694,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     response: ""
                 })
             }
-        }
+        // }
         else {
             return res.send({
                 status: keyStatus.data.status,
