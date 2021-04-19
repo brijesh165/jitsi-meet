@@ -558,10 +558,10 @@ exports.startMeeting = async (req, res) => {
                         }
                     });
 
-                    return res.redirect(`https://tlmeet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                     console.log("Non periodic else");
-                    return res.redirect(`https://tlmeet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
@@ -574,15 +574,15 @@ exports.startMeeting = async (req, res) => {
                                 meeting_id: meeting_id
                             }
                         });
-                        return res.redirect(`https://tlmeet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
                     } else {
-                        return res.redirect(`https://tlmeet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                        return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                     }
                 } else {
-                    return res.redirect(`https://tlmeet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 }
             } else {
-                return res.redirect(`https://tlmeet.teamlocus.com/errorpage?${meeting.meeting_id}`);
+                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
             }
 
         } else if (userstatus == "join") {
@@ -591,12 +591,12 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.status == "started") {
                     console.log("If Meeting ID: ", meeting.meeting_id)
 
-                    return res.redirect(`https://tlmeet.teamlocus.com/${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
-                    return res.redirect(`https://tlmeet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
-                    return res.redirect(`https://tlmeet.teamlocus.com/waiting/${meeting_id}`);
+                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
                 }
             }
 
@@ -608,13 +608,13 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
-                        return res.redirect(`https://tlmeet.teamlocus.com/${meeting.meeting_id}`)
+                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
                     } else {
-                        return res.redirect(`https://tlmeet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                        return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
                     }
 
                 } else {
-                    return res.redirect(`https://tlmeet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
                 }
             }
         }
