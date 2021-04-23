@@ -26,7 +26,9 @@ const server = require('http').Server(app);
 const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
-let io = require('socket.io').listen(httpsServer,  { origins: '*:*' });
+// let io = require('socket.io').listen(httpsServer,  { origins: '*:*' });
+let io = require('socket.io').listen(httpsServer, { origins: '*:*' });
+
 let socketIO = require('./util/socket-manager').openIO(io);
 
 
