@@ -27,11 +27,11 @@ const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
 let io = require('socket.io')(httpsServer,{
-  cors: {
-    origin: "https://tlmeet.teamlocus.com",
-    methods: ["GET", "POST"],
-    credentials: true
-  }
+  // cors: {
+  //   origin: "https://tlmeet.teamlocus.com",
+  //   methods: ["GET", "POST"],
+  //   credentials: true
+  // }
 });
 let socketIO = require('./util/socket-manager').openIO(io);
 
@@ -73,7 +73,7 @@ server.listen(process.env.HTTP_PORT, function() {
   console.log(`ASHAR SERVICE listening on ${process.env.HTTP_PORT}`);
 });
 
-httpsServer.listen(3443, function() {
+httpsServer.listen(process.env.HTTPS_PORT, function() {
   console.log(`ASHAR SERVICE listening on ${process.env.HTTPS_PORT}`);
 });
 
