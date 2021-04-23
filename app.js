@@ -28,7 +28,7 @@ let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
 let io = require('socket.io')(httpsServer,{
   cors: {
-    origin: '*:*',
+    origin: '*',
     methods: ["GET", "POST"],
     credentials: true
   }
