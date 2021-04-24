@@ -27,15 +27,6 @@ exports.openIO = function (io) {
             socket.join(data.meetingId)
         })
 
-        // socket.on("isHost", async (data) => {
-        //     console.log("IsHost Data: ", data)
-        //     isHost = data.role;
-        //     meetingId = data.meeting_id;
-
-        //     console.log("isHost: ", isHost);
-        //     console.log("meetingId: ", meetingId);
-        // });
-
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost)
             if (socket.isHost === "host") {
