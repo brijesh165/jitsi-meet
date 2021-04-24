@@ -7,6 +7,8 @@ exports.openIO = function (io) {
     socketIO = io;
 
     io.on('connection', function (socket) {
+        let isHost;
+        let meetingId;
         socket.on("hangup", async (data) => {
             console.log("Socket Hangup: ", data)
             if (data.meeting_id != null && data.meeting_id.length > 0) {
@@ -19,6 +21,15 @@ exports.openIO = function (io) {
             }
     
         })
+
+        socket.on("isHost", data) {
+            console.log("IsHost Data: ", data)
+            isHost = data.role;
+            meetingId = data.meeting_id;
+
+            console.log("isHost: ", isHost);
+            console.log("meetingId: ", meetingId);
+        }
 
         console.log(`Socket Connection successful ${socket.id}`);
     })
