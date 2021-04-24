@@ -40,7 +40,7 @@ exports.openIO = function (io) {
             console.log("Disconnect", socket.isHost)
             if (socket.isHost === "host") {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
-                    "meetingId": meetingId
+                    "meetingId": socket.meetingId
                 })
             }
         });
