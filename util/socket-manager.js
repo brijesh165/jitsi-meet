@@ -22,14 +22,14 @@ exports.openIO = function (io) {
     
         })
 
-        socket.on("isHost", data) {
+        socket.on("isHost", async (data) => {
             console.log("IsHost Data: ", data)
             isHost = data.role;
             meetingId = data.meeting_id;
 
             console.log("isHost: ", isHost);
             console.log("meetingId: ", meetingId);
-        }
+        });
 
         console.log(`Socket Connection successful ${socket.id}`);
     })
