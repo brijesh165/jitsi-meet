@@ -5,7 +5,7 @@ let socketIO;
 
 exports.openIO = function (io) {
     socketIO = io;
-    let meetingSockets = [];
+    let meetingSockets = {};
 
     io.on('connection', function (socket) {
         socket.on("hangup", async (data) => {
@@ -25,22 +25,25 @@ exports.openIO = function (io) {
             console.log("Join meetings: ", data);
             socket.isHost = data.role;
             socket.meetingId = data.meetingId;
-            meetingSockets.push({ isHost: data.role, meetingId: data.meetingId})
+
+            if (data.role === "host") {
+                meetingSockets[data.meetingId] = socket.id;
+            }
+
             socket.join(data.meetingId)
         })
 
         socket.on("roleChange", (data) => {
-            meetingSockets.filter((item) => {
-                item.meetingId != data.meetingId;
-            })
-
+            if (data.role === "host") {
+                meetingSockets[data.meetingId] = socket.id;
+            }
             console.log("Meeting Socket: ", meetingSockets);
-            meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
+            // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
         socket.on("disconnect", () => {
-            console.log("Disconnect", socket.isHost)
-            if (socket.isHost === "host") {
+            console.log("Disconnect", socket.isHost, socket.id)
+            if (meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
                 })
