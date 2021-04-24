@@ -5,10 +5,10 @@ let socketIO;
 
 exports.openIO = function (io) {
     socketIO = io;
-
+    let isHost;
+    let meetingId;
+    
     io.on('connection', function (socket) {
-        let isHost;
-        let meetingId;
         socket.on("hangup", async (data) => {
             console.log("Socket Hangup: ", data)
             if (data.meeting_id != null && data.meeting_id.length > 0) {
