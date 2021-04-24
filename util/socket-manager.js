@@ -31,6 +31,14 @@ exports.openIO = function (io) {
             console.log("meetingId: ", meetingId);
         });
 
+        socket.close(() => {
+            console.log("Socket closed");
+            socket.emit("end_meeting", {
+                "role": isHost,
+                "meetingId": meetingId
+            })
+        });
+
         console.log(`Socket Connection successful ${socket.id}`);
     })
 }
