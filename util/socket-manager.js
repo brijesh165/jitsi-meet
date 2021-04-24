@@ -33,7 +33,7 @@ exports.openIO = function (io) {
 
         socket.on("disconnect", () => {
             console.log("Socket closed", isHost, meetingId);
-            socket.emit("end_meeting", {
+            socketIO.emit("end_meeting", {
                 "role": isHost,
                 "meetingId": meetingId
             })
