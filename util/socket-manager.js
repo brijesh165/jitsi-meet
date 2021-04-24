@@ -8,18 +8,18 @@ exports.openIO = function (io) {
     let meetingSockets = {};
 
     io.on('connection', function (socket) {
-        socket.on("hangup", async (data) => {
-            console.log("Socket Hangup: ", data)
-            if (data.meeting_id != null && data.meeting_id.length > 0) {
-                await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
-                    where: {
-                        meeting_id: data.meeting_id
-                    }
-                });
-                socketIO.emit("end_meeting", { "meeting_id": data.meeting_id });
-            }
+        // socket.on("hangup", async (data) => {
+        //     console.log("Socket Hangup: ", data)
+        //     if (data.meeting_id != null && data.meeting_id.length > 0) {
+        //         await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+        //             where: {
+        //                 meeting_id: data.meeting_id
+        //             }
+        //         });
+        //         socketIO.emit("end_meeting", { "meeting_id": data.meeting_id });
+        //     }
     
-        })
+        // })
 
         socket.on("joinMeeting", (data) => {
             console.log("Join meetings: ", data);
@@ -37,7 +37,7 @@ exports.openIO = function (io) {
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
             }
-            console.log("Meeting Socket: ", meetingSockets);
+            console.log("Role Change: Meeting Socket: ", data, meetingSockets);
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
