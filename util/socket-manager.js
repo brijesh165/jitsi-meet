@@ -5,7 +5,8 @@ let socketIO;
 
 exports.openIO = function (io) {
     socketIO = io;
-    
+    let meetingSockets = [];
+
     io.on('connection', function (socket) {
         socket.on("hangup", async (data) => {
             console.log("Socket Hangup: ", data)
@@ -24,7 +25,17 @@ exports.openIO = function (io) {
             console.log("Join meetings: ", data);
             socket.isHost = data.role;
             socket.meetingId = data.meetingId;
+            meetingSockets.push({ isHost: data.role, meetingId: data.meetingId})
             socket.join(data.meetingId)
+        })
+
+        socket.on("roleChange", (data) => {
+            meetingSockets.filter((item) => {
+                item.meetingId != data.meetingId;
+            })
+
+            console.log("Meeting Socket: ", meetingSockets);
+            meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
         socket.on("disconnect", () => {
