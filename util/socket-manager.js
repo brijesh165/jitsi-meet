@@ -21,6 +21,7 @@ exports.openIO = function (io) {
         })
 
         socket.on("joinMeeting", (data) => {
+            console.log("Join meetings: ", data);
             socket.isHost = data.role;
             socket.meetingId = data.meetingId;
             socket.join(data.meetingId)
