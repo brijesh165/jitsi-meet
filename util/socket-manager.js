@@ -55,6 +55,7 @@ exports.openIO = function (io) {
 }
 
 exports.emitOnDisconnect = function (topic, message) {
+    console.log("Emit Socket on disconnect: ", socket.meetingId);
     socketIO.to(socket.meetingId).emit(topic, {
         "meetingId": socket.meetingId
     })
