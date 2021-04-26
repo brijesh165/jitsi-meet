@@ -1,5 +1,6 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
+const socketManager = require('./../util/socket-manager');
 const models = require('./../models');
 const axios = require('axios');
 const { Op } = require('sequelize');
@@ -673,6 +674,8 @@ exports.changeMeetingStatus = async (req, res) => {
                     }
                 });
 
+                socketManager.emit("end_meeting");
+                
                 return res.send({
                     status: "ok",
                     message: "",
