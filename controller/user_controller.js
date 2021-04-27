@@ -27,6 +27,7 @@ exports.login = async (req, res) => {
             "password": req.body.password,
             "gmtoffset": "5.5",
             "ipaddress": "0123456789",
+            "webversion":"1",
             "deviceinfo": JSON.stringify({
                 "deviceid": guid,
                 "devicetype": "",
