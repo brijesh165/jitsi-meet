@@ -2,10 +2,10 @@ const models = require('./../models');
 const moment = require('moment');
 
 let socketIO;
+let meetingSockets = {};
 
 exports.openIO = function (io) {
     socketIO = io;
-    let meetingSockets = {};
 
     io.on('connection', function (socket) {
         // socket.on("hangup", async (data) => {
@@ -55,7 +55,7 @@ exports.openIO = function (io) {
 }
 
 exports.emitOnDisconnect = function (topic, message) {
-    console.log("Emit Socket on disconnect: ", socket.meetingId);
+    console.log("Emit Socket on disconnect: ", meetingSockets);
     socketIO.to(socket.meetingId).emit(topic, {
         "meetingId": socket.meetingId
     })
