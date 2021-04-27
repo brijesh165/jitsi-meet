@@ -674,7 +674,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     }
                 });
 
-                socketManager.emitOnDisconnect("end_meeting");
+                socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
                 
                 return res.send({
                     status: "ok",
