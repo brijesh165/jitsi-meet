@@ -25,7 +25,7 @@ exports.login = async (req, res) => {
             "username": req.body.username,
             "password": req.body.password,
             "gmtoffset": "5.5",
-            "ipaddress": "0123456789",
+            // "ipaddress": "0123456789",
             "deviceinfo": JSON.stringify({
                 "deviceid": "jitsiWeb-" + guid,
                 "devicetype": "",
@@ -33,7 +33,6 @@ exports.login = async (req, res) => {
                 "locationinfo": JSON.stringify(req.body.locationinfo)
             })
         }
-
         console.log("Params: ", params);
 
         const loginReq = await axios.post("http://192.168.75.131:91/webservice_v42.svc/general_webuserlogin", params);
