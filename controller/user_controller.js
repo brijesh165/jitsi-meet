@@ -2,6 +2,7 @@ const appUtil = require('./../util/app-util');
 const models = require('./../models');
 
 const axios = require('axios');
+const { json } = require('express');
 
 /**
  * 
@@ -27,7 +28,7 @@ exports.login = async (req, res) => {
             "gmtoffset": "5.5",
             "ipaddress": "0123456789",
             "deviceinfo": JSON.stringify({
-                "deviceid": "jitsiWeb-" + guid,
+                "deviceid": guid,
                 "devicetype": "",
                 "deviceimieuuid": "0123456789",
                 "locationinfo": JSON.stringify(req.body.locationinfo)
