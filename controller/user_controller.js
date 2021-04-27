@@ -24,7 +24,7 @@ exports.login = async (req, res) => {
         const params = {
             "username": req.body.username,
             "password": req.body.password,
-            "gmtoffset": req.body.gmtoffset,
+            "gmtoffset": "5.5",
             "ipaddress": "0123456789",
             "deviceinfo": JSON.stringify({
                 "deviceid": "jitsiWeb-" + guid,
