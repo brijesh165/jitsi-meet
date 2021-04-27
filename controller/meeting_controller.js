@@ -643,13 +643,13 @@ exports.startMeeting = async (req, res) => {
  * @param {*} actual_end_time(Status == "ended")
  * @param {*} authkey (optional)
  */
-exports.changeMeetingStatus = async (req, res) => {
+ exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
-        const keyStatus = await axios.post("http://192.168.75.131:91/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
-        console.log("Key Status: ", keyStatus.data);
+        // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
+        // console.log("Key Status: ", keyStatus.data);
 
-        if (keyStatus.data.status == "ok") {
+        // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
                 await models.meeting.update({
                     status: req.body.status,
@@ -677,6 +677,8 @@ exports.changeMeetingStatus = async (req, res) => {
                     }
                 });
 
+                socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
+                
                 return res.send({
                     status: "ok",
                     message: "",
@@ -698,7 +700,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     response: ""
                 })
             }
-        }
+        // }
         else {
             return res.send({
                 status: keyStatus.data.status,
