@@ -18,7 +18,7 @@ exports.login = async (req, res) => {
         const guidScript = () => {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         }
-    
+        
         const guid = (guidScript() + guidScript() + "-" + guidScript() + "-4" + guidScript().substr(0, 3) + "-" + guidScript() + "-" + guidScript() + guidScript() + guidScript()).toLowerCase();
         
         const params = {
