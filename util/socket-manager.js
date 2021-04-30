@@ -12,7 +12,7 @@ exports.openIO = function (io) {
     setInterval(() => {
         for (let i=0; i <= endMeeingSocket.length; i++) {
             console.log("Disconnectino Time: ", endMeeingSocket[i]);
-            console.log("Add 5 seconds: ", moment.utc().add('5', seconds));
+            console.log("Add 5 seconds: ", moment.utc().add('5', 'seconds'));
             socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
                 "meetingId": endMeeingSocket[i].meetingId
             })
