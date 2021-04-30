@@ -9,21 +9,22 @@ exports.openIO = function (io) {
     let meetingSockets = {};
     let endMeeingSocket = [];
 
-    if (endMeeingSocket.length > 0) {
-        setInterval(() => {
-            for (let i=0; i <= endMeeingSocket.length; i++) {
+    setInterval(() => {
+        if (endMeeingSocket.length > 0) {
+
+            for (let i = 0; i <= endMeeingSocket.length; i++) {
                 console.log("Disconnectino Time: ", endMeeingSocket[i].disconnectionTime);
-                console.log("Add 5 seconds: ", moment.utc().add('5', 'seconds'));    
+                console.log("Add 5 seconds: ", moment.utc().add('5', 'seconds'));
                 if (endMeeingSocket[i].disconnectionTime >= moment.utc().add('5', seconds)) {
                     socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
-    
+
                     endMeeingSocket[i].splice(i, 1);
                 }
             }
-        }, 1000)            
-    }
+        }
+    }, 1000)
 
     io.on('connection', function (socket) {
         // socket.on("hangup", async (data) => {
@@ -36,7 +37,7 @@ exports.openIO = function (io) {
         //         });
         //         socketIO.emit("end_meeting", { "meeting_id": data.meeting_id });
         //     }
-    
+
         // })
 
         socket.on("joinMeeting", (data) => {
@@ -65,7 +66,7 @@ exports.openIO = function (io) {
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
-    
+
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
@@ -76,7 +77,7 @@ exports.openIO = function (io) {
                     "disconnectionTime": moment.utc()
                 })
 
-                
+
                 // socketIO.to(socket.meetingId).emit("end_meeting", {
                 //     "meetingId": socket.meetingId
                 // })
