@@ -17,7 +17,7 @@ exports.openIO = function (io) {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
 
-                    await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+                    models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
                         where: {
                             meeting_id: endMeeingSocket[i].meetingId
                         }
