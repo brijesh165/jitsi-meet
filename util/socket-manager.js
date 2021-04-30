@@ -13,9 +13,10 @@ exports.openIO = function (io) {
         if (endMeeingSocket.length > 0) {
 
             for (let i = 0; i <= endMeeingSocket.length; i++) {
+                console.log("I: ", endMeeingSocket[i])
                 console.log("Disconnectino Time: ", endMeeingSocket[i].disconnectionTime);
                 console.log("Add 5 seconds: ", moment.utc().add('5', 'seconds'));
-                if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime).add('5', 'seconds')) {
+                if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('5', 'seconds')) {
                     socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
