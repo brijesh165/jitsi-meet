@@ -3,9 +3,26 @@ const moment = require('moment');
 
 let socketIO;
 
+
 exports.openIO = function (io) {
     socketIO = io;
     let meetingSockets = {};
+    let endMeeingSocket = [];
+
+    setInterval(() => {
+        for (let i=0; i <= endMeeingSocket.length; i++) {
+            console.log("Disconnectino Time: ", endMeeingSocket[i].disconnectionTime);
+            console.log("Add 5 seconds: ", moment.utc().add('5', seconds));
+            if (endMeeingSocket[i].disconnectionTime >= moment.utc().add('5', seconds)) {
+                socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
+                    "meetingId": endMeeingSocket[i].meetingId
+                })
+
+                endMeeingSocket[i].splice(i, 1);
+            }
+        }
+    })
+
 
     io.on('connection', function (socket) {
         // socket.on("hangup", async (data) => {
@@ -28,7 +45,13 @@ exports.openIO = function (io) {
 
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
+
+                // push meeting into into endMeetingSocket array
+                endMeeingSocket = endMeeingSocket.filter(item => {
+                    item.meetingId != data.meetingId
+                })
             }
+
 
             socket.join(data.meetingId)
         })
@@ -41,12 +64,21 @@ exports.openIO = function (io) {
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
+    
+
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
+
             if (meetingSockets[socket.meetingId] == socket.id) {
-                socketIO.to(socket.meetingId).emit("end_meeting", {
-                    "meetingId": socket.meetingId
+                endMeeingSocket.push({
+                    "meetingId": socket.meetingId,
+                    "disconnectionTime": moment.utc()
                 })
+
+                
+                // socketIO.to(socket.meetingId).emit("end_meeting", {
+                //     "meetingId": socket.meetingId
+                // })
             }
         });
 
