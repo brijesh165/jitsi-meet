@@ -20,7 +20,7 @@ exports.openIO = function (io) {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
 
-                    endMeeingSocket[i].splice(i, 1);
+                    endMeeingSocket.splice(i, 1);
                 }
             }
         }
@@ -72,7 +72,6 @@ exports.openIO = function (io) {
             console.log("Disconnect", socket.isHost, socket.id)
 
             if (meetingSockets[socket.meetingId] == socket.id) {
-                console.log("In if")
                 endMeeingSocket.push({
                     "meetingId": socket.meetingId,
                     "disconnectionTime": moment.utc()
