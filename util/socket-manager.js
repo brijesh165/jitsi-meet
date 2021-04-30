@@ -22,7 +22,7 @@ exports.openIO = function (io) {
                     endMeeingSocket[i].splice(i, 1);
                 }
             }
-        })            
+        }, 1000)            
     }
 
     io.on('connection', function (socket) {
