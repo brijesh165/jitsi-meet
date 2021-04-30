@@ -76,7 +76,7 @@ exports.openIO = function (io) {
                     "meetingId": socket.meetingId,
                     "disconnectionTime": moment.utc()
                 })
-
+                console.log("End Meeting Socket: ", endMeeingSocket)
 
                 // socketIO.to(socket.meetingId).emit("end_meeting", {
                 //     "meetingId": socket.meetingId
