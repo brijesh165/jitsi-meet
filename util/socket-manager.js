@@ -11,16 +11,17 @@ exports.openIO = function (io) {
 
     setInterval(() => {
         if (endMeeingSocket.length > 0) {
-
             for (let i = 0; i < endMeeingSocket.length; i++) {
-                console.log("I: ", endMeeingSocket[i])
-                console.log("Disconnectino Time: ", endMeeingSocket[i].disconnectionTime);
-                console.log("Add 5 seconds: ", moment.utc().add('15', 'seconds'));
                 if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('15', 'seconds')) {
                     socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
 
+                    await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+                        where: {
+                            meeting_id: endMeeingSocket[i].meetingId
+                        }
+                    });
                     endMeeingSocket.splice(i, 1);
                 }
             }
@@ -71,7 +72,6 @@ exports.openIO = function (io) {
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
-            console.log("Condition: ",  meetingSockets[socket.meetingId],meetingSockets[socket.meetingId] == socket.id)
             if (meetingSockets[socket.meetingId] == socket.id) {
                 endMeeingSocket.push({
                     "meetingId": socket.meetingId,
