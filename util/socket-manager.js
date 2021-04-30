@@ -12,7 +12,7 @@ exports.openIO = function (io) {
     setInterval(() => {
         if (endMeeingSocket.length > 0) {
 
-            for (let i = 0; i <= endMeeingSocket.length; i++) {
+            for (let i = 0; i < endMeeingSocket.length; i++) {
                 console.log("I: ", endMeeingSocket[i])
                 console.log("Disconnectino Time: ", endMeeingSocket[i].disconnectionTime);
                 console.log("Add 5 seconds: ", moment.utc().add('5', 'seconds'));
