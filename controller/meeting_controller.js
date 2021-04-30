@@ -2,6 +2,7 @@ const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const constants = require('./../util/constants');
 const models = require('./../models');
+const socketManager = require('../util/socket-manager');
 const axios = require('axios');
 const { Op } = require('sequelize');
 
