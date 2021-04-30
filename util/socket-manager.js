@@ -41,7 +41,7 @@ exports.openIO = function (io) {
         // })
 
         socket.on("joinMeeting", (data) => {
-            console.log("Join meetings: ", data);
+            console.log("Join meetings: ", data, socket.id);
             socket.isHost = data.role;
             socket.meetingId = data.meetingId;
 
@@ -59,10 +59,10 @@ exports.openIO = function (io) {
         })
 
         socket.on("roleChange", (data) => {
+            console.log("Role Change: Meeting Socket: ", data, socket.id, meetingSockets);
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
             }
-            console.log("Role Change: Meeting Socket: ", data, meetingSockets);
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
