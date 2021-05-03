@@ -340,7 +340,7 @@ function meetingStatusCheck(params) {
         console.log("Meeting Type: ", params.meeting_type)
         console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Daily") {
-            if (moment(params.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
+            if (moment(params.repeat_end_date).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 return true;
             }
         } else if (params.repeat_event_until == "Every Week") {
@@ -371,7 +371,7 @@ function meetingStatusCheck(params) {
         } else if (params.repeat_event_until == "Custom") {
             // console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
-                if (moment(params.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                if (moment(params.repeat_end_date).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     return true;
                 }
             }
