@@ -19,7 +19,7 @@ module.exports = function(app) {
   ], formValidationMiddleware, meetingController.getMeetingInfo);
 
   app.post('/create-meeting', [
-    check('application').not().isEmpty().isIn(['teamlocus', 'tlchat', 'jitsi']).withMessage('Please provide application name or application name should be teamlocus/tlchat'),
+    check('application').not().isEmpty().isIn(['teamlocus', 'tlmeet']).withMessage('Please provide application name or application name should be teamlocus/tlchat'),
     check('meeting_host').not().isEmpty().withMessage('Meeting host is required.'),
     check('meeting_type').not().isEmpty().isIn(['periodic', 'nonperiodic', 'onetime']).withMessage('Meeting type should be periodic, non-periodic or onetime'),
     check('subject').not().isEmpty().withMessage("Subject is required."),
