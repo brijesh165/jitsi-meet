@@ -651,7 +651,7 @@ exports.changeMeetingStatus = async (req, res) => {
         console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
-
+        const meetingDetails = await models.meeting.findOne({ meeting_id: req.body.meeting_id});
         // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
                 await models.meeting.update({
@@ -671,14 +671,27 @@ exports.changeMeetingStatus = async (req, res) => {
                 })
             }
             if (req.body.status == "ended") {
-                await models.meeting.update({
-                    status: req.body.status,
-                    actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
-                }, {
-                    where: {
-                        meeting_id: req.body.meeting_id
-                    }
-                });
+                if (meetingDetails.meeting_type === "periodic") {
+                    console.log("Periodic");
+                    await models.meeting.update({
+                        status: "pending",
+                        actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
+                    }, {
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    });                    
+                } else {
+                    console.log("Non Periodic");
+                    await models.meeting.update({
+                        status: req.body.status,
+                        actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
+                    }, {
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    });
+                }
 
                 socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
                 
