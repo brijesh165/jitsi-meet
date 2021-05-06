@@ -57,7 +57,7 @@ exports.openIO = function (io) {
             }
 
             models.meeting_logs.create({
-                meeting_id: data.meeting_id,
+                meeting_id: data.meetingId,
                 log_type: "join_meeting",
                 log_description: `${data.username} joined Meeting. Role is ${data.role}.`
             })
