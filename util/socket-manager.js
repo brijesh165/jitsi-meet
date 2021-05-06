@@ -56,7 +56,7 @@ exports.openIO = function (io) {
                 })
             }
 
-            await models.meeting_logs({
+            await models.meeting_logs.create({
                 meeting_id: data.meeting_id,
                 log_type: "join_meeting",
                 log_description: `${data.username} joined Meeting. Role is ${data.role}.`
@@ -73,7 +73,14 @@ exports.openIO = function (io) {
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
-
+        socket.on("add_log", (data) => {
+            console.log("Add Log Socket: ", data);
+            await models.meeting_logs.create({ 
+                meeting_id: data.meeting_id,
+                log_type: data.log_type,
+                log_description: data.log_description
+            })
+        })
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
