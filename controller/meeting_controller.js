@@ -22,7 +22,7 @@ exports.getAllMeetings = async (req, res) => {
 
         const allmeetings = meetings.data.response.tblmymeetings;
         let filterOptions = [
-            { "application": "jitsi" }
+            { "application": "tlmeet" }
         ];
 
         if (allmeetings.length > 0) {
