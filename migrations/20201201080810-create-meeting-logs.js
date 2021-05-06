@@ -9,14 +9,8 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       meeting_id: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING(255),
         allowNull: false,
-        references: { 
-          model: 'meetings', 
-          key: 'meeting_id' 
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE'
       },
       log_type: {
         type: Sequelize.STRING(255),

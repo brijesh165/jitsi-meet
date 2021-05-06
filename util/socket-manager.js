@@ -22,6 +22,13 @@ exports.openIO = function (io) {
                             meeting_id: endMeeingSocket[i].meetingId
                         }
                     });
+
+                    models.meeting_logs.create({
+                        meeting_id: data.meetingId,
+                        log_type: "end_meeting",
+                        log_description: `Ended Meeting. Because host failed to connect in 15 seconds.`
+                    })
+
                     endMeeingSocket.splice(i, 1);
                 }
             }
@@ -89,12 +96,19 @@ exports.openIO = function (io) {
                     "meetingId": socket.meetingId,
                     "disconnectionTime": moment.utc()
                 })
+
                 console.log("End Meeting Socket: ", endMeeingSocket)
 
                 // socketIO.to(socket.meetingId).emit("end_meeting", {
                 //     "meetingId": socket.meetingId
                 // })
             }
+
+            models.meeting_logs.create({
+                meeting_id: data.meetingId,
+                log_type: "disconnect_user_socket",
+                log_description: `Socket disconnect for ${data.username}.`
+            })
         });
 
         console.log(`Socket Connection successful ${socket.id}`);
