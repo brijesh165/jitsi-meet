@@ -24,7 +24,7 @@ exports.openIO = function (io) {
                     });
 
                     models.meeting_logs.create({
-                        meeting_id: data.meetingId,
+                        meeting_id: endMeeingSocket[i].meetingId,
                         log_type: "end_meeting",
                         log_description: `Ended Meeting. Because host failed to connect in 15 seconds.`
                     })
@@ -53,6 +53,7 @@ exports.openIO = function (io) {
             console.log("Join meetings: ", data, socket.id);
             socket.isHost = data.role;
             socket.meetingId = data.meetingId;
+            socket.username = data.username;
 
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
@@ -105,9 +106,9 @@ exports.openIO = function (io) {
             }
 
             models.meeting_logs.create({
-                meeting_id: data.meetingId,
+                meeting_id: socket.meetingId,
                 log_type: "disconnect_user_socket",
-                log_description: `Socket disconnect for ${data.username}.`
+                log_description: `Socket disconnect for ${socket.username}.`
             })
         });
 
