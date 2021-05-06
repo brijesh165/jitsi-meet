@@ -56,6 +56,11 @@ exports.openIO = function (io) {
                 })
             }
 
+            await models.meeting_logs({
+                meeting_id: data.meeting_id,
+                log_type: "join_meeting",
+                log_description: `${data.username} joined Meeting. Role is ${data.role}.`
+            })
 
             socket.join(data.meetingId)
         })
