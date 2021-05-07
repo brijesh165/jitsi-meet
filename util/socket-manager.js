@@ -77,7 +77,16 @@ exports.openIO = function (io) {
             console.log("Role Change: Meeting Socket: ", data, socket.id, meetingSockets);
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
+                socket.username = data.username;
+            
+                models.meeting_logs.create({ 
+                    meeting_id: data.meetingId,
+                    log_type: "role_change",
+                    log_description: `Meeting Host changed for ${data.meetingId}. New Host is ${data.username}`
+                })
             }
+
+            
             // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
