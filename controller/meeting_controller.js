@@ -671,7 +671,7 @@ exports.changeMeetingStatus = async (req, res) => {
                 })
             }
             if (req.body.status == "ended") {
-                console.log("Meeting Details: ", meetingDetails)
+                // console.log("Meeting Details: ", meetingDetails)
                 if (meetingDetails.meeting_type === "periodic") {
                     console.log("Periodic");
                     await models.meeting.update({
