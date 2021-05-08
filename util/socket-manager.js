@@ -93,6 +93,10 @@ exports.openIO = function (io) {
             })
         })
 
+        socket.on("end_meeting", () => {
+            meetingSockets[socket.meetingId] = null;
+        })
+
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
             if (meetingSockets[socket.meetingId] == socket.id) {
