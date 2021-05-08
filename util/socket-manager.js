@@ -12,7 +12,7 @@ exports.openIO = function (io) {
     setInterval( async () => {
         if (endMeeingSocket.length > 0) {
             for (let i = 0; i < endMeeingSocket.length; i++) {
-                if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('15', 'seconds')) {
+                if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('10', 'seconds')) {
                     socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
@@ -26,7 +26,7 @@ exports.openIO = function (io) {
                     await models.meeting_logs.create({
                         meeting_id: endMeeingSocket[i].meetingId,
                         log_type: "end_meeting",
-                        log_description: `Ended Meeting. Because host failed to connect in 15 seconds.`
+                        log_description: `Ended Meeting. Because host failed to connect in 10 seconds.`
                     })
 
                     endMeeingSocket.splice(i, 1);
