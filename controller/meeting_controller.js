@@ -559,7 +559,7 @@ exports.startMeeting = async (req, res) => {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("Non periodic meeting")
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
-                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
                         where: {
                             meeting_id: meeting_id
                         }
@@ -576,7 +576,7 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
-                        await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                        await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
                             where: {
                                 meeting_id: meeting_id
                             }
