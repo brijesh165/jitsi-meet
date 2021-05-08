@@ -656,7 +656,7 @@ exports.changeMeetingStatus = async (req, res) => {
             if (req.body.status == "started") {
                 await models.meeting.update({
                     status: req.body.status,
-                    actual_start_time: req.body.actual_start_time ? req.body.actual_start_time : moment(req.body.actual_start_time, 'x').toDate()
+                    actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
                 }, {
                     where: {
                         meeting_id: req.body.meeting_id
@@ -670,7 +670,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     response: ""
                 })
             }
-            if (req.body.status == "ended") {
+            else if (req.body.status == "ended") {
                 // console.log("Meeting Details: ", meetingDetails)
                 if (meetingDetails.meeting_type === "periodic") {
                     console.log("Periodic");
@@ -703,7 +703,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     response: ""
                 })
             }
-            if (req.body.status == "pending") {
+            else if (req.body.status == "pending") {
                 await models.meeting.update({ status: req.body.status }, {
                     where: {
                         meeting_id: req.body.meeting_id
