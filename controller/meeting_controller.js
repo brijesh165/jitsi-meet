@@ -654,19 +654,15 @@ exports.changeMeetingStatus = async (req, res) => {
         let meetingDetails = await models.meeting.findOne({ where:{meeting_id: req.body.meeting_id}});
         // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
-
-                meetingDetails.status = req.body.status;
-               await  meetingDetails.save();
-
                 // console.log("Started");
-                // await models.meeting.update({
-                //     status: req.body.status,
-                //     // actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
-                // }, {
-                //     where: {
-                //         meeting_id: req.body.meeting_id
-                //     }
-                // });
+                await models.meeting.update({
+                    status: req.body.status,
+                    actual_start_time: new Date()
+                }, {
+                    where: {
+                        meeting_id: req.body.meeting_id
+                    }
+                });
 
                 return res.send({
                     status: "ok",
@@ -682,7 +678,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     console.log("Periodic");
                     await models.meeting.update({
                         status: "pending",
-                        actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
+                        actual_end_time: new Date()
                     }, {
                         where: {
                             meeting_id: req.body.meeting_id
@@ -692,7 +688,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     console.log("Non Periodic");
                     await models.meeting.update({
                         status: req.body.status,
-                        actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
+                        actual_end_time: new Date()
                     }, {
                         where: {
                             meeting_id: req.body.meeting_id
