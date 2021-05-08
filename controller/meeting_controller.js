@@ -656,6 +656,7 @@ exports.changeMeetingStatus = async (req, res) => {
             if (req.body.status == "started") {
 
                 meetingDetails.status = req.body.status;
+               await  meetingDetails.save();
 
                 // console.log("Started");
                 // await models.meeting.update({
@@ -671,7 +672,7 @@ exports.changeMeetingStatus = async (req, res) => {
                     status: "ok",
                     message: "",
                     webpage: "",
-                    response: ""
+                    response: meetingDetails
                 })
             }
             else if (req.body.status == "ended") {
