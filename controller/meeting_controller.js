@@ -654,6 +654,7 @@ exports.changeMeetingStatus = async (req, res) => {
         const meetingDetails = await models.meeting.findOne({ meeting_id: req.body.meeting_id});
         // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
+                console.log("Started")
                 await models.meeting.update({
                     status: req.body.status,
                     actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
@@ -672,6 +673,7 @@ exports.changeMeetingStatus = async (req, res) => {
             }
             else if (req.body.status == "ended") {
                 // console.log("Meeting Details: ", meetingDetails)
+                console.log("Ended");
                 if (meetingDetails.meeting_type === "periodic") {
                     console.log("Periodic");
                     await models.meeting.update({
