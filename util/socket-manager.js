@@ -9,7 +9,7 @@ exports.openIO = function (io) {
     let meetingSockets = {};
     let endMeeingSocket = [];
 
-    setInterval(() => {
+    setInterval( async () => {
         if (endMeeingSocket.length > 0) {
             for (let i = 0; i < endMeeingSocket.length; i++) {
                 if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('15', 'seconds')) {
@@ -17,13 +17,13 @@ exports.openIO = function (io) {
                         "meetingId": endMeeingSocket[i].meetingId
                     })
 
-                    models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate().valueOf() }, {
+                    await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate() }, {
                         where: {
                             meeting_id: endMeeingSocket[i].meetingId
                         }
                     });
 
-                    models.meeting_logs.create({
+                    await models.meeting_logs.create({
                         meeting_id: endMeeingSocket[i].meetingId,
                         log_type: "end_meeting",
                         log_description: `Ended Meeting. Because host failed to connect in 15 seconds.`
