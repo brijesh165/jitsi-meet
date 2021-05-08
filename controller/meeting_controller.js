@@ -651,18 +651,21 @@ exports.changeMeetingStatus = async (req, res) => {
         console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
-        const meetingDetails = await models.meeting.findOne({ meeting_id: req.body.meeting_id});
+        let meetingDetails = await models.meeting.findOne({ meeting_id: req.body.meeting_id});
         // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
-                console.log("Started")
-                await models.meeting.update({
-                    status: req.body.status,
-                    // actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
-                }, {
-                    where: {
-                        meeting_id: req.body.meeting_id
-                    }
-                });
+
+                meetingDetails.status = req.body.status;
+
+                // console.log("Started");
+                // await models.meeting.update({
+                //     status: req.body.status,
+                //     // actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
+                // }, {
+                //     where: {
+                //         meeting_id: req.body.meeting_id
+                //     }
+                // });
 
                 return res.send({
                     status: "ok",
