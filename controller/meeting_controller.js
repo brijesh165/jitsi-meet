@@ -657,7 +657,7 @@ exports.changeMeetingStatus = async (req, res) => {
                 console.log("Started")
                 await models.meeting.update({
                     status: req.body.status,
-                    actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
+                    // actual_start_time: req.body.actual_start_time ? moment(req.body.actual_start_time,'x').toDate() : new Date()
                 }, {
                     where: {
                         meeting_id: req.body.meeting_id
