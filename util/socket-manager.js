@@ -42,14 +42,14 @@ exports.openIO = function (io) {
             socket.meetingId = data.meetingId;
             socket.username = data.username;
 
-            if (data.role === "host") {
-                meetingSockets[data.meetingId] = socket.id;
+            // if (data.role === "host" && meetingSockets[data.meetingId]==null) {
+            //     meetingSockets[data.meetingId] = socket.id;
 
-                // push meeting into into endMeetingSocket array
-                endMeeingSocket = endMeeingSocket.filter(item => {
-                    item.meetingId != data.meetingId
-                })
-            }
+            //     // push meeting into into endMeetingSocket array
+            //     endMeeingSocket = endMeeingSocket.filter(item => {
+            //         item.meetingId != data.meetingId
+            //     });
+            // }
 
             models.meeting_logs.create({
                 meeting_id: data.meetingId,
@@ -64,8 +64,15 @@ exports.openIO = function (io) {
             console.log("Role Change: Meeting Socket: ", data, socket.id, meetingSockets);
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
+
+                // push meeting into into endMeetingSocket array
+                // endMeeingSocket = endMeeingSocket.filter(item => {
+                //     item.meetingId != data.meetingId
+                // });
+
                 socket.username = data.username;
             
+
                 models.meeting_logs.create({ 
                     meeting_id: data.meetingId,
                     log_type: "role_change",
