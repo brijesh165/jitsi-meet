@@ -1,6 +1,5 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
-const constants = require('./../util/constants');
 const models = require('./../models');
 const socketManager = require('../util/socket-manager');
 const axios = require('axios');
@@ -64,7 +63,7 @@ exports.getAllMeetings = async (req, res) => {
         }
         console.log("Meetingsss: ", meetingsss.length);
         
-        if (userMeetings.length == 0) {
+        if (meetingsss.length == 0) {
             return res.send({
                 status: "200",
                 message: "No upcoming meetings!"
@@ -242,7 +241,7 @@ exports.createmeeting = async (req, res) => {
             const currentTimeStamp = moment().utc().unix().toString();
 
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 10),
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 subject: req.body.subject,
@@ -278,7 +277,7 @@ exports.createmeeting = async (req, res) => {
             console.log("Meeting Schedule: ", req.body.meeting_schedule)
             let response = {};
             const createmeetingparams = {
-                meeting_id: currentTimeStamp.slice(0, 3) + currentTimeStamp.slice(3, 6) + currentTimeStamp.slice(6, currentTimeStamp.length),
+                meeting_id: currentTimeStamp.slice(0, 10),
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
@@ -336,15 +335,17 @@ exports.createmeeting = async (req, res) => {
 /**
  * @param {*} meeting
  */
-function meetingStatusCheck(params) {
+ function meetingStatusCheck(params) {
     try {
         // console.log("Params: ", params);
-        const difference = moment().utc().diff(moment(params.start_time), 'days');
-        console.log("Difference: ", difference)
+        const difference = moment().startOf('day').diff(moment(params.start_time).startOf('day'), 'days');
+        console.log("Difference: ", difference);
         console.log("Meeting Type: ", params.meeting_type)
         console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Daily") {
-            return true;
+            if (moment(params.repeat_end_date).valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                return true;
+            }
         } else if (params.repeat_event_until == "Every Week") {
             if (difference % 7 == 0) {
                 return true;
@@ -373,9 +374,10 @@ function meetingStatusCheck(params) {
         } else if (params.repeat_event_until == "Custom") {
             // console.log("Params Of Repeat Event until: ", params.repeat_event_until)
             if (params.repeat_frequency == "Daily") {
-                return true;
+                if (moment(params.repeat_end_date).valueOf() > moment().utc().toDate().getTime().valueOf()) {
+                    return true;
+                }
             }
-
             if (params.repeat_frequency == "Weekly") {
                 let occurance = params.occurance;
                 // console.log("Occurance: ", occurance);
@@ -383,12 +385,9 @@ function meetingStatusCheck(params) {
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
                     return val.replace(/<\/?w>/g, '');
                 });
-
                 let result = occurrenceno.includes(todaysdayposition.toString());
-
                 return result;
             }
-
             if (params.repeat_frequency == "Monthly") {
                 if (params.occurance.length > 0) {
                     const occurance = params.occurance;
@@ -396,9 +395,7 @@ function meetingStatusCheck(params) {
                     const dates = occurance.match(/<DT>(.*?)<\/DT>/g).map(function (val) {
                         return val.replace(/<\/?DT>/g, '');
                     });
-
                     let result = dates.includes(todaysdayno.toString());
-
                     return result;
                 } else if (params.occurance_on_week_no.length > 0) {
                     const occuranceonweekno = params.occurance_on_week_no;
@@ -408,7 +405,6 @@ function meetingStatusCheck(params) {
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function (val) {
                         return val.replace(/<\/?D>/g, '');
                     });
-
                     const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
@@ -417,7 +413,6 @@ function meetingStatusCheck(params) {
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
-
                     for (let item of weekno) {
                         allData.push({
                             week: item,
@@ -425,37 +420,30 @@ function meetingStatusCheck(params) {
                         });
                         i++;
                     }
-
                     if (parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
                         currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentweekno) && item.day == currentday;
                         });
-
                     } else {
                         currentSchedule = allData.find(function (item) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-
                     return currentSchedule == null ? false : true;
                 }
             }
-
             if (params.repeat_frequency == "Yearly") {
                 if (params.occurance.length > 0 && params.occurance_year_month_date.length > 0) {
                     let allData = [];
                     let i = 0;
                     let currentMonthNo = moment().utc().month() + 1;
                     let currentDay = moment().utc().date();
-
                     let months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) {
                         return val.replace(/<\/?M>/g, '');
                     })
-
                     let dates = params.occurance_year_month_date.match(/<DT>(.*?)<\/DT>/g).map(function (val) {
                         return val.replace(/<\/?DT>/g, '');
                     })
-
                     for (let month of months) {
                         allData.push({
                             month: month,
@@ -463,11 +451,9 @@ function meetingStatusCheck(params) {
                         })
                         i++;
                     }
-
                     let currentSchedule = allData.find(function (item) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
-
                     console.log("Current Schedule 1: ", currentSchedule);
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
@@ -480,7 +466,6 @@ function meetingStatusCheck(params) {
                     const days = params.occurance_on_week_no.match(/<D>(.*?)<\/D>/g).map(function (val) {
                         return val.replace(/<\/?D>/g, '');
                     })
-
                     const currentMonthNo = moment().utc().month() + 1;
                     const todaysday = moment().utc();
                     const currentWeekNo = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
@@ -488,7 +473,6 @@ function meetingStatusCheck(params) {
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
-
                     let i = 0;
                     let allData = [];
                     for (let week of weeks) {
@@ -498,7 +482,6 @@ function meetingStatusCheck(params) {
                         })
                         i++;
                     }
-
                     if (months.includes(currentMonthNo.toString()) && parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
                         currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentWeekNo) && item.day == currentDayNo;
@@ -510,9 +493,7 @@ function meetingStatusCheck(params) {
                     } else {
                         return false;
                     }
-
                     console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
-
                     return currentSchedule == undefined ? false : true;
                 } else {
                     return false;
@@ -521,7 +502,6 @@ function meetingStatusCheck(params) {
                 return false;
             }
         }
-
     } catch (error) {
         console.log("Meeting Controller || Meeting status check", error);
         return res.json({
@@ -559,7 +539,7 @@ exports.startMeeting = async (req, res) => {
             if (meeting && meeting.meeting_type == "nonperiodic") {
                 console.log("Non periodic meeting")
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
-                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                    await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
                         where: {
                             meeting_id: meeting_id
                         }
@@ -568,7 +548,7 @@ exports.startMeeting = async (req, res) => {
                     return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}?host=true`)
                 } else {
                     console.log("Non periodic else");
-                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/endmeeting`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
@@ -576,17 +556,17 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
-                        await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate().valueOf() }, {
+                        await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
                             where: {
                                 meeting_id: meeting_id
                             }
                         });
                         return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}?host=true`)
                     } else {
-                        return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                        return res.redirect(`https://betameet.teamlocus.com/endmeeting`)
                     }
                 } else {
-                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/endmeeting`)
                 }
             } else {
                 return res.redirect(`https://betameet.teamlocus.com/errorpage?${meeting.meeting_id}`);
@@ -600,7 +580,7 @@ exports.startMeeting = async (req, res) => {
 
                     return res.redirect(`https://betameet.teamlocus.com/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
-                    return res.redirect(`https://betameet.teamlocus.com/end_meeting?${meeting.meeting_id}`)
+                    return res.redirect(`https://betameet.teamlocus.com/endmeeting`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
                     return res.redirect(`https://betameet.teamlocus.com/waiting/${meeting_id}`);
@@ -646,40 +626,62 @@ exports.startMeeting = async (req, res) => {
  * @param {*} actual_end_time(Status == "ended")
  * @param {*} authkey (optional)
  */
+/**
+ * 
+ * @param {*} meeting_id 
+ * @param {*} status
+ * @param {*} actual_start_time(Status == "started")
+ * @param {*} actual_end_time(Status == "ended")
+ * @param {*} authkey (optional)
+ */
  exports.changeMeetingStatus = async (req, res) => {
     try {
         console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
-
+        let meetingDetails = await models.meeting.findOne({ where:{meeting_id: req.body.meeting_id}});
         // if (keyStatus.data.status == "ok") {
             if (req.body.status == "started") {
+                // console.log("Started");
                 await models.meeting.update({
                     status: req.body.status,
-                    actual_start_time: req.body.actual_start_time ? req.body.actual_start_time : moment(req.body.actual_start_time, 'x').toDate()
+                    actual_start_time: new Date()
                 }, {
                     where: {
                         meeting_id: req.body.meeting_id
                     }
                 });
-
                 return res.send({
                     status: "ok",
                     message: "",
                     webpage: "",
-                    response: ""
+                    response: meetingDetails
                 })
             }
-            if (req.body.status == "ended") {
-                await models.meeting.update({
-                    status: req.body.status,
-                    actual_end_time: req.body.actual_end_time ? req.body.actual_end_time : moment(req.body.actual_end_time, 'x').toDate()
-                }, {
-                    where: {
-                        meeting_id: req.body.meeting_id
-                    }
-                });
-
+            else if (req.body.status == "ended") {
+                // console.log("Meeting Details: ", meetingDetails)
+                console.log("Ended");
+                if (meetingDetails.meeting_type === "periodic") {
+                    console.log("Periodic");
+                    await models.meeting.update({
+                        status: "pending",
+                        actual_end_time: new Date()
+                    }, {
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    });                    
+                } else {
+                    console.log("Non Periodic");
+                    await models.meeting.update({
+                        status: req.body.status,
+                        actual_end_time: new Date()
+                    }, {
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    });
+                }
                 socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
                 
                 return res.send({
@@ -689,13 +691,12 @@ exports.startMeeting = async (req, res) => {
                     response: ""
                 })
             }
-            if (req.body.status == "pending") {
+            else if (req.body.status == "pending") {
                 await models.meeting.update({ status: req.body.status }, {
                     where: {
                         meeting_id: req.body.meeting_id
                     }
                 });
-
                 return res.send({
                     status: "ok",
                     message: "",
@@ -722,7 +723,6 @@ exports.startMeeting = async (req, res) => {
         })
     }
 }
-
 /**
  * 
  * @param {*} meeting_id 
