@@ -320,7 +320,6 @@ exports.createmeeting = async (req, res) => {
                 }
             })
         } else if (req.body.meeting_type == 'onetime') {
-            let response = {};
             const currentTimeStamp = moment().utc().unix().toString();
 
             const createmeetingparams = {
@@ -328,7 +327,7 @@ exports.createmeeting = async (req, res) => {
                 application: req.body.application,
                 meeting_host: req.body.meeting_host,
                 subject: req.body.subject,
-                status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                status: req.body.status ? req.body.status : "pending",
                 meeting_type: req.body.meeting_type,
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate()
