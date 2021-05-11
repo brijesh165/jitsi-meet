@@ -708,6 +708,13 @@ exports.startMeeting = async (req, res) => {
                             meeting_id: req.body.meeting_id
                         }
                     });                    
+                } else if (meetingDetails.meeting_type === "onetime") {
+                    console.log("one time");
+                    await models.meeting.destroy({
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    })
                 } else {
                     console.log("Non Periodic");
                     await models.meeting.update({
