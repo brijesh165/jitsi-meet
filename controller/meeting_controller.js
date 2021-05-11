@@ -316,6 +316,42 @@ exports.createmeeting = async (req, res) => {
                     join_url: response.join_url
                 }
             })
+        } else if (req.body.meeting_type == 'onetime') {
+            const currentTimeStamp = moment().utc().unix().toString();
+        
+            const createmeetingparams = {
+                meeting_id: currentTimeStamp.slice(0, 10),
+                application: req.body.application,
+                meeting_host: req.body.meeting_host,
+                subject: req.body.subject,
+                status: req.body.status ? req.body.status : "pending",
+                meeting_type: req.body.meeting_type,
+                start_time: moment(req.body.start_time, 'x').toDate(),
+                end_time: moment(req.body.end_time, 'x').toDate()
+            };
+        
+            // console.log("Create Meeting Params : ", createmeetingparams)
+            const createdMeeting = await models.meeting.create(createmeetingparams);
+            // console.log("Created Meeting: ", createdMeeting.meeting_id);
+        
+            // const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
+            // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
+        
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+            // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+            // response.start_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
+            // response.join_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+        
+            return res.send({
+                status: "ok",
+                message: "",
+                webpage: "",
+                response: {
+                    meeting_id: createmeetingparams.meeting_id,
+                    // start_url: response.start_url,
+                    // join_url: response.join_url
+                }
+            })
         }
 
     } catch (error) {
@@ -684,7 +720,17 @@ exports.changeMeetingStatus = async (req, res) => {
                             meeting_id: req.body.meeting_id
                         }
                     });                    
-                } else {
+                } else if (meetingDetails.meeting_type === "onetime") {
+                    console.log("one time");
+                    await models.meeting.update({
+                        status: req.body.status,
+                        actual_end_time: new Date()
+                    }, {
+                        where: {
+                            meeting_id: req.body.meeting_id
+                        }
+                    });
+                } else if (meetingDetails.meeting_type === "nonperiodic"){
                     console.log("Non Periodic");
                     await models.meeting.update({
                         status: req.body.status,
