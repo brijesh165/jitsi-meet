@@ -134,6 +134,7 @@ exports.createmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: createdMeeting,
                 response: {
                     meeting_id: createmeetingparams.meeting_id,
                     start_url: response.start_url,
@@ -179,6 +180,7 @@ exports.createmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: createdMeeting,
                 response: {
                     meeting_id: createdMeeting.meeting_id,
                     start_url: response.start_url,
