@@ -655,6 +655,8 @@ exports.editmeeting = async (req, res) => {
                 }
             })
 
+            console.log("After Update: ", afterUpdate)
+
             return res.send({
                 status: "ok",
                 message: "",
