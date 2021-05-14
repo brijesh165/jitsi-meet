@@ -649,19 +649,17 @@ exports.editmeeting = async (req, res) => {
         }
 
         if (req.body.meeting_id) {
-            const afterUpdate = await models.meeting.update(editParams, {
+            await models.meeting.update(editParams, {
                 where: {
                     meeting_id: req.body.meeting_id
                 }
             })
 
-            console.log("After Update: ", afterUpdate)
-
             return res.send({
                 status: "ok",
                 message: "",
                 webpage: "",
-                meeting_details: afterUpdate,
+                meeting_details: editParams,
                 response: "sucess"
             });
         } else {
