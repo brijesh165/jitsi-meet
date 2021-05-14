@@ -655,11 +655,17 @@ exports.editmeeting = async (req, res) => {
                 }
             })
 
+            const editedMeeting = await models.meeting.findOne({
+                where: {
+                    meeting_id: req.body.meeting_id
+                }
+            })
+
             return res.send({
                 status: "ok",
                 message: "",
                 webpage: "",
-                meeting_details: editParams,
+                meeting_details: editedMeeting,
                 response: "sucess"
             });
         } else {
