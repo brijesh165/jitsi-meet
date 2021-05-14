@@ -649,7 +649,7 @@ exports.editmeeting = async (req, res) => {
         }
 
         if (req.body.meeting_id) {
-            await models.meeting.update(editParams, {
+            const afterUpdate = await models.meeting.update(editParams, {
                 where: {
                     meeting_id: req.body.meeting_id
                 }
@@ -659,6 +659,7 @@ exports.editmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: afterUpdate,
                 response: "sucess"
             });
         } else {
