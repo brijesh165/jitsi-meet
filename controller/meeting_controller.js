@@ -264,6 +264,7 @@ exports.createmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: createdMeeting,
                 response: {
                     meeting_id: createmeetingparams.meeting_id,
                     start_url: response.start_url,
@@ -310,6 +311,7 @@ exports.createmeeting = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: createdMeeting,
                 response: {
                     meeting_id: createdMeeting.meeting_id,
                     start_url: response.start_url,
@@ -872,10 +874,17 @@ exports.editmeeting = async (req, res) => {
                 }
             })
 
+            const editedMeeting = await models.meeting.findOne({
+                where: {
+                    meeting_id: req.body.meeting_id
+                }
+            })
+
             return res.send({
                 status: "ok",
                 message: "",
                 webpage: "",
+                meeting_details: editedMeeting,
                 response: "sucess"
             });
         } else {
