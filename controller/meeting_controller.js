@@ -116,6 +116,7 @@ exports.allMeetings = async (req, res) => {
         return res.send({
             status: 200,
             message: "",
+            webpage: "",
             meetings: meetings
         })
     } catch (error) {
