@@ -12,7 +12,7 @@ module.exports = {
       return Promise.all([
         queryInterface.addColumn('meetings', 'timezone', {
           type: Sequelize.DataTypes.TEXT,
-          allowNull: false
+          allowNull: true
         })
       ])
     })
