@@ -6,7 +6,7 @@ const scheduleManager = require('../util/schedule-manager');
 module.exports = function(app) {
   app.get('/join/:id', meetingController.startMeeting);
 
-  app.post('/get-all-meetings', meetingController.getAllMeetings);
+  app.post('/get-upcoming-meetings', meetingController.getUpcomingMeetings);
 
   app.post('/all-meetings', meetingController.allMeetings);
 

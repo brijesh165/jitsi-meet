@@ -5,7 +5,7 @@ const models = require('./../models');
 const axios = require('axios');
 const { Op } = require('sequelize');
 
-exports.getAllMeetings = async (req, res) => {
+exports.getUpcomingMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
