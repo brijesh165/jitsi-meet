@@ -917,6 +917,7 @@ exports.deletemeeting = async (req, res) => {
 
         await models.meeting.destroy({
             where: {
+                meeting_host: req.body.username,
                 meeting_id: req.body.meeting_id
             }
         });
