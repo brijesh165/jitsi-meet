@@ -21,13 +21,13 @@ exports.getUpcomingMeetings = async (req, res) => {
 
         const allmeetings = meetings.data.response.tblmymeetings;
         let filterOptions = [
-            { "application": "tlmeet"
-            }
+            { "application": "tlmeet" }
         ];
 
         if (allmeetings.length > 0) {
             filterOptions.push({
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+                'meeting_host': req.body.username
             })
         }
 
