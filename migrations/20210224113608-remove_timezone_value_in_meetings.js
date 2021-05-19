@@ -10,10 +10,10 @@ module.exports = {
      */
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.addColumn('meetings', 'timezone', {
+        queryInterface.removeColumn('meetings', 'timezone', {
           type: Sequelize.DataTypes.TEXT,
-          allowNull: true
-        }),
+          allowNull: false
+        })
       ])
     })
   },
