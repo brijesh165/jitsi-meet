@@ -88,7 +88,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     timezone: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: true
     }
   }, {
     sequelize,
