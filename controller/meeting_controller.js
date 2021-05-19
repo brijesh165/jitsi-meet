@@ -21,8 +21,7 @@ exports.getUpcomingMeetings = async (req, res) => {
 
         const allmeetings = meetings.data.response.tblmymeetings;
         let filterOptions = [
-            { "application": "tlmeet",
-                "meeting_host": req.body.username
+            { "application": "tlmeet"
             }
         ];
 
@@ -38,6 +37,7 @@ exports.getUpcomingMeetings = async (req, res) => {
         // console.log("Moment: ", moment())
         const userMeetings = await models.meeting.findAll({
             where: {
+                "meeting_host": req.body.username,
                 [Op.or]: filterOptions
             },
             order: [
