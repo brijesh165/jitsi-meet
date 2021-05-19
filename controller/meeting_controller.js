@@ -10,7 +10,7 @@ exports.getUpcomingMeetings = async (req, res) => {
         console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
 
-        console.log("Data: ", meetings.data.response.tblmymeetings)
+        // console.log("Data: ", meetings.data.response.tblmymeetings)
 
         if (meetings.data.status == "error") {
             return res.send({
