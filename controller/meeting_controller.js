@@ -27,11 +27,10 @@ exports.getUpcomingMeetings = async (req, res) => {
         if (allmeetings.length > 0) {
             filterOptions.push({
                 'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-                'meeting_host': req.body.username
             })
         }
 
-        // console.log("Filter Options: ", filterOptions);
+        console.log("Filter Options: ", filterOptions);
         // console.log("Date: ", new Date());
 
         // console.log("Moment: ", moment())
