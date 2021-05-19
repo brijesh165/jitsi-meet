@@ -85,6 +85,10 @@ module.exports = (sequelize, DataTypes) => {
     occurance_year_month_date: {
       type: DataTypes.TEXT,
       allowNull: true
+    },
+    timezone: {
+      type: DataTypes.TEXT,
+      allowNull: false
     }
   }, {
     sequelize,
