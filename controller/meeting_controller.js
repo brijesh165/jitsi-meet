@@ -47,11 +47,11 @@ exports.getUpcomingMeetings = async (req, res) => {
         
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
-            if (userMeetings[i].meeting_type === "nonperiodic" && userMeetings[i].meeting_host === req.body.username) {
+            if (userMeetings[i].meeting_type === "nonperiodic") {
                 if (moment(userMeetings[i].start_time).isSame(moment(), 'day')) {                    
                     meetingsss.push(userMeetings[i])
                 }
-            } else if (userMeetings[i].meeting_type === "periodic" && userMeetings[i].meeting_host === req.body.username) {
+            } else if (userMeetings[i].meeting_type === "periodic") {
                 const resp = meetingStatusCheck(userMeetings[i]);
                 if (resp) {
                     meetingsss.push(userMeetings[i]);
