@@ -37,7 +37,6 @@ exports.getUpcomingMeetings = async (req, res) => {
         // console.log("Moment: ", moment())
         const userMeetings = await models.meeting.findAll({
             where: {
-                "meeting_host": req.body.username,
                 [Op.or]: filterOptions
             },
             order: [
