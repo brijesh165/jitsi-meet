@@ -244,6 +244,7 @@ exports.createmeeting = async (req, res) => {
                 meeting_host: req.body.meeting_host,
                 subject: req.body.subject,
                 status: req.body.meeting_status ? req.body.meeting_status : "pending",
+                timezone: req.body.timezone ? req.body.timezone : "Asia/Calcutta",
                 meeting_type: req.body.meeting_type,
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate()
