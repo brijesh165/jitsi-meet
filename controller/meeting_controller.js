@@ -253,6 +253,11 @@ exports.createmeeting = async (req, res) => {
             // console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             // console.log("Created Meeting: ", createdMeeting.meeting_id);
+            await models.meeting_logs.create({
+                meeting_id: createdMeeting.meeting_id,
+                log_type: "create_meeting",
+                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${createmeetingparams}`
+            })
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
             const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
@@ -300,6 +305,12 @@ exports.createmeeting = async (req, res) => {
             // console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             // console.log("Created Meeting: ", createdMeeting);
+
+            await models.meeting_logs.create({
+                meeting_id: createdMeeting.meeting_id,
+                log_type: "create_meeting",
+                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${createmeetingparams}`
+            })
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
             const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
@@ -879,6 +890,12 @@ exports.editmeeting = async (req, res) => {
                 }
             })
 
+            await models.meeting_logs.create({
+                meeting_id: req.body.meeting_id,
+                log_type: "edit_meeting",
+                log_description: `Meeting edited by ${req.body.meeting_host} and parameters are ${editParams}`
+            })
+
             const editedMeeting = await models.meeting.findOne({
                 where: {
                     meeting_id: req.body.meeting_id
@@ -925,6 +942,12 @@ exports.deletemeeting = async (req, res) => {
                 meeting_id: req.body.meeting_id
             }
         });
+
+        await models.meeting_logs.create({
+            meeting_id: req.body.meeting_id,
+            log_type: "delete_meeting",
+            log_description: `Meeting deleted by ${req.body.username}.`
+        })
 
         return res.send({
             status: "ok",
