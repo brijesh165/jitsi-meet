@@ -256,7 +256,7 @@ exports.createmeeting = async (req, res) => {
             await models.meeting_logs.create({
                 meeting_id: createdMeeting.meeting_id,
                 log_type: "create_meeting",
-                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${createmeetingparams}`
+                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${JSON.stringify(createmeetingparams)}`
             })
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
