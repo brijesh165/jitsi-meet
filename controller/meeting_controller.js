@@ -309,7 +309,7 @@ exports.createmeeting = async (req, res) => {
             await models.meeting_logs.create({
                 meeting_id: createdMeeting.meeting_id,
                 log_type: "create_meeting",
-                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${createmeetingparams}`
+                log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${JSON.stringify(createmeetingparams)}`
             })
 
             const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
@@ -893,7 +893,7 @@ exports.editmeeting = async (req, res) => {
             await models.meeting_logs.create({
                 meeting_id: req.body.meeting_id,
                 log_type: "edit_meeting",
-                log_description: `Meeting edited by ${req.body.meeting_host} and parameters are ${editParams}`
+                log_description: `Meeting edited by ${req.body.meeting_host} and parameters are ${JSON.stringify(editParams)}`
             })
 
             const editedMeeting = await models.meeting.findOne({
@@ -931,6 +931,7 @@ exports.editmeeting = async (req, res) => {
 /**
  * 
  * @param {*} meeting_id
+ * @param {*} username
  */
 exports.deletemeeting = async (req, res) => {
     try {
