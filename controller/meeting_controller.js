@@ -92,7 +92,7 @@ exports.checkMeetingValidity = async (req, res) => {
 
         if (meeting.length == 0) {
             return res.send({
-                status: "201",
+                status: 201,
                 message: "Invalid Meeting Id!"
             })
         }
