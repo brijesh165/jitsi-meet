@@ -10,6 +10,8 @@ module.exports = function(app) {
 
   app.post('/all-meetings', meetingController.allMeetings);
 
+  app.post('/check-meeting-validity', meetingController.checkMeetingValidity);
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting);

@@ -79,6 +79,37 @@ exports.getUpcomingMeetings = async (req, res) => {
 
 /**
  * 
+ * @param {*} meeting_id 
+ * @param {*} res 
+ */
+exports.checkMeetingValidity = async (req, res) => {
+    try {
+        const meeting = await models.meeting.findAll({
+            where: {
+                meeting_id: req.body.meeting_id
+            }
+        })
+
+        if (meeting.length == 0) {
+            return res.send({
+                status: "201",
+                message: "Invalid Meeting Id!"
+            })
+        }
+
+        return res.send({
+            status: 200,
+            message: "",
+            webpage: "",
+            meetings: meeting
+        })
+    } catch (error) {
+        console.log("Meeting Controller | Get All Meetings Error", error);
+    }
+}
+
+/**
+ * 
  * @param {*} username 
  * @param {*} res 
  */
