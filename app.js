@@ -27,6 +27,8 @@ const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
 let io = require('socket.io')(httpsServer,{
+  pingInterval: 5000, // default - 25000
+  pingTimeout: 15000,
   cors: {
     origin: "https://betameet.teamlocus.com",
     methods: ["GET", "POST"],
