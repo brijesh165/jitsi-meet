@@ -278,7 +278,8 @@ exports.createmeeting = async (req, res) => {
                 timezone: req.body.timezone ? req.body.timezone : "Asia/Calcutta",
                 meeting_type: req.body.meeting_type,
                 start_time: moment(req.body.start_time, 'x').toDate(),
-                end_time: moment(req.body.end_time, 'x').toDate()
+                end_time: moment(req.body.end_time, 'x').toDate(),
+                actual_end_time: new Date()
             };
 
             // console.log("Create Meeting Params : ", createmeetingparams)
@@ -322,6 +323,7 @@ exports.createmeeting = async (req, res) => {
                 subject: req.body.subject,
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate(),
+                actual_end_time: new Date(),
                 repeat_event_until: req.body.meeting_schedule.repeateveryunit,
                 repeat_interval: req.body.meeting_schedule.repeatinterval,
                 repeat_start_date: moment(req.body.meeting_schedule.startdate, 'x').toDate(),
