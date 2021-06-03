@@ -27,7 +27,7 @@ const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
 let io = require('socket.io')(httpsServer,{
-  pingInterval: 5000, // default - 25000
+  pingInterval: 5000, // default - 5000
   pingTimeout: 30000,
   cors: {
     origin: '*',
