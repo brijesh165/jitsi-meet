@@ -9,31 +9,31 @@ exports.openIO = function (io) {
     let meetingSockets = {};
     let endMeeingSocket = [];
 
-    setInterval( async () => {
-        if (endMeeingSocket.length > 0) {
-            for (let i = 0; i < endMeeingSocket.length; i++) {
-                if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('10', 'seconds')) {
-                    socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
-                        "meetingId": endMeeingSocket[i].meetingId
-                    })
+    // setInterval( async () => {
+    //     if (endMeeingSocket.length > 0) {
+    //         for (let i = 0; i < endMeeingSocket.length; i++) {
+    //             if (moment.utc() >= moment(endMeeingSocket[i].disconnectionTime, 'x').add('10', 'seconds')) {
+    //                 socketIO.to(endMeeingSocket[i].meetingId).emit("end_meeting", {
+    //                     "meetingId": endMeeingSocket[i].meetingId
+    //                 })
 
-                    await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate() }, {
-                        where: {
-                            meeting_id: endMeeingSocket[i].meetingId
-                        }
-                    });
+    //                 await models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate() }, {
+    //                     where: {
+    //                         meeting_id: endMeeingSocket[i].meetingId
+    //                     }
+    //                 });
 
-                    await models.meeting_logs.create({
-                        meeting_id: endMeeingSocket[i].meetingId,
-                        log_type: "end_meeting",
-                        log_description: `Ended Meeting. Because host failed to connect in 10 seconds.`
-                    })
+    //                 await models.meeting_logs.create({
+    //                     meeting_id: endMeeingSocket[i].meetingId,
+    //                     log_type: "end_meeting",
+    //                     log_description: `Ended Meeting. Because host failed to connect in 10 seconds.`
+    //                 })
 
-                    endMeeingSocket.splice(i, 1);
-                }
-            }
-        }
-    }, 1000)
+    //                 endMeeingSocket.splice(i, 1);
+    //             }
+    //         }
+    //     }
+    // }, 1000)
 
     io.on('connection', function (socket) {
         socket.on("joinMeeting", (data) => {
@@ -99,17 +99,17 @@ exports.openIO = function (io) {
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
-            if (meetingSockets[socket.meetingId] == socket.id) {
-                endMeeingSocket.push({
-                    "meetingId": socket.meetingId,
-                    "disconnectionTime": moment.utc()
+            if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
+                // endMeeingSocket.push({
+                //     "meetingId": socket.meetingId,
+                //     "disconnectionTime": moment.utc()
+                // })
+
+                socketIO.to(socket.meetingId).emit("end_meeting", {
+                    "meetingId": socket.meetingId
                 })
 
                 console.log("End Meeting Socket: ", endMeeingSocket)
-
-                // socketIO.to(socket.meetingId).emit("end_meeting", {
-                //     "meetingId": socket.meetingId
-                // })
             }
 
             models.meeting_logs.create({
