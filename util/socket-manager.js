@@ -64,14 +64,7 @@ exports.openIO = function (io) {
             console.log("Role Change: Meeting Socket: ", data, socket.id, meetingSockets);
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
-
-                // push meeting into into endMeetingSocket array
-                // endMeeingSocket = endMeeingSocket.filter(item => {
-                //     item.meetingId != data.meetingId
-                // });
-
-                socket.username = data.username;
-            
+                socket.username = data.username;            
 
                 models.meeting_logs.create({ 
                     meeting_id: data.meetingId,
@@ -100,11 +93,6 @@ exports.openIO = function (io) {
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
-                // endMeeingSocket.push({
-                //     "meetingId": socket.meetingId,
-                //     "disconnectionTime": moment.utc()
-                // })
-
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
                 }) 
@@ -115,7 +103,7 @@ exports.openIO = function (io) {
                     }
                 });
 
-                console.log("End Meeting Socket: ", endMeeingSocket)
+                console.log("End Meeting Socket emit at disconnect");
             }
 
             models.meeting_logs.create({
