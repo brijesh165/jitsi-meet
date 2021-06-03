@@ -107,7 +107,13 @@ exports.openIO = function (io) {
 
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
-                })
+                }) 
+                
+                models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate() }, {
+                    where: {
+                        meeting_id: socket.meetingId
+                    }
+                });
 
                 console.log("End Meeting Socket: ", endMeeingSocket)
             }
