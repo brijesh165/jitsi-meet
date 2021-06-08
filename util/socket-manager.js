@@ -64,9 +64,6 @@ exports.openIO = function (io) {
                     log_description: `Meeting Host changed for ${data.meetingId}. New Host is ${data.username}`
                 })
             }
-
-            
-            // meetingSockets.push({ isHost: data.role, meetingId: data.meetingId })
         })
 
         socket.on("add_log", (data) => {
