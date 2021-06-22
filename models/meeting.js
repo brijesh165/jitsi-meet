@@ -100,7 +100,7 @@ module.exports = (sequelize, DataTypes) => {
     const filterOptions = {
       application: params.application,
       meeting_host: params.meeting_host,
-      meeting_id: params.meetingId.map(item => item.meeting_video)
+      meeting_id: params.meeting_id.map(item => item.meeting_video)
     }
 
     console.log("Modal Filter Options: ", filterOptions);
