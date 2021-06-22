@@ -57,15 +57,15 @@ exports.getUpcomingMeetings = async (req, res) => {
         console.log("User Meetings: ", userMeetings.length)
         
         let meetingsss = [];
-        for (let i=0; i<userMeetings.length; i++) {
-            if (userMeetings[i].meeting_type === "nonperiodic") {
-                if (moment(userMeetings[i].start_time).isSame(moment(), 'day')) {                    
-                    meetingsss.push(userMeetings[i])
+        for (let i=0; i<userMeetingFromModal.length; i++) {
+            if (userMeetingFromModal[i].meeting_type === "nonperiodic") {
+                if (moment(userMeetingFromModal[i].start_time).isSame(moment(), 'day')) {                    
+                    meetingsss.push(userMeetingFromModal[i])
                 }
-            } else if (userMeetings[i].meeting_type === "periodic") {
-                const resp = meetingStatusCheck(userMeetings[i]);
+            } else if (userMeetingFromModal[i].meeting_type === "periodic") {
+                const resp = meetingStatusCheck(userMeetingFromModal[i]);
                 if (resp) {
-                    meetingsss.push(userMeetings[i]);
+                    meetingsss.push(userMeetingFromModal[i]);
                 }    
             }
         }
