@@ -1,19 +1,10 @@
-process.env.PROJECT_PATH = __dirname;
-try {
-  process.chdir(process.env.PROJECT_PATH);
-  process.env.PROJECT_PATH = process.cwd();
-
-} catch(error) {
-  console.log('Error while changing directory : ', error);
-}
-
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
-const env = require('dotenv').config();
+const env = require('dotenv').config({ path: path.resolve(process.cwd(), '.env.'+process.env.NODE_ENV) });
 const cors = require('cors');
 const app = express();
 

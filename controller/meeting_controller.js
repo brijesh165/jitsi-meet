@@ -30,10 +30,21 @@ exports.getUpcomingMeetings = async (req, res) => {
             })
         }
 
+
         console.log("Filter Options: ", filterOptions);
         // console.log("Date: ", new Date());
 
         // console.log("Moment: ", moment())
+        const params = {
+            application: "tlmeet",
+            meeting_host: req.body.username,
+            meeting_id: meetings.data.response.tblmymeetings
+        };
+
+
+        const userMeetingFromModal = await models.getUpcomingMeetingList(params);
+        console.log("Modal Response: ", userMeetingFromModal);
+        
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions

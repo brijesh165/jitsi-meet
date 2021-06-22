@@ -94,5 +94,25 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'meeting',
   });
+
+
+  meeting.getUpcomingMeetingList = async (params) => {
+    const filterOptions = {
+      application: params.application,
+      meeting_host: params.meeting_host,
+      meeting_id: params.meetingId.map(item => item.meeting_video)
+    }
+
+    console.log("Modal Filter Options: ", filterOptions);
+    return await meeting.findAll({
+      where: {
+        [Op.or]: filterOptions
+    },
+    order: [
+        ['start_time', 'ASC']
+    ]
+    })
+  }
+
   return meeting;
 };
