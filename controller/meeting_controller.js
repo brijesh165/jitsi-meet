@@ -421,12 +421,10 @@ function meetingStatusCheck(params) {
     try {
         // console.log("Params: ", params);
         const difference = moment().startOf('day').diff(moment(params.start_time).startOf('day'), 'days');
-        // console.log("Difference: ", difference);
+        console.log("Difference: ", params.meeting_id, difference);
         // console.log("Meeting Type: ", params.meeting_type)
         // console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Daily") {
-            console.log("End Date: ", params.meeting_id, moment(params.repeat_end_date).valueOf());
-            console.log("Current time: ", params.meeting_id, moment().utc().toDate().getTime().valueOf())
             if (moment(params.repeat_end_date).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                 return true;
             }
