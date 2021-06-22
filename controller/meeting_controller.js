@@ -43,7 +43,7 @@ exports.getUpcomingMeetings = async (req, res) => {
 
 
         const userMeetingFromModal = await models.meeting.getUpcomingMeetingList(params);
-        console.log("Modal Response: ", userMeetingFromModal);
+        console.log("Modal Response: ", userMeetingFromModal.length);
 
         const userMeetings = await models.meeting.findAll({
             where: {
@@ -54,7 +54,7 @@ exports.getUpcomingMeetings = async (req, res) => {
             ]
         });
 
-        // console.log("User Meetings: ", userMeetings.length)
+        console.log("User Meetings: ", userMeetings.length)
         
         let meetingsss = [];
         for (let i=0; i<userMeetings.length; i++) {
