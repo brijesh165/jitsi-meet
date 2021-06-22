@@ -42,9 +42,9 @@ exports.getUpcomingMeetings = async (req, res) => {
         };
 
 
-        const userMeetingFromModal = await models.getUpcomingMeetingList(params);
+        const userMeetingFromModal = await models.meeting.getUpcomingMeetingList(params);
         console.log("Modal Response: ", userMeetingFromModal);
-        
+
         const userMeetings = await models.meeting.findAll({
             where: {
                 [Op.or]: filterOptions
