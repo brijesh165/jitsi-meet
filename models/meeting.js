@@ -2,7 +2,8 @@
 const {
   Model, Op
 } = require('sequelize');
-import moment from 'moment';
+
+const { moment } = require('moment');
 
 module.exports = (sequelize, DataTypes) => {
   class meeting extends Model {
