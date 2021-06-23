@@ -100,16 +100,21 @@ module.exports = (sequelize, DataTypes) => {
 
 
   meeting.getUpcomingMeetingList = async (params) => {
-    const filterOptions = {
-      application: params.application,
-      meeting_host: params.meeting_host,
-      meeting_id: params.meeting_id.map(item => item.meeting_video)
-    }
+    // const filterOptions = {
+    //   application: params.application,
+    //   meeting_host: params.meeting_host,
+    //   meeting_id: params.meeting_id.map(item => item.meeting_video)
+    // }
 
-    console.log("Modal Filter Options: ", filterOptions);
+    // console.log("Modal Filter Options: ", filterOptions);
     return await meeting.findAll({
       where: {
-        [Op.or]: filterOptions
+        [Op.or]: [
+          { "application": "tlmeet", "meeting_host": params.username },
+          {
+            'meeting_id': params.meetingIdList
+          }
+        ]
       },
       order: [
         ['start_time', 'ASC']
@@ -118,7 +123,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   meeting.getMeetingByMeetingId = async (params) => {
-    return await meeting.findAll({
+    return await meeting.findOne({
       where: {
         meeting_id: params.meeting_id
       }

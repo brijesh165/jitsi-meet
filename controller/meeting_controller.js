@@ -21,25 +21,25 @@ exports.getUpcomingMeetings = async (req, res) => {
         }
 
         const allmeetings = meetings.data.response.tblmymeetings;
-        let filterOptions = [
-            { "application": "tlmeet", "meeting_host": req.body.username }
-        ];
+        // let filterOptions = [
+        //     { "application": "tlmeet", "meeting_host": req.body.username }
+        // ];
 
-        if (allmeetings.length > 0) {
-            filterOptions.push({
-                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-            })
-        }
+        // if (allmeetings.length > 0) {
+        //     filterOptions.push({
+        //         'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+        //     })
+        // }
 
 
-        console.log("Filter Options: ", filterOptions);
+        // console.log("Filter Options: ", filterOptions);
         // console.log("Date: ", new Date());
 
         // console.log("Moment: ", moment())
         const params = {
-            application: "tlmeet",
-            meeting_host: req.body.username,
-            meeting_id: meetings.data.response.tblmymeetings
+            // application: "tlmeet",
+            username: req.body.username,
+            meetingIdList: meetings.data.response.tblmymeetings.map(item => item.meeting_video)
         };
 
 
