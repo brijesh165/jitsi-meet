@@ -86,7 +86,7 @@ exports.openIO = function (io) {
                     "meetingId": socket.meetingId
                 })
 
-                await models.meeting.changeMeetingStatusByMeetingId({
+                models.meeting.changeMeetingStatusByMeetingId({
                     status: "ended",
                     meeting_id: socket.meetingId
                 });
