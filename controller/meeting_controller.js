@@ -776,7 +776,7 @@ exports.changeMeetingStatus = async (req, res) => {
         }
         else if (req.body.status == "ended") {
             // console.log("Meeting Details: ", meetingDetails)
-            console.log("Ended", meetingDetails.meeting_type);
+            console.log("Ended", meetingDetails);
             if (meetingDetails.meeting_type === "periodic") {
                 console.log("Periodic");
                 const params = {
