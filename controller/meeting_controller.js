@@ -21,15 +21,15 @@ exports.getUpcomingMeetings = async (req, res) => {
         }
 
         const allmeetings = meetings.data.response.tblmymeetings;
-        // let filterOptions = [
-        //     { "application": "tlmeet", "meeting_host": req.body.username }
-        // ];
+        let filterOptions = [
+            { "application": "tlmeet", "meeting_host": req.body.username }
+        ];
 
-        // if (allmeetings.length > 0) {
-        //     filterOptions.push({
-        //         'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-        //     })
-        // }
+        if (allmeetings.length > 0) {
+            filterOptions.push({
+                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+            })
+        }
 
 
         // console.log("Filter Options: ", filterOptions);
@@ -46,16 +46,16 @@ exports.getUpcomingMeetings = async (req, res) => {
         const userMeetingFromModal = await models.meeting.getUpcomingMeetingList(params);
         console.log("Modal Response: ", userMeetingFromModal.length);
 
-        // const userMeetings = await models.meeting.findAll({
-        //     where: {
-        //         [Op.or]: filterOptions
-        //     },
-        //     order: [
-        //         ['start_time', 'ASC']
-        //     ]
-        // });
+        const userMeetings = await models.meeting.findAll({
+            where: {
+                [Op.or]: filterOptions
+            },
+            order: [
+                ['start_time', 'ASC']
+            ]
+        });
 
-        // console.log("User Meetings: ", userMeetings.length)
+        console.log("User Meetings: ", userMeetings.length)
 
         let meetingsss = [];
         for (let i = 0; i < userMeetingFromModal.length; i++) {
