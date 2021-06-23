@@ -4,6 +4,7 @@ const socketManager = require('./../util/socket-manager');
 const models = require('./../models');
 const axios = require('axios');
 const { Op } = require('sequelize');
+const meeting = require('../models/meeting');
 
 exports.getUpcomingMeetings = async (req, res) => {
     try {
@@ -775,7 +776,7 @@ exports.changeMeetingStatus = async (req, res) => {
         }
         else if (req.body.status == "ended") {
             // console.log("Meeting Details: ", meetingDetails)
-            console.log("Ended");
+            console.log("Ended", meetingDetails.meeting_type);
             if (meetingDetails.meeting_type === "periodic") {
                 console.log("Periodic");
                 const params = {
