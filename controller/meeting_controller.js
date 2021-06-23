@@ -771,12 +771,12 @@ exports.changeMeetingStatus = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
-                response: meetingDetails
+                response: meetingDetails.meeting
             })
         }
         else if (req.body.status == "ended") {
             // console.log("Meeting Details: ", meetingDetails)
-            console.log("Ended", meetingDetails.meeting.meeting_type);
+            console.log("Ended", meetingDetails.meeting.dataValues.meeting_type);
             if (meetingDetails.meeting_type === "periodic") {
                 console.log("Periodic");
                 const params = {
