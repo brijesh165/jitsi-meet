@@ -55,22 +55,22 @@ exports.getUpcomingMeetings = async (req, res) => {
         });
 
         console.log("User Meetings: ", userMeetings.length)
-        
+
         let meetingsss = [];
-        for (let i=0; i<userMeetingFromModal.length; i++) {
+        for (let i = 0; i < userMeetingFromModal.length; i++) {
             if (userMeetingFromModal[i].meeting_type === "nonperiodic") {
-                if (moment(userMeetingFromModal[i].start_time).isSame(moment(), 'day')) {                    
+                if (moment(userMeetingFromModal[i].start_time).isSame(moment(), 'day')) {
                     meetingsss.push(userMeetingFromModal[i])
                 }
             } else if (userMeetingFromModal[i].meeting_type === "periodic") {
                 const resp = meetingStatusCheck(userMeetingFromModal[i]);
                 if (resp) {
                     meetingsss.push(userMeetingFromModal[i]);
-                }    
+                }
             }
         }
         console.log("Meetingsss: ", meetingsss.length);
-        
+
         if (meetingsss.length == 0) {
             return res.send({
                 status: 200,
@@ -96,11 +96,16 @@ exports.getUpcomingMeetings = async (req, res) => {
  */
 exports.checkMeetingValidity = async (req, res) => {
     try {
-        const meeting = await models.meeting.findAll({
-            where: {
-                meeting_id: req.body.meeting_id
-            }
-        })
+        // const meeting = await models.meeting.findAll({
+        //     where: {
+        //         meeting_id: req.body.meeting_id
+        //     }
+        // })
+        const params = {
+            meeting_id: req.body.meeting_id
+        }
+
+        const meeting = await models.meeting.getMeetingByMeetingId(params);
 
         if (meeting.length == 0) {
             return res.send({
@@ -127,27 +132,34 @@ exports.checkMeetingValidity = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        const meetings = await models.meeting.findAll({
-            where: {
-                meeting_host: req.body.username,
-                [Op.or]: [
-                    {
-                    meeting_type: "nonperiodic",
-                    start_time: {
-                        [Op.gte]: moment().utc().format("yyyy-MM-DD")
-                    }
-                }, {
-                    meeting_type: "periodic",
-                    repeat_end_date: {
-                        [Op.gte]: moment().utc().format("yyyy-MM-DD")
-                    }
-                }
-                ]
-            },
-            order: [
-                ['start_time', 'ASC']
-            ]
-        })
+        const params = {
+            username: req.body.username
+        }
+
+
+        // const meetings = await models.meeting.findAll({
+        //     where: {
+        //         meeting_host: req.body.username,
+        //         [Op.or]: [
+        //             {
+        //             meeting_type: "nonperiodic",
+        //             start_time: {
+        //                 [Op.gte]: moment().utc().format("yyyy-MM-DD")
+        //             }
+        //         }, {
+        //             meeting_type: "periodic",
+        //             repeat_end_date: {
+        //                 [Op.gte]: moment().utc().format("yyyy-MM-DD")
+        //             }
+        //         }
+        //         ]
+        //     },
+        //     order: [
+        //         ['start_time', 'ASC']
+        //     ]
+        // })
+
+        const meetings = await models.meeting.getAllMeetingList(params);
 
         if (meetings.length == 0) {
             return res.send({
@@ -176,13 +188,11 @@ exports.getMeeting = async (req, res) => {
     try {
         console.log("Get Meeting Params : ", req.body);
         let response = {};
-        const meeting_id = req.body.meeting_id.split("?")[0];
-
-        const meeting = await models.meeting.findAll({
-            where: {
-                meeting_id: meeting_id
-            }
-        });
+        // const meeting_id = req.body.meeting_id.split("?")[0];
+        const params = {
+            meeting_id: req.body.meeting_id.split("?")[0]
+        }
+        const meeting = await models.meeting.getMeetingByMeetingId(params);
 
         if (!meeting.length) {
             return res.send({
@@ -200,8 +210,8 @@ exports.getMeeting = async (req, res) => {
 
         // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
         // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-        response.start_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-        response.join_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+        response.start_url = `${process.env.URL}/join/${encryptedMeetingforstart}`;
+        response.join_url = `${process.env.URL}/join/${encryptedMeetingforjoin}`;
 
 
         return res.send({
@@ -228,13 +238,11 @@ exports.getMeeting = async (req, res) => {
 exports.getMeetingInfo = async (req, res) => {
     try {
 
-        console.log("Params: ", req.body);
+        const params = {
+            meeting_id: req.body.meeting_id
+        };
 
-        const meetingInfo = await models.meeting.findOne({
-            where: {
-                meeting_id: req.body.meeting_id
-            }
-        });
+        const meetingInfo = await models.meeting.getMeetingByMeetingId(params);
         // console.log("Meeting Info: ", meetingInfo);
 
         if (meetingInfo == null) {
@@ -308,8 +316,8 @@ exports.createmeeting = async (req, res) => {
 
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
-            response.start_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforstart}`;
+            response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforjoin}`;
 
             return res.send({
                 status: "ok",
@@ -362,8 +370,8 @@ exports.createmeeting = async (req, res) => {
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
 
-            response.start_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
-            response.join_url = `https://tlmeet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
+            response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforstart}`;
+            response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforjoin}`;
 
             return res.send({
                 status: "ok",
@@ -378,7 +386,7 @@ exports.createmeeting = async (req, res) => {
             })
         } else if (req.body.meeting_type == 'onetime') {
             const currentTimeStamp = moment().utc().unix().toString();
-        
+
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 10),
                 application: req.body.application,
@@ -389,19 +397,19 @@ exports.createmeeting = async (req, res) => {
                 start_time: moment(req.body.start_time, 'x').toDate(),
                 end_time: moment(req.body.end_time, 'x').toDate()
             };
-        
+
             // console.log("Create Meeting Params : ", createmeetingparams)
             const createdMeeting = await models.meeting.create(createmeetingparams);
             // console.log("Created Meeting: ", createdMeeting.meeting_id);
-        
+
             // const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
             // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
-        
+
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
             // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
             // response.start_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforstart}`;
             // response.join_url = `https://betameet.teamlocus.com:3443/join/${encryptedMeetingforjoin}`;
-        
+
             return res.send({
                 status: "ok",
                 message: "",
@@ -648,7 +656,7 @@ exports.startMeeting = async (req, res) => {
         console.log("Meeting: ", meeting == null);
         if (meeting == null) {
             console.log("Condition True");
-            return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting_id}`)
+            return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
         }
 
         if (userstatus == "start") {
@@ -661,10 +669,10 @@ exports.startMeeting = async (req, res) => {
                         }
                     });
 
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
                 } else {
                     console.log("Non periodic else");
-                    return res.redirect(`https://meet.teamlocus.com/endmeeting`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
                 console.log("In Periodic meeting");
@@ -677,15 +685,15 @@ exports.startMeeting = async (req, res) => {
                                 meeting_id: meeting_id
                             }
                         });
-                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}?host=true`)
+                        return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
                     } else {
-                        return res.redirect(`https://meet.teamlocus.com/endmeeting`)
+                        return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                     }
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/endmeeting`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                 }
             } else {
-                return res.redirect(`https://meet.teamlocus.com/errorpage?${meeting.meeting_id}`);
+                return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting.meeting_id}`);
             }
 
         } else if (userstatus == "join") {
@@ -694,12 +702,12 @@ exports.startMeeting = async (req, res) => {
                 if (meeting.status == "started") {
                     console.log("If Meeting ID: ", meeting.meeting_id)
 
-                    return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
-                    return res.redirect(`https://meet.teamlocus.com/endmeeting`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                 } else {
                     console.log("Else Meeting ID: ", meeting_id)
-                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting_id}`);
+                    return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting_id}`);
                 }
             }
 
@@ -711,13 +719,13 @@ exports.startMeeting = async (req, res) => {
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
-                        return res.redirect(`https://meet.teamlocus.com/${meeting.meeting_id}`)
+                        return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
                     } else {
-                        return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                        return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting.meeting_id}`)
                     }
 
                 } else {
-                    return res.redirect(`https://meet.teamlocus.com/waiting/${meeting.meeting_id}`)
+                    return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting.meeting_id}`)
                 }
             }
         }
@@ -747,84 +755,76 @@ exports.changeMeetingStatus = async (req, res) => {
         console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
-        let meetingDetails = await models.meeting.findOne({ where:{meeting_id: req.body.meeting_id}});
+        let meetingDetails = await models.meeting.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
         // if (keyStatus.data.status == "ok") {
-            if (req.body.status == "started") {
-                // console.log("Started");
-                await models.meeting.update({
-                    status: req.body.status,
-                    actual_start_time: new Date()
-                }, {
-                    where: {
-                        meeting_id: req.body.meeting_id
-                    }
-                });
-
-                return res.send({
-                    status: "ok",
-                    message: "",
-                    webpage: "",
-                    response: meetingDetails
-                })
+        if (req.body.status == "started") {
+            // console.log("Started");
+            const params = {
+                status: req.body.status,
+                meeting_id: req.body.meeting_id
             }
-            else if (req.body.status == "ended") {
-                // console.log("Meeting Details: ", meetingDetails)
-                console.log("Ended");
-                if (meetingDetails.meeting_type === "periodic") {
-                    console.log("Periodic");
-                    await models.meeting.update({
-                        status: "pending",
-                        actual_end_time: new Date()
-                    }, {
-                        where: {
-                            meeting_id: req.body.meeting_id
-                        }
-                    });                    
-                } else if (meetingDetails.meeting_type === "onetime") {
-                    console.log("one time");
-                    await models.meeting.update({
-                        status: req.body.status,
-                        actual_end_time: new Date()
-                    }, {
-                        where: {
-                            meeting_id: req.body.meeting_id
-                        }
-                    });
-                } else if (meetingDetails.meeting_type === "nonperiodic"){
-                    console.log("Non Periodic");
-                    await models.meeting.update({
-                        status: req.body.status,
-                        actual_end_time: new Date()
-                    }, {
-                        where: {
-                            meeting_id: req.body.meeting_id
-                        }
-                    });
+            await models.meeting.changeMeetingStatusByMeetingId(params);
+
+            return res.send({
+                status: "ok",
+                message: "",
+                webpage: "",
+                response: meetingDetails
+            })
+        }
+        else if (req.body.status == "ended") {
+            // console.log("Meeting Details: ", meetingDetails)
+            console.log("Ended");
+            if (meetingDetails.meeting_type === "periodic") {
+                // console.log("Periodic");
+                const params = {
+                    status: "pending",
+                    meeting_id: req.body.meeting_id
+                }
+                await models.meeting.changeMeetingStatusByMeetingId(params);
+
+            } else if (meetingDetails.meeting_type === "onetime") {
+                console.log("one time");
+                const params = {
+                    status: req.body.status,
+                    meeting_id: req.body.meeting_id
                 }
 
-                socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
-                
-                return res.send({
-                    status: "ok",
-                    message: "",
-                    webpage: "",
-                    response: ""
-                })
-            }
-            else if (req.body.status == "pending") {
-                await models.meeting.update({ status: req.body.status }, {
-                    where: {
-                        meeting_id: req.body.meeting_id
-                    }
-                });
+                await models.meeting.changeMeetingStatusByMeetingId(params);
+            } else if (meetingDetails.meeting_type === "nonperiodic") {
+                console.log("Non Periodic");
+                const params = {
+                    status: req.body.status,
+                    meeting_id: req.body.meeting_id
+                }
 
-                return res.send({
-                    status: "ok",
-                    message: "",
-                    webpage: "",
-                    response: ""
-                })
+                await models.meeting.changeMeetingStatusByMeetingId(params);
             }
+
+            socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
+
+            return res.send({
+                status: "ok",
+                message: "",
+                webpage: "",
+                response: ""
+            })
+        }
+        else if (req.body.status == "pending") {
+            const params = {
+                status: req.body.status,
+                meeting_id: req.body.meeting_id
+            }
+
+            await models.meeting.changeMeetingStatusByMeetingId(params);
+
+            return res.send({
+                status: "ok",
+                message: "",
+                webpage: "",
+                response: ""
+            })
+        }
         // }
         else {
             return res.send({
@@ -927,12 +927,19 @@ exports.editmeeting = async (req, res) => {
             }
         }
 
+        const params = {
+            editParams: editParams,
+            meeting_id: req.body.meeting_id
+        };
+
         if (req.body.meeting_id) {
-            await models.meeting.update(editParams, {
-                where: {
-                    meeting_id: req.body.meeting_id
-                }
-            })
+            // await models.meeting.update(editParams, {
+            //     where: {
+            //         meeting_id: req.body.meeting_id
+            //     }
+            // })
+
+            await models.meeting.updateMeetingByMeetingId(params)
 
             await models.meeting_logs.create({
                 meeting_id: req.body.meeting_id,
@@ -940,11 +947,7 @@ exports.editmeeting = async (req, res) => {
                 log_description: `Meeting edited by ${req.body.meeting_host} and parameters are ${JSON.stringify(editParams)}`
             })
 
-            const editedMeeting = await models.meeting.findOne({
-                where: {
-                    meeting_id: req.body.meeting_id
-                }
-            })
+            const editedMeeting = await models.meeting.getMeetingByMeetingId({ meeting_id: req.body.meeting_id })
 
             return res.send({
                 status: "ok",
@@ -980,13 +983,12 @@ exports.editmeeting = async (req, res) => {
 exports.deletemeeting = async (req, res) => {
     try {
         console.log("Delete Meeting Params: ", req.body);
+        const params = {
+            username: req.body.username,
+            meeting_id: req.body.meeting_id
+        };
 
-        await models.meeting.destroy({
-            where: {
-                meeting_host: req.body.username,
-                meeting_id: req.body.meeting_id
-            }
-        });
+        await models.meeting.deleteMeetingByMeetingId(params);
 
         await models.meeting_logs.create({
             meeting_id: req.body.meeting_id,

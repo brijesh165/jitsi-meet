@@ -2,6 +2,8 @@
 const {
   Model, Op
 } = require('sequelize');
+import moment from 'moment';
+
 module.exports = (sequelize, DataTypes) => {
   class meeting extends Model {
     /**
@@ -107,10 +109,70 @@ module.exports = (sequelize, DataTypes) => {
     return await meeting.findAll({
       where: {
         [Op.or]: filterOptions
-    },
-    order: [
+      },
+      order: [
         ['start_time', 'ASC']
-    ]
+      ]
+    })
+  }
+
+  meeting.getMeetingByMeetingId = async (params) => {
+    return await meeting.findAll({
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
+  meeting.getAllMeetingList = async (params) => {
+    return await meeting.findAll({
+      where: {
+        meeting_host: params.username,
+        [Op.or]: [
+          {
+            meeting_type: "nonperiodic",
+            start_time: {
+              [Op.gte]: moment().utc().format("yyyy-MM-DD")
+            }
+          }, {
+            meeting_type: "periodic",
+            repeat_end_date: {
+              [Op.gte]: moment().utc().format("yyyy-MM-DD")
+            }
+          }
+        ]
+      },
+      order: [
+        ['start_time', 'ASC']
+      ]
+    });
+  }
+
+  meeting.changeMeetingStatusByMeetingId = async (params) => {
+    return await meeting.update({
+      status: params.status,
+      actual_start_time: new Date()
+    }, {
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
+  meeting.updateMeetingByMeetingId = async (params) => {
+    return await meeting.update(params.editParams, {
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
+  meeting.deleteMeetingByMeetingId = async (params) => {
+    return await meeting.destroy({
+      where: {
+        meeting_host: params.username,
+        meeting_id: params.meeting_id
+      }
     })
   }
 
