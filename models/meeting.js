@@ -150,6 +150,7 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   meeting.changeMeetingStatusByMeetingId = async (params) => {
+    console.log("Change Meeting Status Params: ", params)
     return await meeting.update({
       status: params.status,
       actual_start_time: new Date()

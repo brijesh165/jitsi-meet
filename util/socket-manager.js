@@ -56,9 +56,9 @@ exports.openIO = function (io) {
             if (data.role === "host") {
                 meetingSockets[data.meetingId] = socket.id;
                 socket.isHost = data.role;
-                socket.username = data.username;            
+                socket.username = data.username;
 
-                models.meeting_logs.create({ 
+                models.meeting_logs.create({
                     meeting_id: data.meetingId,
                     log_type: "role_change",
                     log_description: `Meeting Host changed for ${data.meetingId}. New Host is ${data.username}`
@@ -68,7 +68,7 @@ exports.openIO = function (io) {
 
         socket.on("add_log", (data) => {
             console.log("Add Log Socket: ", data);
-            models.meeting_logs.create({ 
+            models.meeting_logs.create({
                 meeting_id: data.meeting_id,
                 log_type: data.log_type,
                 log_description: data.log_description
@@ -84,12 +84,11 @@ exports.openIO = function (io) {
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
-                }) 
-                
-                models.meeting.update({ status: "ended", actual_end_time: moment().utc().toDate() }, {
-                    where: {
-                        meeting_id: socket.meetingId
-                    }
+                })
+
+                await models.meeting.changeMeetingStatusByMeetingId({
+                    status: "ended",
+                    meeting_id: socket.meetingId
                 });
 
                 console.log("End Meeting Socket emit at disconnect");
