@@ -771,7 +771,7 @@ exports.changeMeetingStatus = async (req, res) => {
                 status: "ok",
                 message: "",
                 webpage: "",
-                response: meetingDetails.meeting
+                response: meetingDetails
             })
         }
         else if (req.body.status == "ended") {
