@@ -8,7 +8,7 @@ const meeting = require('../models/meeting');
 
 exports.getUpcomingMeetings = async (req, res) => {
     try {
-        console.log("Get All Meetings: ", req.body);
+        // console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
 
         // console.log("Data: ", meetings.data.response.tblmymeetings)
@@ -21,15 +21,15 @@ exports.getUpcomingMeetings = async (req, res) => {
         }
 
         const allmeetings = meetings.data.response.tblmymeetings;
-        let filterOptions = [
-            { "application": "tlmeet", "meeting_host": req.body.username }
-        ];
+        // let filterOptions = [
+        //     { "application": "tlmeet", "meeting_host": req.body.username }
+        // ];
 
-        if (allmeetings.length > 0) {
-            filterOptions.push({
-                'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
-            })
-        }
+        // if (allmeetings.length > 0) {
+        //     filterOptions.push({
+        //         'meeting_id': [meetings.data.response.tblmymeetings.map(item => item.meeting_video)],
+        //     })
+        // }
 
 
         // console.log("Filter Options: ", filterOptions);
@@ -44,18 +44,18 @@ exports.getUpcomingMeetings = async (req, res) => {
 
 
         const userMeetingFromModal = await models.meeting.getUpcomingMeetingList(params);
-        console.log("Modal Response: ", userMeetingFromModal.length);
+        // console.log("Modal Response: ", userMeetingFromModal.length);
 
-        const userMeetings = await models.meeting.findAll({
-            where: {
-                [Op.or]: filterOptions
-            },
-            order: [
-                ['start_time', 'ASC']
-            ]
-        });
+        // const userMeetings = await models.meeting.findAll({
+        //     where: {
+        //         [Op.or]: filterOptions
+        //     },
+        //     order: [
+        //         ['start_time', 'ASC']
+        //     ]
+        // });
 
-        console.log("User Meetings: ", userMeetings.length)
+        // console.log("User Meetings: ", userMeetings.length)
 
         let meetingsss = [];
         for (let i = 0; i < userMeetingFromModal.length; i++) {
@@ -70,7 +70,7 @@ exports.getUpcomingMeetings = async (req, res) => {
                 }
             }
         }
-        console.log("Meetingsss: ", meetingsss.length);
+        // console.log("Meetingsss: ", meetingsss.length);
 
         if (meetingsss.length == 0) {
             return res.send({
@@ -187,7 +187,7 @@ exports.allMeetings = async (req, res) => {
  */
 exports.getMeeting = async (req, res) => {
     try {
-        console.log("Get Meeting Params : ", req.body);
+        // console.log("Get Meeting Params : ", req.body);
         let response = {};
         // const meeting_id = req.body.meeting_id.split("?")[0];
         const params = {
@@ -332,7 +332,7 @@ exports.createmeeting = async (req, res) => {
                 }
             })
         } else if (req.body.meeting_type == 'periodic') {
-            console.log("Meeting Schedule: ", req.body.meeting_schedule)
+            // console.log("Meeting Schedule: ", req.body.meeting_schedule)
             let response = {};
             const createmeetingparams = {
                 meeting_id: currentTimeStamp.slice(0, 10),
@@ -441,7 +441,7 @@ function meetingStatusCheck(params) {
     try {
         // console.log("Params: ", params);
         const difference = moment().startOf('day').diff(moment(params.start_time).startOf('day'), 'days');
-        console.log("Difference: ", params.meeting_id, difference);
+        // console.log("Difference: ", params.meeting_id, difference);
         // console.log("Meeting Type: ", params.meeting_type)
         // console.log("Repeat Until: ", params.repeat_event_until)
         if (params.repeat_event_until == "Daily") {
@@ -573,7 +573,7 @@ function meetingStatusCheck(params) {
                         return item.month == currentMonthNo && item.dates.includes((currentDay).toString())
                     })
 
-                    console.log("Current Schedule 1: ", currentSchedule);
+                    // console.log("Current Schedule 1: ", currentSchedule);
                     return currentSchedule == undefined ? false : true;
                 } else if (params.occurance && params.occurance_on_week_no) {
                     const months = params.occurance.match(/<M>(.*?)<\/M>/g).map(function (val) {
@@ -616,7 +616,7 @@ function meetingStatusCheck(params) {
                         return false;
                     }
 
-                    console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
+                    // console.log("Current Schedule: ", currentSchedule == undefined ? false : true);
 
                     return currentSchedule == undefined ? false : true;
                 } else {
@@ -640,12 +640,12 @@ function meetingStatusCheck(params) {
 
 exports.startMeeting = async (req, res) => {
     try {
-        console.log("Start Meeting Params: ", req.params.id);
+        // console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
-        console.log("Meeting Id: ", meeting_id);
-        console.log("User Status: ", userstatus);
+        // console.log("Meeting Id: ", meeting_id);
+        // console.log("User Status: ", userstatus);
         // console.log("Today Day Position: ", moment().weekday());
 
         const meeting = await models.meeting.findOne({
@@ -654,7 +654,7 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting: ", meeting == null);
+        // console.log("Meeting: ", meeting == null);
         if (meeting == null) {
             console.log("Condition True");
             return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
@@ -662,7 +662,7 @@ exports.startMeeting = async (req, res) => {
 
         if (userstatus == "start") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
-                console.log("Non periodic meeting")
+                // console.log("Non periodic meeting")
                 if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
                     await models.meeting.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
                         where: {
@@ -672,11 +672,11 @@ exports.startMeeting = async (req, res) => {
 
                     return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
                 } else {
-                    console.log("Non periodic else");
+                    // console.log("Non periodic else");
                     return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                 }
             } else if (meeting && meeting.meeting_type == "periodic") {
-                console.log("In Periodic meeting");
+                // console.log("In Periodic meeting");
                 if (moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
                     const check = meetingStatusCheck(meeting)
 
@@ -699,24 +699,24 @@ exports.startMeeting = async (req, res) => {
 
         } else if (userstatus == "join") {
             if (meeting && meeting.meeting_type == "nonperiodic") {
-                console.log("In Non periodic meeting");
+                // console.log("In Non periodic meeting");
                 if (meeting.status == "started") {
-                    console.log("If Meeting ID: ", meeting.meeting_id)
+                    // console.log("If Meeting ID: ", meeting.meeting_id)
 
                     return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
                 } else if (meeting.status == "ended") {
                     return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
                 } else {
-                    console.log("Else Meeting ID: ", meeting_id)
+                    // console.log("Else Meeting ID: ", meeting_id)
                     return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting_id}`);
                 }
             }
 
             if (meeting && meeting.meeting_type == "periodic") {
-                console.log("In Periodic meeting");
+                // console.log("In Periodic meeting");
                 if (meeting.status == "started"
                     && moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
-                    console.log("Repeat event until: ", meeting.repeat_event_until)
+                    // console.log("Repeat event until: ", meeting.repeat_event_until)
                     const check = meetingStatusCheck(meeting)
 
                     if (check) {
@@ -753,11 +753,11 @@ exports.startMeeting = async (req, res) => {
  */
 exports.changeMeetingStatus = async (req, res) => {
     try {
-        console.log("Change Meeting Status Params : ", req.body);
+        // console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
         let meetingDetails = await models.meeting.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
-        console.log("Meeting Details: ", meetingDetails);
+        // console.log("Meeting Details: ", meetingDetails);
         // if (keyStatus.data.status == "ok") {
         if (req.body.status == "started") {
             // console.log("Started");
@@ -776,19 +776,18 @@ exports.changeMeetingStatus = async (req, res) => {
         }
         else if (req.body.status == "ended") {
             // console.log("Meeting Details: ", meetingDetails)
-            console.log("Ended", meetingDetails);
+            // console.log("Ended");
             if (meetingDetails.meeting_type === "periodic") {
-                console.log("Periodic");
+                // console.log("Periodic");
                 const params = {
                     status: "pending",
                     meeting_id: req.body.meeting_id
                 }
-                console.log("End Periodic", params);
 
                 await models.meeting.changeMeetingStatusByMeetingId(params);
 
             } else if (meetingDetails.meeting_type === "onetime") {
-                console.log("one time");
+                // console.log("one time");
                 const params = {
                     status: req.body.status,
                     meeting_id: req.body.meeting_id
@@ -796,7 +795,7 @@ exports.changeMeetingStatus = async (req, res) => {
 
                 await models.meeting.changeMeetingStatusByMeetingId(params);
             } else if (meetingDetails.meeting_type === "nonperiodic") {
-                console.log("Non Periodic");
+                // console.log("Non Periodic");
                 const params = {
                     status: req.body.status,
                     meeting_id: req.body.meeting_id
@@ -857,7 +856,7 @@ exports.changeMeetingStatus = async (req, res) => {
  */
 exports.addlogs = async (req, res) => {
     try {
-        console.log("All Logs Params : ", req.body);
+        // console.log("All Logs Params : ", req.body);
         const logsParams = {
             meeting_id: req.body.meeting_id,
             log_type: req.body.log_type,
@@ -897,7 +896,7 @@ exports.addlogs = async (req, res) => {
  */
 exports.editmeeting = async (req, res) => {
     try {
-        console.log("Edit Meeting Params : ", req.body);
+        // console.log("Edit Meeting Params : ", req.body);
         let editParams = {};
         if (req.body.meeting_type == "nonperiodic") {
             editParams = {
@@ -986,7 +985,7 @@ exports.editmeeting = async (req, res) => {
  */
 exports.deletemeeting = async (req, res) => {
     try {
-        console.log("Delete Meeting Params: ", req.body);
+        // console.log("Delete Meeting Params: ", req.body);
         const params = {
             username: req.body.username,
             meeting_id: req.body.meeting_id

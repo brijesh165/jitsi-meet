@@ -100,13 +100,6 @@ module.exports = (sequelize, DataTypes) => {
 
 
   meeting.getUpcomingMeetingList = async (params) => {
-    // const filterOptions = {
-    //   application: params.application,
-    //   meeting_host: params.meeting_host,
-    //   meeting_id: params.meeting_id.map(item => item.meeting_video)
-    // }
-
-    // console.log("Modal Filter Options: ", filterOptions);
     return await meeting.findAll({
       where: {
         [Op.or]: [
@@ -155,7 +148,6 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   meeting.changeMeetingStatusByMeetingId = async (params) => {
-    console.error("Change Meeting Status Params: ", params)
     return await meeting.update({
       status: params.status,
       actual_start_time: new Date()
