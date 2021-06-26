@@ -640,12 +640,12 @@ function meetingStatusCheck(params) {
 
 exports.startMeeting = async (req, res) => {
     try {
-        console.log("Start Meeting Params: ", req.params.id);
+        // console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
-        console.log("Meeting Id: ", meeting_id);
-        console.log("User Status: ", userstatus);
+        // console.log("Meeting Id: ", meeting_id);
+        // console.log("User Status: ", userstatus);
         // console.log("Today Day Position: ", moment().weekday());
 
         const meeting = await models.meeting.findOne({
@@ -654,9 +654,8 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        console.log("Meeting: ", meeting);
         if (!meeting) {
-            console.log("Condition True", `${process.env.REDIRECT_URL}/errorpage?${meeting_id}`);
+            // console.log("Condition True", `${process.env.REDIRECT_URL}/errorpage?${meeting_id}`);
             return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
         }
 
