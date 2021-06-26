@@ -655,7 +655,7 @@ exports.startMeeting = async (req, res) => {
         });
 
         console.log("Meeting: ", meeting);
-        if (meeting == null) {
+        if (!meeting) {
             console.log("Condition True", `${process.env.REDIRECT_URL}/errorpage?${meeting_id}`);
             return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
         }
