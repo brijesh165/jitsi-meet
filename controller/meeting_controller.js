@@ -640,7 +640,7 @@ function meetingStatusCheck(params) {
 
 exports.startMeeting = async (req, res) => {
     try {
-        // console.log("Start Meeting Params: ", req.params.id);
+        console.log("Start Meeting Params: ", req.params.id);
         const queryParams = req.params.id;
         const meeting_id = appUtil.decryptMeetingId(queryParams).split("-")[0];
         const userstatus = appUtil.decryptMeetingId(queryParams).split("-")[1];
@@ -654,7 +654,7 @@ exports.startMeeting = async (req, res) => {
             }
         });
 
-        // console.log("Meeting: ", meeting == null);
+        console.log("Meeting: ", meeting.length);
         if (meeting == null) {
             console.log("Condition True", `${process.env.REDIRECT_URL}/errorpage?${meeting_id}`);
             return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
