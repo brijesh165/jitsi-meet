@@ -17,26 +17,28 @@ exports.login = async (req, res) => {
         const guidScript = () => {
             return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
         }
-    
+
         const guid = (guidScript() + guidScript() + "-" + guidScript() + "-4" + guidScript().substr(0, 3) + "-" + guidScript() + "-" + guidScript() + guidScript() + guidScript()).toLowerCase();
-        
+        const deviceInfo = {
+            deviceid: "jitsiWeb-" + guid,
+            devicetype: "",
+            deviceimieuuid: "0123456789",
+            locationinfo: JSON.stringify(req.body.locationinfo),
+        };
+
         const params = {
             "username": req.body.username,
             "password": req.body.password,
             "gmtoffset": req.body.gmtoffset,
             "ipaddress": "0123456789",
-            "deviceinfo": JSON.stringify({
-                "deviceid": "jitsiWeb-" + guid,
-                "devicetype": "",
-                "deviceimieuuid": "0123456789",
-                "locationinfo": JSON.stringify(req.body.locationinfo)
-            })
+            "deviceinfo": JSON.stringify(deviceInfo)
         }
 
-        console.log("Params: ", params);
+        // console.log("Params: ", params);
 
-        const loginReq = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
+        // const loginReq = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/general_webuserlogin", params);
         // console.log("Response: ", loginReq);
+        const loginReq = await axios.post("http://192.168.75.132:91/WebService_V43.svc/general_webuserlogin", params);
 
         if (loginReq.data.status == "ok") {
             // console.log("Response: ", loginReq.data.response.table1);
@@ -54,10 +56,10 @@ exports.login = async (req, res) => {
                     user_id: loginReq.data.response.table1[0].userid,
                     user_name: loginReq.data.response.table1[0].username,
                     full_name: loginReq.data.response.table1[0].userdisplayname
-                })                
+                })
             }
 
-            
+
             await models.LoginHistory.create({
                 status: "active",
                 auth_key: loginReq.data.response.table1[0].key,
@@ -93,8 +95,8 @@ exports.logout = async (req, res) => {
     try {
         console.log("User Id: ", req.body.user_id);
 
-        const logout = await models.LoginHistory.update({ status: "inactive"}, { 
-            where: { 
+        const logout = await models.LoginHistory.update({ status: "inactive" }, {
+            where: {
                 user_id: req.body.user_id
             }
         });

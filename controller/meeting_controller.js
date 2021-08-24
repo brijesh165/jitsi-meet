@@ -9,7 +9,8 @@ const meeting = require('../models/meeting');
 exports.getUpcomingMeetings = async (req, res) => {
     try {
         // console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        // const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
 
         // console.log("Data: ", meetings.data.response.tblmymeetings)
 
@@ -17,6 +18,12 @@ exports.getUpcomingMeetings = async (req, res) => {
             return res.send({
                 status: 401,
                 message: meetings.data.message
+            })
+        } else {
+            return res.send({
+                status: 200,
+                message: "",
+                meetings: meetings.data.response.tblmymeetings
             })
         }
 
@@ -985,18 +992,18 @@ exports.editmeeting = async (req, res) => {
 exports.deletemeeting = async (req, res) => {
     try {
         // console.log("Delete Meeting Params: ", req.body);
-        const params = {
-            username: req.body.username,
-            meeting_id: req.body.meeting_id
-        };
 
-        await models.meeting.deleteMeetingByMeetingId(params);
+        const meetings = await axios.post("http://192.168.75.131:91/WebService_V43.svc/calendar_deleteevent", req.body);
 
-        await models.meeting_logs.create({
-            meeting_id: req.body.meeting_id,
-            log_type: "delete_meeting",
-            log_description: `Meeting deleted by ${req.body.username}.`
-        })
+        console.log("Delete Meeting: ", meetings);
+
+        // await models.meeting.deleteMeetingByMeetingId(params);
+
+        // await models.meeting_logs.create({
+        //     meeting_id: req.body.meeting_id,
+        //     log_type: "delete_meeting",
+        //     log_description: `Meeting deleted by ${req.body.username}.`
+        // })
 
         return res.send({
             status: "ok",
