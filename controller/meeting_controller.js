@@ -9,7 +9,7 @@ const meeting = require('../models/meeting');
 exports.getUpcomingMeetings = async (req, res) => {
     try {
         // console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v43.svc/calendararea_listjeetvideomeeting", req.body);
         // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
 
         // console.log("Data: ", meetings.data.response.tblmymeetings)
