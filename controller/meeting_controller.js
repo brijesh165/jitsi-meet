@@ -27,7 +27,7 @@ exports.getUpcomingMeetings = async (req, res) => {
         //     })
         // }
 
-        const allmeetings = meetings.data.response.tblmymeetings;
+        // const allmeetings = meetings.data.response.tblmymeetings;
         // let filterOptions = [
         //     { "application": "tlmeet", "meeting_host": req.body.username }
         // ];
