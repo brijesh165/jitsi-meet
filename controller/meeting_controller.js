@@ -10,15 +10,22 @@ exports.getUpcomingMeetings = async (req, res) => {
     try {
         // console.log("Get All Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v42.svc/calendararea_listjeetvideomeeting", req.body);
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
 
         // console.log("Data: ", meetings.data.response.tblmymeetings)
 
-        if (meetings.data.status == "error") {
-            return res.send({
-                status: 401,
-                message: meetings.data.message
-            })
-        }
+        // if (meetings.data.status == "error") {
+        //     return res.send({
+        //         status: 401,
+        //         message: meetings.data.message
+        //     })
+        // } else {
+        //     return res.send({
+        //         status: 200,
+        //         message: "",
+        //         meetings: meetings.data.response.tblmymeetings
+        //     })
+        // }
 
         const allmeetings = meetings.data.response.tblmymeetings;
         // let filterOptions = [
@@ -133,11 +140,7 @@ exports.checkMeetingValidity = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        const params = {
-            username: req.body.username
-        }
-
-
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
         // const meetings = await models.meeting.findAll({
         //     where: {
         //         meeting_host: req.body.username,
@@ -160,22 +163,33 @@ exports.allMeetings = async (req, res) => {
         //     ]
         // })
 
-        const meetings = await models.meeting.getAllMeetingList(params);
+        // if (meetings.length == 0) {
+        //     return res.send({
+        //         status: "200",
+        //         message: "You have no meetings at this moment!",
+        //         meetings: []
+        //     })
+        // }
 
-        if (meetings.length == 0) {
+        // return res.send({
+        //     status: 200,
+        //     message: "",
+        //     webpage: "",
+        //     meetings: meetings
+        // })
+        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        if (meetings.data.status == "error") {
             return res.send({
-                status: "200",
-                message: "You have no meetings at this moment!",
-                meetings: []
+                status: 401,
+                message: meetings.data.message
+            })
+        } else {
+            return res.send({
+                status: 200,
+                message: "",
+                meetings: meetings.data.response.tblmymeetings
             })
         }
-
-        return res.send({
-            status: 200,
-            message: "",
-            webpage: "",
-            meetings: meetings
-        })
     } catch (error) {
         console.log("Meeting Controller | All Meetings Error", error);
     }
@@ -985,18 +999,18 @@ exports.editmeeting = async (req, res) => {
 exports.deletemeeting = async (req, res) => {
     try {
         // console.log("Delete Meeting Params: ", req.body);
-        const params = {
-            username: req.body.username,
-            meeting_id: req.body.meeting_id
-        };
 
-        await models.meeting.deleteMeetingByMeetingId(params);
+        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendar_deleteevent", req.body);
 
-        await models.meeting_logs.create({
-            meeting_id: req.body.meeting_id,
-            log_type: "delete_meeting",
-            log_description: `Meeting deleted by ${req.body.username}.`
-        })
+        console.log("Delete Meeting: ", meetings);
+
+        // await models.meeting.deleteMeetingByMeetingId(params);
+
+        // await models.meeting_logs.create({
+        //     meeting_id: req.body.meeting_id,
+        //     log_type: "delete_meeting",
+        //     log_description: `Meeting deleted by ${req.body.username}.`
+        // })
 
         return res.send({
             status: "ok",

@@ -4,20 +4,20 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const fs = require('fs');
-const env = require('dotenv').config({ path: path.resolve(process.cwd(), '.env.'+process.env.NODE_ENV) });
+const env = require('dotenv').config({ path: path.resolve(process.cwd(), '.env') });
 const cors = require('cors');
 const app = express();
 
 
-let privateKey  = fs.readFileSync('sslcert/ashar_service.key', 'utf8');
+let privateKey = fs.readFileSync('sslcert/ashar_service.key', 'utf8');
 let certificate = fs.readFileSync('sslcert/c1a0e45f99179667.crt', 'utf8');
-let credentials = {key: privateKey, cert: certificate,ca: fs.readFileSync('sslcert/gd_bundle-g2-g1.crt')};
+let credentials = { key: privateKey, cert: certificate, ca: fs.readFileSync('sslcert/gd_bundle-g2-g1.crt') };
 
 const server = require('http').Server(app);
 const https = require('https');
 let httpsServer = https.createServer(credentials, app);
 // httpsServer = https.createServer(credentials, app);
-let io = require('socket.io')(httpsServer,{
+let io = require('socket.io')(httpsServer, {
   pingInterval: 5000, // default - 5000
   pingTimeout: 30000,
   cors: {
@@ -47,12 +47,12 @@ require('./routes')(app);
 require('./util/schedule-manager');
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -62,11 +62,11 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-server.listen(process.env.HTTP_PORT, function() {
+server.listen(process.env.HTTP_PORT, function () {
   console.log(`ASHAR SERVICE listening on ${process.env.HTTP_PORT}`);
 });
 
-httpsServer.listen(process.env.HTTPS_PORT, function() {
+httpsServer.listen(process.env.HTTPS_PORT, function () {
   console.log(`ASHAR SERVICE listening on ${process.env.HTTPS_PORT}`);
 });
 

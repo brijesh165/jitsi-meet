@@ -3,7 +3,7 @@ const formValidationMiddleware = require('../util/middlewares/form-validation-mi
 const { check } = require('express-validator');
 const scheduleManager = require('../util/schedule-manager');
 
-module.exports = function(app) {
+module.exports = function (app) {
   app.get('/join/:id', meetingController.startMeeting);
 
   app.post('/get-upcoming-meetings', meetingController.getUpcomingMeetings);
@@ -31,14 +31,15 @@ module.exports = function(app) {
 
   app.post('/change-meeting-status', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
-  ], formValidationMiddleware,meetingController.changeMeetingStatus)
+  ], formValidationMiddleware, meetingController.changeMeetingStatus)
 
   app.post('/edit-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
   ], formValidationMiddleware, meetingController.editmeeting)
 
   app.post('/delete-meeting', [
-    check('meeting_id').not().isEmpty().withMessage("Meeting id is required.")
+    check('userid').not().isEmpty().withMessage("User Id is required."),
+    check('eventid').not().isEmpty().withMessage("Event Id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
 
   // app.delete('/delete-meeting', [

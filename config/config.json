@@ -3,8 +3,8 @@
     "username": "nodejitsi",
     "password": "node123456789",
     "database": "jitsi_db",
-    "host": "127.0.0.1",
-    "port":3306,
+    "host": "52.201.132.224",
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {
@@ -19,7 +19,7 @@
     "password": "node123456789",
     "database": "jitsi_db",
     "host": "127.0.0.1",
-    "port":3306,
+    "port": 3306,
     "dialect": "mysql"
   }
 }
