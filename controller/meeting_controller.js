@@ -1000,17 +1000,17 @@ exports.deletemeeting = async (req, res) => {
     try {
         // console.log("Delete Meeting Params: ", req.body);
 
-        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendar_deleteevent", req.body);
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendar_deleteevent", req.body);
 
-        console.log("Delete Meeting: ", meetings);
+        // console.log("Delete Meeting: ", meetings);
 
-        // await models.meeting.deleteMeetingByMeetingId(params);
+        await models.meeting.deleteMeetingByMeetingId(params);
 
-        // await models.meeting_logs.create({
-        //     meeting_id: req.body.meeting_id,
-        //     log_type: "delete_meeting",
-        //     log_description: `Meeting deleted by ${req.body.username}.`
-        // })
+        await models.meeting_logs.create({
+            meeting_id: req.body.meeting_id,
+            log_type: "delete_meeting",
+            log_description: `Meeting deleted by ${req.body.username}.`
+        })
 
         return res.send({
             status: "ok",
