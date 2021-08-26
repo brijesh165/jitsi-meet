@@ -1004,7 +1004,7 @@ exports.deletemeeting = async (req, res) => {
 
         // console.log("Delete Meeting: ", meetings);
 
-        await models.meeting.deleteMeetingByMeetingId(params);
+        await models.meeting.deleteMeetingByMeetingId(req.body);
 
         await models.meeting_logs.create({
             meeting_id: req.body.meeting_id,
