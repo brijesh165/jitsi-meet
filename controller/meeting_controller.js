@@ -140,7 +140,7 @@ exports.checkMeetingValidity = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
         const meetings = await models.meeting.findAll({
             where: {
                 meeting_host: req.body.username,
