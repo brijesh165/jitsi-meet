@@ -8,7 +8,7 @@ const meeting = require('../models/meeting');
 
 exports.getUpcomingMeetings = async (req, res) => {
     try {
-        // console.log("Get All Meetings: ", req.body);
+        console.log("Get Upcoming Meetings: ", req.body);
         const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v43.svc/calendararea_listjeetvideomeeting", req.body);
         // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
 
@@ -140,56 +140,56 @@ exports.checkMeetingValidity = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
-        // const meetings = await models.meeting.findAll({
-        //     where: {
-        //         meeting_host: req.body.username,
-        //         [Op.or]: [
-        //             {
-        //             meeting_type: "nonperiodic",
-        //             start_time: {
-        //                 [Op.gte]: moment().utc().format("yyyy-MM-DD")
-        //             }
-        //         }, {
-        //             meeting_type: "periodic",
-        //             repeat_end_date: {
-        //                 [Op.gte]: moment().utc().format("yyyy-MM-DD")
-        //             }
-        //         }
-        //         ]
-        //     },
-        //     order: [
-        //         ['start_time', 'ASC']
-        //     ]
-        // })
-
-        // if (meetings.length == 0) {
-        //     return res.send({
-        //         status: "200",
-        //         message: "You have no meetings at this moment!",
-        //         meetings: []
-        //     })
-        // }
-
-        // return res.send({
-        //     status: 200,
-        //     message: "",
-        //     webpage: "",
-        //     meetings: meetings
-        // })
         const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
-        if (meetings.data.status == "error") {
+        const meetings = await models.meeting.findAll({
+            where: {
+                meeting_host: req.body.username,
+                [Op.or]: [
+                    {
+                        meeting_type: "nonperiodic",
+                        start_time: {
+                            [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                        }
+                    }, {
+                        meeting_type: "periodic",
+                        repeat_end_date: {
+                            [Op.gte]: moment().utc().format("yyyy-MM-DD")
+                        }
+                    }
+                ]
+            },
+            order: [
+                ['start_time', 'ASC']
+            ]
+        })
+
+        if (meetings.length == 0) {
             return res.send({
-                status: 401,
-                message: meetings.data.message
-            })
-        } else {
-            return res.send({
-                status: 200,
-                message: "",
-                meetings: meetings.data.response.tblmymeetings
+                status: "200",
+                message: "You have no meetings at this moment!",
+                meetings: []
             })
         }
+
+        return res.send({
+            status: 200,
+            message: "",
+            webpage: "",
+            meetings: meetings
+        })
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        // if (meetings.data.status == "error") {
+        //     return res.send({
+        //         status: 401,
+        //         message: meetings.data.message
+        //     })
+        // } else {
+        //     return res.send({
+        //         status: 200,
+        //         message: "",
+        //         meetings: meetings.data.response.tblmymeetings
+        //     })
+        // }
     } catch (error) {
         console.log("Meeting Controller | All Meetings Error", error);
     }
