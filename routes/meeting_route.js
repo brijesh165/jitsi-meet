@@ -38,8 +38,8 @@ module.exports = function (app) {
   ], formValidationMiddleware, meetingController.editmeeting)
 
   app.post('/delete-meeting', [
-    check('meeting_id').not().isEmpty().withMessage("Meeting Id is required."),
-    check('username').not().isEmpty().withMessage("User name is required.")
+    check('userid').not().isEmpty().withMessage("User Id is required."),
+    check('eventid').not().isEmpty().withMessage("Event Id is required.")
   ], formValidationMiddleware, meetingController.deletemeeting)
 
   // app.delete('/delete-meeting', [
