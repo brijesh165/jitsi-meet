@@ -466,6 +466,7 @@ function meetingStatusCheck(params) {
                 return true;
             }
         } else if (params.repeat_event_until == "Every Week") {
+            console.log("Difference: ", difference % 7 == 0)
             if (difference % 7 == 0) {
                 return true;
             } else {
