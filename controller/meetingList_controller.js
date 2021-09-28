@@ -13,7 +13,7 @@ exports.createMeeting = async (req, res) => {
         const currentTimeStamp = moment().utc().unix().toString();
         const createmeetingparams = {
             meeting_id: currentTimeStamp.slice(0, 10),
-            stauts: "pending"
+            status: "pending"
         }
 
         const createdMeeting = await models.meetinglist.create(createmeetingparams);
@@ -29,11 +29,12 @@ exports.createMeeting = async (req, res) => {
         response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforstart}`;
         response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforjoin}`;
 
+        console.log("Response: ", response);
+
         return res.send({
             status: "ok",
             message: "",
             webpage: "",
-            meeting_details: createdMeeting,
             response: {
                 meeting_id: createmeetingparams.meeting_id,
                 start_url: response.start_url,
