@@ -436,7 +436,6 @@ exports.createmeeting = async (req, res) => {
                 }
             })
         }
-
     } catch (error) {
         console.log("Meeting Controller || Create Meeting", error);
         res.send({
