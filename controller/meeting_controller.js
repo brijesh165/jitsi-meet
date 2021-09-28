@@ -1001,7 +1001,7 @@ exports.deletemeeting = async (req, res) => {
 
         const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendar_deleteevent", req.body);
 
-        console.log("Delete Meeting: ", meetings);
+        // console.log("Delete Meeting: ", meetings);
 
         // await models.meeting.deleteMeetingByMeetingId(req.body);
 
