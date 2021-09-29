@@ -39,7 +39,7 @@ exports.login = async (req, res) => {
         // const loginReq = await axios.post("https://webservice.teamlocus.com/webservice_v43.svc/general_webuserlogin", params);
         // console.log("Response: ", loginReq);
         const loginReq = await axios.post("http://192.168.75.131:91/WebService_V43.svc/general_webuserlogin", params);
-
+        console.log("Login Request: ", loginReq);
         if (loginReq.data.status == "ok") {
             // console.log("Response: ", loginReq.data.response.table1);
             // console.log("User Id: ", loginReq.data.response.table1[0].userid)
