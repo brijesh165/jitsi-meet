@@ -26,5 +26,24 @@ module.exports = (sequelize, DataTypes) => {
     sequelize,
     modelName: 'meetinglist',
   });
+
+  meetinglist.getMeetingByMeetingId = async (params) => {
+    return await meetinglist.findOne({
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
+  meetinglist.changeMeetingStatusByMeetingId = async (params) => {
+    return await meeting.update({
+      status: params.status,
+    }, {
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
   return meetinglist;
 };
