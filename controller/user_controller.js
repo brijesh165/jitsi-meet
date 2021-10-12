@@ -19,12 +19,23 @@ exports.login = async (req, res) => {
         }
 
         const guid = (guidScript() + guidScript() + "-" + guidScript() + "-4" + guidScript().substr(0, 3) + "-" + guidScript() + "-" + guidScript() + guidScript() + guidScript()).toLowerCase();
-        const deviceInfo = {
-            deviceid: "jitsiWeb-" + guid,
-            devicetype: "",
-            deviceimieuuid: "0123456789",
-            locationinfo: JSON.stringify(req.body.locationinfo),
-        };
+        let deviceInfo;
+
+        if (req.body.signedin) {
+            deviceInfo = {
+                deviceid: "jitsiWeb-" + guid,
+                devicetype: "MEET",
+                deviceimieuuid: "0123456789",
+                locationinfo: JSON.stringify(req.body.locationinfo),
+            };
+        } else {
+            deviceInfo = {
+                deviceid: "jitsiWeb-" + guid,
+                devicetype: "",
+                deviceimieuuid: "0123456789",
+                locationinfo: JSON.stringify(req.body.locationinfo),
+            };
+        }
 
         const params = {
             "username": req.body.username,
