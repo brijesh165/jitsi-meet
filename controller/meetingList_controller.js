@@ -103,7 +103,6 @@ exports.startMeeting = async (req, res) => {
         });
 
         if (!meeting) {
-            // console.log("Condition True", `${process.env.REDIRECT_URL}/errorpage?${meeting_id}`);
             return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting_id}`)
         }
 
@@ -115,78 +114,12 @@ exports.startMeeting = async (req, res) => {
             });
 
             return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
-
-            // if (meeting && meeting.meeting_type == "nonperiodic") {
-            //     if (moment(meeting.end_time).valueOf() > moment().utc().toDate().getTime().valueOf()) {
-            //         await models.meetinglist.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
-            //             where: {
-            //                 meeting_id: meeting_id
-            //             }
-            //         });
-
-            //         return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
-            //     } else {
-            //         return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
-            //     }
-            // } else if (meeting && meeting.meeting_type == "periodic") {
-            //     if (moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
-            //         const check = meetingStatusCheck(meeting)
-
-            //         if (check) {
-            //             await models.meetinglist.update({ status: "started", actual_start_time: moment().utc().toDate() }, {
-            //                 where: {
-            //                     meeting_id: meeting_id
-            //                 }
-            //             });
-            //             return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}?host=true`)
-            //         } else {
-            //             return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
-            //         }
-            //     } else {
-            //         return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
-            //     }
-            // } else {
-            //     return res.redirect(`${process.env.REDIRECT_URL}/errorpage?${meeting.meeting_id}`);
-            // }
-
         } else if (userstatus == "join") {
             if (meeting.status == "started") {
-                return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
+                return res.redirect(`${process.env.REDIRECT_URL}/j/${meeting.meeting_id}`)
             } else {
                 return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting_id}`);
             }
-
-            // if (meeting && meeting.meeting_type == "nonperiodic") {
-            //     // console.log("In Non periodic meeting");
-            //     if (meeting.status == "started") {
-            //         // console.log("If Meeting ID: ", meeting.meeting_id)
-
-            //         return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
-            //     } else if (meeting.status == "ended") {
-            //         return res.redirect(`${process.env.REDIRECT_URL}/endmeeting`)
-            //     } else {
-            //         // console.log("Else Meeting ID: ", meeting_id)
-            //         return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting_id}`);
-            //     }
-            // }
-
-            // if (meeting && meeting.meeting_type == "periodic") {
-            //     // console.log("In Periodic meeting");
-            //     if (meeting.status == "started"
-            //         && moment(meeting.repeat_end_date).valueOf() > moment().utc().toDate().valueOf()) {
-            //         // console.log("Repeat event until: ", meeting.repeat_event_until)
-            //         const check = meetingStatusCheck(meeting)
-
-            //         if (check) {
-            //             return res.redirect(`${process.env.REDIRECT_URL}/${meeting.meeting_id}`)
-            //         } else {
-            //             return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting.meeting_id}`)
-            //         }
-
-            //     } else {
-            //         return res.redirect(`${process.env.REDIRECT_URL}/waiting/${meeting.meeting_id}`)
-            //     }
-            // }
         }
 
     } catch (error) {
