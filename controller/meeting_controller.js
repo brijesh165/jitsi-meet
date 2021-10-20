@@ -533,10 +533,7 @@ function meetingStatusCheck(params) {
                     });
 
                     const todaysday = moment().utc();
-                    console.log('todaysday.week()', todaysday.week());
-                    console.log('moment(todaysday).startOf(month).week()', moment(todaysday).startOf('month').week());
-                    // const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
-                    const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week();
+                    const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
                     console.log('currentweekno', currentweekno);
                     console.log('currentday', currentday);
@@ -561,7 +558,6 @@ function meetingStatusCheck(params) {
 
                     } else {
                         currentSchedule = allData.find(function (item) {
-                            console.log('item', item);
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
