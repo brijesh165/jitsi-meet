@@ -525,6 +525,7 @@ function meetingStatusCheck(params) {
                     return result;
                 } else if (params.occurance_on_week_no.length > 0) {
                     const occuranceonweekno = params.occurance_on_week_no;
+                    console.log('occuranceonweekno', occuranceonweekno);
                     const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function (val) {
                         return val.replace(/<\/?W>/g, '');
                     });
@@ -542,7 +543,6 @@ function meetingStatusCheck(params) {
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
                     let endOfMonth = moment().utc().isoWeekday(1).endOf("month").format("DD");
                     let currentSchedule;
-
                     for (let item of weekno) {
                         allData.push({
                             week: item,
@@ -550,7 +550,6 @@ function meetingStatusCheck(params) {
                         });
                         i++;
                     }
-
                     if (parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
                         currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentweekno) && item.day == currentday;
@@ -561,7 +560,6 @@ function meetingStatusCheck(params) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-
                     return currentSchedule == null ? false : true;
                 }
             }
