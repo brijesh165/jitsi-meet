@@ -525,7 +525,6 @@ function meetingStatusCheck(params) {
                     return result;
                 } else if (params.occurance_on_week_no.length > 0) {
                     const occuranceonweekno = params.occurance_on_week_no;
-                    console.log('occuranceonweekno', occuranceonweekno);
                     const weekno = occuranceonweekno.match(/<W>(.*?)<\/W>/g).map(function (val) {
                         return val.replace(/<\/?W>/g, '');
                     });
@@ -536,8 +535,6 @@ function meetingStatusCheck(params) {
                     const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
-                    console.log('currentweekno', currentweekno);
-                    console.log('currentday', currentday);
                     let i = 0;
                     let allData = [];
                     let startOfWeek = moment().utc().isoWeekday(1).startOf('week').format("DD");
