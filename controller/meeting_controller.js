@@ -556,6 +556,7 @@ function meetingStatusCheck(params) {
 
                     } else {
                         currentSchedule = allData.find(function (item) {
+                            console.log(item);
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
