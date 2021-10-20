@@ -533,6 +533,7 @@ function meetingStatusCheck(params) {
                     });
 
                     const todaysday = moment().utc();
+                    console.log('todaysday.week()', todaysday.week());
                     // const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week();
                     const currentday = moment().utc().weekday() + 1;
