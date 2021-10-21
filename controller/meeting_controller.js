@@ -531,7 +531,24 @@ function meetingStatusCheck(params) {
                     const days = occuranceonweekno.match(/<D>(.*?)<\/D>/g).map(function (val) {
                         return val.replace(/<\/?D>/g, '');
                     });
-
+                    // combine occurance and day number in json array.
+                    const meetingOccuData = [];
+                    for (let i = 0; i < occno.length; i++) {
+                        meetingOccuData.push({
+                            dayOccurance: occno[i],
+                            dayNo: days[i]
+                        });
+                    }
+                    let currentSchedule = false;
+                    let allDaysOfMonth = findTotalDateList();
+                    meetingOccuData.forEach((m) => {
+                        let dayFound = allDaysOfMonth.filter(x => x.dayOccurance == m.dayOccurance && x.dayNo == m.dayNo);
+                        if (dayFound.length) {
+                            currentSchedule = true;
+                        }
+                    });
+                    return currentSchedule;
+                    /* OLD code.
                     const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
@@ -557,7 +574,7 @@ function meetingStatusCheck(params) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-                    return currentSchedule == null ? false : true;
+                    return currentSchedule == null ? false : true; */
                 }
             }
 
@@ -1028,4 +1045,45 @@ exports.deletemeeting = async (req, res) => {
             response: ""
         });
     }
+}
+
+function findTotalDateList() {
+    var startDateNo = moment().startOf('month').format('DD');
+    var endDateNo = moment().endOf('month').format('DD');
+    var monthNo = moment().format('MM');
+    var yearNo = moment().format('YYYY');
+    var totalDateList = [];
+    for (var i = startDateNo; i <= endDateNo; i++) {
+        var dateDigit = (i < 10 && i.toString().length == 1) ? '0' + i : i;
+        var occuArray = getDay(moment(new Date(yearNo + '-' + monthNo + '-' + i)).day() + 1);
+        var occuNo = (occuArray.indexOf(yearNo + '-' + monthNo + '-' + dateDigit) + 1);
+        totalDateList.push({
+            date: yearNo + '-' + monthNo + '-' + dateDigit,
+            dayName: moment(new Date(yearNo + '-' + monthNo + '-' + i)).format('dddd'),
+            dayOccurance: occuNo,
+            dayNo: moment(new Date(yearNo + '-' + monthNo + '-' + i)).day() + 1
+        });
+    }
+    /* localStorage.setItem('totalDateList', JSON.stringify(totalDateList));
+    console.log('startOfMonth ' + startOfMonth);
+    console.log('endOfMonth ' + endOfMonth);
+    console.log(totalDateList);*/
+    return totalDateList;
+}
+
+function getDay(dayNumber) {
+    var d = new Date(),
+        month = d.getMonth(),
+        days = [];
+    d.setDate(1);
+    // Get the first Monday in the month
+    while ((d.getDay() + 1) !== dayNumber) {
+        d.setDate(d.getDate() + 1);
+    }
+    // Get all the other days in the month
+    while (d.getMonth() === month) {
+        days.push(moment(new Date(d.getTime())).format('YYYY-MM-DD'));
+        d.setDate(d.getDate() + 7);
+    }
+    return days;
 }
