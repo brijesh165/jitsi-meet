@@ -539,14 +539,15 @@ function meetingStatusCheck(params) {
                             dayNo: days[i]
                         });
                     }
-                    let currentSchedule = true;
+                    let currentSchedule = false;
                     let allDaysOfMonth = findTotalDateList();
                     meetingOccuData.forEach((m) => {
                         let dayFound = allDaysOfMonth.filter(x => (m.dayOccurance == "10" || x.dayOccurance == m.dayOccurance) && x.dayNo == m.dayNo);
                         if (dayFound.length == 0) {
-                            currentSchedule = false;
+                            currentSchedule = true;
                         }
                     });
+                    console.log('currentSchedule', currentSchedule);
                     return currentSchedule;
                     /* OLD code.
                     const todaysday = moment().utc();
