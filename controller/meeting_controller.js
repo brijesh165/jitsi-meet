@@ -533,18 +533,18 @@ function meetingStatusCheck(params) {
                     });
                     // combine occurance and day number in json array.
                     const meetingOccuData = [];
-                    for (let i = 0; i < occno.length; i++) {
+                    for (let i = 0; i < weekno.length; i++) {
                         meetingOccuData.push({
-                            dayOccurance: occno[i],
+                            dayOccurance: weekno[i],
                             dayNo: days[i]
                         });
                     }
-                    let currentSchedule = false;
+                    let currentSchedule = true;
                     let allDaysOfMonth = findTotalDateList();
                     meetingOccuData.forEach((m) => {
                         let dayFound = allDaysOfMonth.filter(x => x.dayOccurance == m.dayOccurance && x.dayNo == m.dayNo);
-                        if (dayFound.length) {
-                            currentSchedule = true;
+                        if (dayFound.length == 0) {
+                            currentSchedule = false;
                         }
                     });
                     return currentSchedule;
