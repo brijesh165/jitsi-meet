@@ -506,9 +506,7 @@ function meetingStatusCheck(params) {
                 let occurrenceno = occurance.match(/<w>(.*?)<\/w>/g).map(function (val) {
                     return val.replace(/<\/?w>/g, '');
                 });
-
                 let result = occurrenceno.includes(todaysdayposition.toString());
-
                 return result;
             }
 
@@ -532,7 +530,7 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?D>/g, '');
                     });
                     // combine occurance and day number in json array.
-                    /*const meetingOccuData = [];
+                    const meetingOccuData = [];
                     for (let i = 0; i < weekno.length; i++) {
                         meetingOccuData.push({
                             dayOccurance: weekno[i],
@@ -544,13 +542,15 @@ function meetingStatusCheck(params) {
                     meetingOccuData.forEach((m) => {
                         let dayFound = allDaysOfMonth.filter(x => (m.dayOccurance == "10" || x.dayOccurance == m.dayOccurance) && x.dayNo == m.dayNo);
                         if (dayFound.length == 0) {
-                            currentSchedule = true;
+                            if (new Date(dayFound[0].date).valueOf() == new Date(moment().format('YYYY-MM-DD')).valueOf()) {
+                                currentSchedule = true;
+                            }
                         }
                     });
                     console.log('currentSchedule', currentSchedule);
-                    return currentSchedule;*/
+                    return currentSchedule;
                     // OLD code.
-                    const todaysday = moment().utc();
+                    /*const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
                     let i = 0;
@@ -568,15 +568,13 @@ function meetingStatusCheck(params) {
                     if (parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
                         currentSchedule = allData.find(function (item) {
                             return (item.week == "10" || item.week == currentweekno) && item.day == cur
-                            rentday;
                         });
-
                     } else {
                         currentSchedule = allData.find(function (item) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-                    return currentSchedule == null ? false : true;
+                    return currentSchedule == null ? false : true;*/
                 }
             }
 
