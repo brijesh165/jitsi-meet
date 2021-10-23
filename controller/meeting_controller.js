@@ -530,7 +530,7 @@ function meetingStatusCheck(params) {
                         return val.replace(/<\/?D>/g, '');
                     });
                     // combine occurance and day number in json array.
-                    const meetingOccuData = [];
+                    /*const meetingOccuData = [];
                     for (let i = 0; i < weekno.length; i++) {
                         meetingOccuData.push({
                             dayOccurance: weekno[i],
@@ -548,9 +548,9 @@ function meetingStatusCheck(params) {
                         }
                     });
                     console.log('currentSchedule', currentSchedule);
-                    return currentSchedule;
+                    return currentSchedule;*/
                     // OLD code.
-                    /*const todaysday = moment().utc();
+                    const todaysday = moment().utc();
                     const currentweekno = todaysday.week() - moment(todaysday).startOf('month').week() + 1;
                     const currentday = moment().utc().weekday() + 1;
                     let i = 0;
@@ -574,7 +574,7 @@ function meetingStatusCheck(params) {
                             return item.week == currentweekno && item.day == currentday;
                         });
                     }
-                    return currentSchedule == null ? false : true;*/
+                    return currentSchedule == null ? false : true;
                 }
             }
 
