@@ -1,6 +1,7 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
 const models = require('./../models');
+const CryptoJS = require("crypto-js");
 
 /**
  * to create meetings
@@ -25,7 +26,7 @@ exports.createMeeting = async (req, res) => {
             log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${JSON.stringify(createmeetingparams)}`
         })
 
-        const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "tlmeet-with-teamlocus");
+        const encryptedMeetingforstart = CryptoJS.AES.encrypt(createdMeeting.meeting_id, "tlmeet-with-teamlocus");
         // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
         // response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
         // response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${createdMeeting.meeting_id}`;
