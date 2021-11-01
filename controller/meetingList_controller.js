@@ -25,10 +25,10 @@ exports.createMeeting = async (req, res) => {
             log_description: `Meeting created by ${req.body.meeting_host} and parameters are ${JSON.stringify(createmeetingparams)}`
         })
 
-        const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "start");
-        const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
-        response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforstart}`;
-        response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${encryptedMeetingforjoin}`;
+        const encryptedMeetingforstart = appUtil.encryptMeetingId(createdMeeting.meeting_id, "tlmeet-with-teamlocus");
+        // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
+        response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
+        response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${createdMeeting.meeting_id}`;
 
         console.log("Response: ", response);
 
