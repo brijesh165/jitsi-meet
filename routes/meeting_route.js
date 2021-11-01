@@ -29,6 +29,9 @@ module.exports = function (app) {
     check('end_time').not().isEmpty().withMessage('End Time is required.')
   ], formValidationMiddleware, meetingController.createmeeting)
 
+  // For tlmeet-with-teamlocus
+  app.post('/create-new-meeting', meetingController.createNewMeeting)
+
   app.post('/change-meeting-status', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
   ], formValidationMiddleware, meetingController.changeMeetingStatus)

@@ -451,6 +451,40 @@ exports.createmeeting = async (req, res) => {
     }
 }
 
+
+exports.createNewMeeting = async (req, res) => {
+    try {
+
+        const encryptedMeetingforstart = appUtil.encryptMeetingId(currentTimeStamp.slice(0, 10), "start");
+        // const encryptedMeetingforjoin = appUtil.encryptMeetingId(currentTimeStamp.slice(0, 10), "join");
+
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforstart));
+        // console.log("DecriptedMeetingId: ", appUtil.decryptMeetingId(encryptedMeetingforjoin));
+
+        response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${currentTimeStamp.slice(0, 10)}?${encryptedMeetingforstart}`;
+        response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${currentTimeStamp.slice(0, 10)}`;
+
+        return res.send({
+            status: "ok",
+            message: "",
+            webpage: "",
+            meeting_details: createdMeeting,
+            response: {
+                meeting_id: createmeetingparams.meeting_id,
+                start_url: response.start_url,
+                join_url: response.join_url
+            }
+        })
+    } catch (error) {
+        console.log("Meeting Controller || Create New Meeting", error);
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
+        })
+    }
+}
 /**
  * @param {*} meeting
  */
