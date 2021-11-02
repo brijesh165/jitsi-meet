@@ -74,8 +74,8 @@ exports.getUpcomingMeetings = async (req, res) => {
                     meetingsss.push(userMeetingFromModal[i])
                 }
             } else if (userMeetingFromModal[i].meeting_type === "periodic") {
-                const resp = meetingStatusCheck(userMeetingFromModal[i]);
-                if (resp) {
+                const resppp = meetingStatusCheck(userMeetingFromModal[i]);
+                if (resppp) {
                     meetingsss.push(userMeetingFromModal[i]);
                 }
             }
@@ -601,7 +601,7 @@ function meetingStatusCheck(params) {
                     }
                     if (parseInt(endOfMonth) - parseInt(startOfWeek) < 7) {
                         currentSchedule = allData.find(function (item) {
-                            return (item.week == "10" || item.week == currentweekno) && item.day == cur
+                            return (item.week == "10" || item.week == currentweekno) && item.day == currentday
                         });
                     } else {
                         currentSchedule = allData.find(function (item) {
