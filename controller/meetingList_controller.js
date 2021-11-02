@@ -91,6 +91,43 @@ exports.getMeetingInfo = async (req, res) => {
 }
 
 /**
+ * To check meeting status
+ * @param {*} meetingId 
+ * @returns 
+ */
+exports.checkMeetingStatus = async (req, res) => {
+    try {
+        const params = {
+            meeting_id: req.body.meeting_id
+        }
+
+        const meeting = await models.meetinglist.getMeetingByMeetingId(params);
+
+        if (meeting.length == 0) {
+            return res.send({
+                status: 201,
+                message: "Invalid Meeting Id!"
+            })
+        }
+
+        return res.send({
+            status: 200,
+            message: "",
+            webpage: "",
+            meetings: meeting
+        })
+    } catch (error) {
+        console.log("MeetingList Controller || Check Meeting Status", error);
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
+        })
+    }
+}
+
+/**
  * To start meeting from URL
  */
 exports.startMeeting = async (req, res) => {

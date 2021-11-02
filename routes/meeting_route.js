@@ -13,6 +13,8 @@ module.exports = function (app) {
 
   app.post('/check-meeting-validity', meetingController.checkMeetingValidity);
 
+  app.post('/check-meeting-status', meetingController.checkMeetingStatus);
+
   app.post('/get-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required')
   ], formValidationMiddleware, meetingController.getMeeting);
