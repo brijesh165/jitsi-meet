@@ -98,6 +98,7 @@ exports.getMeetingInfo = async (req, res) => {
  */
 exports.checkMeetingStatus = async (req, res) => {
     try {
+        console.log("Meeting ID: ", req.body)
         const params = {
             meeting_id: req.body.meeting_id
         }
