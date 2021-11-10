@@ -63,7 +63,7 @@ exports.getMeetingInfo = async (req, res) => {
         };
 
         const meetingInfo = await models.meetinglist.getMeetingByMeetingId(params);
-        // console.log("Meeting Info: ", meetingInfo);
+        console.log("Meeting Info: ", meetingInfo);
 
         if (meetingInfo == null) {
             return res.send({
