@@ -30,8 +30,8 @@ exports.createMeeting = async (req, res) => {
         // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
         // response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
         // response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${createdMeeting.meeting_id}`;
-        response.start_url = `http://localhost:3000/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
-        response.join_url = `http://localhost:3000/join/${createdMeeting.meeting_id}`;
+        response.start_url = `https://betameet.teamlocus.com:3000/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
+        response.join_url = `https://betameet.teamlocus.com:3000/join/${createdMeeting.meeting_id}`;
 
         console.log("Response: ", response);
 
