@@ -57,6 +57,7 @@ exports.createMeeting = async (req, res) => {
 exports.getMeetingInfo = async (req, res) => {
     try {
 
+        console.log("Get Meeting Info: ", req.body);
         const params = {
             meeting_id: req.body.meeting_id
         };
