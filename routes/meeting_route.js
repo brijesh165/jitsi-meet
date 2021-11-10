@@ -34,9 +34,13 @@ module.exports = function (app) {
 
   app.post('/create-meeting', meetingListController.createMeeting)
 
+  // app.post('/change-meeting-status', [
+  //   check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
+  // ], formValidationMiddleware, meetingController.changeMeetingStatus)
+
   app.post('/change-meeting-status', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
-  ], formValidationMiddleware, meetingController.changeMeetingStatus)
+  ], formValidationMiddleware, meetingListController.changeMeetingStatus)
 
   app.post('/edit-meeting', [
     check('meeting_id').not().isEmpty().withMessage('Meeting id is required.')
