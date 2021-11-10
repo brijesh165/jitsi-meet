@@ -188,20 +188,26 @@ exports.changeMeetingStatus = async (req, res) => {
         let meetingDetails = await models.meetinglist.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
         // console.log("Meeting Details: ", meetingDetails);
         // if (keyStatus.data.status == "ok") {
+
+        const params = {
+            status: req.body.status,
+            meeting_id: req.body.meeting_id
+        }
+        await models.meetinglist.changeMeetingStatusByMeetingId(params);
+
+        if (req.body.status === "pending") {
+            socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
+        }
+
+        return res.send({
+            status: "ok",
+            message: "",
+            webpage: "",
+            response: meetingDetails
+        })
         if (req.body.status == "started") {
             // console.log("Started");
-            const params = {
-                status: req.body.status,
-                meeting_id: req.body.meeting_id
-            }
-            await models.meetinglist.changeMeetingStatusByMeetingId(params);
 
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: meetingDetails
-            })
         }
         else if (req.body.status == "ended") {
             // console.log("Meeting Details: ", meetingDetails)
