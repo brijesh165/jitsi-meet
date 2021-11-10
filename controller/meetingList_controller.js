@@ -1,5 +1,7 @@
 const moment = require('moment');
 const appUtil = require('./../util/app-util');
+const socketManager = require('./../util/socket-manager');
+
 const models = require('./../models');
 const CryptoJS = require("crypto-js");
 
@@ -183,7 +185,7 @@ exports.startMeeting = async (req, res) => {
  */
 exports.changeMeetingStatus = async (req, res) => {
     try {
-        // console.log("Change Meeting Status Params : ", req.body);
+        console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
         let meetingDetails = await models.meetinglist.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
