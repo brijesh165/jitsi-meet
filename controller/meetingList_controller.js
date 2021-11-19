@@ -32,8 +32,8 @@ exports.createMeeting = async (req, res) => {
         // const encryptedMeetingforjoin = appUtil.encryptMeetingId(createdMeeting.meeting_id, "join");
         // response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
         // response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${createdMeeting.meeting_id}`;
-        response.start_url = `http://localhost:3000/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
-        response.join_url = `http://localhost:3000/join/${createdMeeting.meeting_id}`;
+        response.start_url = `${process.env.URL}:${process.env.HTTPS_PORT}/start/${createdMeeting.meeting_id}/?${encryptedMeetingforstart}`;
+        response.join_url = `${process.env.URL}:${process.env.HTTPS_PORT}/join/${createdMeeting.meeting_id}`;
 
         console.log("Response: ", response);
 
@@ -208,73 +208,6 @@ exports.changeMeetingStatus = async (req, res) => {
             webpage: "",
             response: meetingDetails
         })
-        if (req.body.status == "started") {
-            // console.log("Started");
-
-        }
-        else if (req.body.status == "ended") {
-            // console.log("Meeting Details: ", meetingDetails)
-            // console.log("Ended");
-            if (meetingDetails.meeting_type === "periodic") {
-                // console.log("Periodic");
-                const params = {
-                    status: "pending",
-                    meeting_id: req.body.meeting_id
-                }
-
-                await models.meetinglist.changeMeetingStatusByMeetingId(params);
-
-            } else if (meetingDetails.meeting_type === "onetime") {
-                // console.log("one time");
-                const params = {
-                    status: req.body.status,
-                    meeting_id: req.body.meeting_id
-                }
-
-                await models.meetinglist.changeMeetingStatusByMeetingId(params);
-            } else if (meetingDetails.meeting_type === "nonperiodic") {
-                // console.log("Non Periodic");
-                const params = {
-                    status: req.body.status,
-                    meeting_id: req.body.meeting_id
-                }
-
-                await models.meetinglist.changeMeetingStatusByMeetingId(params);
-            }
-
-            socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
-
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: ""
-            })
-        }
-        else if (req.body.status == "pending") {
-            const params = {
-                status: req.body.status,
-                meeting_id: req.body.meeting_id
-            }
-
-            await models.meetinglist.changeMeetingStatusByMeetingId(params);
-
-            return res.send({
-                status: "ok",
-                message: "",
-                webpage: "",
-                response: ""
-            })
-        }
-        // }
-        else {
-            return res.send({
-                status: keyStatus.data.status,
-                message: keyStatus.data.message,
-                webpage: keyStatus.data.webpage,
-                response: keyStatus.data.response
-            })
-        }
     } catch (error) {
         console.log("Meeting Controller || Change Meeting Status", error);
         return res.send({
