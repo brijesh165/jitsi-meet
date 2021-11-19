@@ -10,7 +10,7 @@ module.exports = {
      */
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.removeColumn('meetings', 'timezone')
+        queryInterface.removeColumn('meetings', 'timezonee')
       ])
     })
   },
