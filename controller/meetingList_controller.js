@@ -16,12 +16,13 @@ exports.createMeeting = async (req, res) => {
         let response = {};
         const currentTimeStamp = moment().utc().unix().toString();
         const createmeetingparams = {
-            meeting_id: currentTimeStamp.slice(0, 10),
+            // meeting_id: currentTimeStamp.slice(0, 10),
+            meeting_id: "1619438130",
             status: req.body.status ? req.body.status : "pending"
         }
 
         const createdMeeting = await models.meetinglist.create(createmeetingparams);
-
+        console.log("Meeting Id: ", createdMeeting.meeting_id)
         await models.meeting_logs.create({
             meeting_id: createdMeeting.meeting_id,
             log_type: "create_meeting",
