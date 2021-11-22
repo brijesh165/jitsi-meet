@@ -16,8 +16,8 @@ exports.createMeeting = async (req, res) => {
         let response = {};
         const currentTimeStamp = moment().utc().unix().toString();
         const createmeetingparams = {
-            // meeting_id: currentTimeStamp.slice(0, 10),
-            meeting_id: "1619438130",
+            meeting_id: currentTimeStamp.slice(0, 10),
+            // meeting_id: "1619438130",
             status: req.body.status ? req.body.status : "pending"
         }
 
