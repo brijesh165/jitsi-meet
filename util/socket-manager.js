@@ -36,6 +36,11 @@ exports.openIO = function (io) {
     // }, 1000)
 
     io.on('connection', function (socket) {
+
+        socket.on('joinSocket', (data) => {
+            console.log(`Join Socket Data :`, data)
+        })
+
         socket.on("joinMeeting", (data) => {
             console.log("Join meetings: ", data, socket.id);
             socket.isHost = data.role;
