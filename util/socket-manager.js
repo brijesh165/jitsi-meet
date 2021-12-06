@@ -87,6 +87,14 @@ exports.openIO = function (io) {
             })
         })
 
+        socket.on('allowMember', (data) => {
+            console.log(`Allow Member Data :`, data)
+
+            socket.emit('allowMemberToJitsi', {
+                "info": data
+            })
+        })
+
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
