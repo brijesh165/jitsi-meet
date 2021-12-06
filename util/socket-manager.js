@@ -40,7 +40,7 @@ exports.openIO = function (io) {
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
 
-            socketIO.to(socket.meetingId).emit("end_meeting", {
+            socketIO.to(socket.meetingId).emit("person_waiting", {
                 "meetingId": socket.meetingId
             })
         })
