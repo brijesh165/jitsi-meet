@@ -84,7 +84,8 @@ exports.openIO = function (io) {
             console.log(`Join Socket Data :`, data)
 
             io.emit("person_waiting", {
-                "meetingId": data.meetingId
+                "meetingId": data.meetingId,
+                "username": data.username
             })
         })
 
