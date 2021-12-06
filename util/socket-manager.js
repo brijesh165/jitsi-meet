@@ -83,15 +83,15 @@ exports.openIO = function (io) {
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
 
-            socket.emit("person_waiting", {
+            io.emit("person_waiting", {
                 "meetingId": data.meetingId
             })
         })
 
-        socket.on('allowMember', (data) => {
+        socket.on('allowedMember', (data) => {
             console.log(`Allow Member Data :`, data)
 
-            socket.emit('allowMemberToJitsi', {
+            io.emit('allowMemberToJitsi', {
                 "info": data
             })
         })
