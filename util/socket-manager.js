@@ -37,14 +37,6 @@ exports.openIO = function (io) {
 
     io.on('connection', function (socket) {
 
-        socket.on('joinSocket', (data) => {
-            console.log(`Join Socket Data :`, data)
-            console.log("Meeting ID: ", socket.meetingId)
-            socketIO.to(socket.meetingId).emit("person_waiting", {
-                "meetingId": socket.meetingId
-            })
-        })
-
         socket.on("joinMeeting", (data) => {
             console.log("Join meetings: ", data, socket.id);
             socket.isHost = data.role;
@@ -86,6 +78,14 @@ exports.openIO = function (io) {
 
         socket.on("end_meeting", () => {
             meetingSockets[socket.meetingId] = null;
+        })
+
+        socket.on('joinSocket', (data) => {
+            console.log(`Join Socket Data :`, data)
+            console.log("Meeting ID: ", socket.meetingId)
+            socketIO.to(socket.meetingId).emit("person_waiting", {
+                "meetingId": socket.meetingId
+            })
         })
 
         socket.on("disconnect", () => {
