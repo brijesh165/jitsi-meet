@@ -89,6 +89,10 @@ exports.openIO = function (io) {
             })
         })
 
+        socket.on('allowOne', (data) => {
+            console.log('allowOne :', data)
+        })
+
         socket.on('allowedMember', (data) => {
             console.log(`Allow Member Data :`, data)
 
