@@ -85,7 +85,8 @@ exports.openIO = function (io) {
 
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
-                "username": data.username
+                "username": data.username,
+                "role": "participant"
             })
         })
 
@@ -99,7 +100,7 @@ exports.openIO = function (io) {
             io.emit('allowOneTrue', data)
         })
 
-        socket.on('allowedMember', (data) => {
+        socket.on('allowMember', (data) => {
             console.log(`Allow Member Data :`, data)
             io.emit('allowMemberToJitsi', {
                 "info": data
