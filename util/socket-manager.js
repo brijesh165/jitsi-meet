@@ -91,13 +91,16 @@ exports.openIO = function (io) {
 
         socket.on('allowOne', (data) => {
             console.log('allowOne :', data)
+            io.emit('allowOneTrue', data)
+        })
 
+        socket.on('allowAll', (data) => {
+            console.log('allowAll :', data)
             io.emit('allowOneTrue', data)
         })
 
         socket.on('allowedMember', (data) => {
             console.log(`Allow Member Data :`, data)
-
             io.emit('allowMemberToJitsi', {
                 "info": data
             })
