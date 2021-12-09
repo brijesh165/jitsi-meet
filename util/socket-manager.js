@@ -88,8 +88,8 @@ exports.openIO = function (io) {
             // }
             let findId = Object.keys(joinMeetingSocket).find((item) => item === meetingId);
             if (findId) {
-                console.log("Members: ", joinMeetingSocket[meetingId].members)
-                // joinMeetingSocket.push({ meetingId: [...username, username] })
+                // console.log("Members: ", joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username }))
+                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
             } else {
                 joinMeetingSocket[meetingId] = {
                     members: [{ id: socket.id, name: username }]
