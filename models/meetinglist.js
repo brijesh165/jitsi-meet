@@ -45,5 +45,15 @@ module.exports = (sequelize, DataTypes) => {
     })
   }
 
+  meetinglist.changeAllowAllByMeetingId = async (params) => {
+    return await meetinglist.update({
+      allow_all: params.allow_all
+    }, {
+      where: {
+        meeting_id: params.meeting_id
+      }
+    })
+  }
+
   return meetinglist;
 };

@@ -178,6 +178,39 @@ exports.startMeeting = async (req, res) => {
     }
 }
 
+
+/**
+ * 
+ * @param {*} meeting_id 
+ * @param {*} allow_all 
+ */
+exports.changeAllowAll = async (req, res) => {
+    try {
+        let meetingDetails = await models.meetinglist.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
+        const params = {
+            allow_all: req.body.allow_all,
+            meeting_id: req.body.meeting_id
+        }
+        await models.meetinglist.changeAllowAllByMeetingId(params);
+
+        return res.send({
+            status: "ok",
+            message: "",
+            webpage: "",
+            response: meetingDetails
+        })
+    } catch (error) {
+        console.log("Meeting Controller || Change Allow All Status", error);
+        return res.send({
+            status: "error",
+            message: "Internal server error. Please try again.",
+            webpage: "",
+            response: ""
+        })
+    }
+}
+
+
 /**
  * 
  * @param {*} meeting_id 
