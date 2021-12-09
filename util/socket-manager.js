@@ -124,7 +124,10 @@ exports.openIO = function (io) {
         })
 
         socket.on("disconnect", () => {
-            console.log("Disconnect", joinMeetingSocket[socket.meetingId], joinMeetingSocket[socket.meetingId].members[id], socket.isHost, socket.id)
+            console.log("Disconnect", joinMeetingSocket[socket.meetingId], socket.isHost, socket.id)
+            const disconnectedMember = joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id);
+            console.log("Disconnect", disconnectedMember);
+
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
@@ -138,7 +141,7 @@ exports.openIO = function (io) {
                 console.log("End Meeting Socket emit at disconnect");
             }
 
-            if (joinMeetingSocket[socket.meetingId].members[id] == socket.id) {
+            if (disconnectedMember) {
                 const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
 
                 joinMeetingSocket[socket.meetingId].members = afterRemove;
