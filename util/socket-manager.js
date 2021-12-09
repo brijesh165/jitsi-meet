@@ -122,7 +122,7 @@ exports.openIO = function (io) {
         })
 
         socket.on("disconnect", () => {
-            console.log("Disconnect", socket.isHost, socket.id)
+            console.log("Disconnect", socket.meetingId, socket.isHost, socket.id)
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
@@ -136,11 +136,14 @@ exports.openIO = function (io) {
                 console.log("End Meeting Socket emit at disconnect");
             }
 
-            models.meeting_logs.create({
-                meeting_id: socket.meetingId,
-                log_type: "disconnect_user_socket",
-                log_description: `Socket disconnect for ${socket.username}.`
-            })
+            // if (socket.id && joinMeetingSocket) {
+            //     const findInJoinMeeting = ;
+            // }
+            // models.meeting_logs.create({
+            //     meeting_id: socket.meetingId,
+            //     log_type: "disconnect_user_socket",
+            //     log_description: `Socket disconnect for ${socket.username}.`
+            // })
         });
 
         console.log(`Socket Connection successful ${socket.id}`);
