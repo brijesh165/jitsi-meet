@@ -85,9 +85,9 @@ exports.openIO = function (io) {
 
             let findId = joinMeetingSocket.find(o => o.meetingId === meetingId);
             if (findId) {
-                joinMeetingSocket.push({ meeting_id: [...username, username] })
+                joinMeetingSocket.push({ meetingId: [...username, username] })
             } else {
-                joinMeetingSocket.push({ meeting_id: [username] })
+                joinMeetingSocket.push({ meetingId: [username] })
             }
 
             console.log(`joinMeetingSocket :`, joinMeetingSocket)
