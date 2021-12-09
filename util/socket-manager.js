@@ -7,7 +7,7 @@ exports.openIO = function (io) {
     socketIO = io;
     let meetingSockets = {};
     let endMeeingSocket = [];
-    let joinMeetingSocket = [];
+    let joinMeetingSocket = {};
     // setInterval( async () => {
     //     if (endMeeingSocket.length > 0) {
     //         for (let i = 0; i < endMeeingSocket.length; i++) {
@@ -83,12 +83,16 @@ exports.openIO = function (io) {
             console.log(`Join Socket Data :`, data)
             const { meetingId, username } = data;
 
-            let findId = joinMeetingSocket.find(o => o.meetingId === meetingId);
-            if (findId) {
-                joinMeetingSocket.push({ meetingId: [...username, username] })
-            } else {
-                joinMeetingSocket.push({ meetingId: [username] })
+            joinMeetingSocket[meetingId] = {
+                members: [{ id: socket.id, name: username }]
             }
+            // let findId = joinMeetingSocket.find(o => o.meetingId === meetingId);
+            // if (findId) {
+
+            //     // joinMeetingSocket.push({ meetingId: [...username, username] })
+            // } else {
+            //     joinMeetingSocket.push({ meetingId: [username] })
+            // }
 
             console.log(`joinMeetingSocket :`, joinMeetingSocket)
             io.emit("person_waiting", {
