@@ -3,12 +3,11 @@ const moment = require('moment');
 
 let socketIO;
 
-
 exports.openIO = function (io) {
     socketIO = io;
     let meetingSockets = {};
     let endMeeingSocket = [];
-
+    let joinMeetingSocket = [];
     // setInterval( async () => {
     //     if (endMeeingSocket.length > 0) {
     //         for (let i = 0; i < endMeeingSocket.length; i++) {
@@ -82,7 +81,16 @@ exports.openIO = function (io) {
 
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
+            const { meetingId, username } = data;
 
+            let findId = joinMeetingSocket.find(o => o.meetingId === meetingId);
+            if (findId) {
+                joinMeetingSocket.push({ meeting_id: [...username, username] })
+            } else {
+                joinMeetingSocket.push({ meeting_id: [username] })
+            }
+
+            console.log(`joinMeetingSocket :`, joinMeetingSocket)
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
                 "username": data.username,
