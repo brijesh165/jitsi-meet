@@ -10,7 +10,7 @@ module.exports = {
      */
     return queryInterface.sequelize.transaction(t => {
       return Promise.all([
-        queryInterface.addColumn('meetinglist', 'allow_all', {
+        queryInterface.addColumn('meetinglists', 'allow_all', {
           type: Sequelize.DataTypes.BOOLEAN,
           defaultValue: false,
           allowNull: true
