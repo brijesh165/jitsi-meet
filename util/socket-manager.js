@@ -144,9 +144,13 @@ exports.openIO = function (io) {
             if (disconnectedMember) {
                 const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
 
-                joinMeetingSocket[socket.meetingId].members = afterRemove;
+                if (afterRemove.length > 0) {
+                    joinMeetingSocket[socket.meetingId].members = afterRemove;
+                } else {
+                    joinMeetingSocket = {};
+                }
 
-                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members);
+                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members, joinMeetingSocket);
             }
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
