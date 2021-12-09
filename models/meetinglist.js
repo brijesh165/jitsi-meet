@@ -22,6 +22,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING(255),
       allowNull: false
     },
+    allow_all: {
+      type: DataTypes.BOOLEAN(false),
+      defaultValue: false,
+      allowNull: true
+    }
   }, {
     sequelize,
     modelName: 'meetinglist',
