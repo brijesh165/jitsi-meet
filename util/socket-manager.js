@@ -120,7 +120,7 @@ exports.openIO = function (io) {
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
-            const disconnectedMember = joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id);
+            const disconnectedMember = socket.isHost == "host" && joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id);
 
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
