@@ -138,9 +138,13 @@ exports.openIO = function (io) {
                 console.log("End Meeting Socket emit at disconnect");
             }
 
-            // if (socket.id && joinMeetingSocket) {
-            //     const findInJoinMeeting = ;
-            // }
+            if (joinMeetingSocket[socket.meetingId] == socket.id) {
+                const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
+
+                joinMeetingSocket[socket.meetingId].members = afterRemove;
+
+                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members);
+            }
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
             //     log_type: "disconnect_user_socket",
