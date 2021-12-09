@@ -146,11 +146,11 @@ exports.openIO = function (io) {
 
                 if (afterRemove.length > 0) {
                     joinMeetingSocket[socket.meetingId].members = afterRemove;
+                    console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members, joinMeetingSocket);
                 } else {
                     joinMeetingSocket = {};
                 }
-
-                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members, joinMeetingSocket);
+                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket);
             }
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
