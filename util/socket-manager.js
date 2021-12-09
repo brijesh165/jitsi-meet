@@ -84,13 +84,8 @@ exports.openIO = function (io) {
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
 
-
-            // joinMeetingSocket[meetingId] = {
-            //     members: [{ id: socket.id, name: username }]
-            // }
             let findId = Object.keys(joinMeetingSocket).find((item) => item === meetingId);
             if (findId) {
-                // console.log("Members: ", joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username }))
                 joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
             } else {
                 joinMeetingSocket[meetingId] = {
@@ -124,9 +119,8 @@ exports.openIO = function (io) {
         })
 
         socket.on("disconnect", () => {
-            console.log("Disconnect", joinMeetingSocket[socket.meetingId], socket.isHost, socket.id)
+            console.log("Disconnect", socket.isHost, socket.id)
             const disconnectedMember = joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id);
-            console.log("Disconnect", disconnectedMember);
 
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
@@ -146,11 +140,9 @@ exports.openIO = function (io) {
 
                 if (afterRemove.length > 0) {
                     joinMeetingSocket[socket.meetingId].members = afterRemove;
-                    console.log("Join Meeting Socket after Remove: ", joinMeetingSocket[socket.meetingId].members, joinMeetingSocket);
                 } else {
                     joinMeetingSocket = {};
                 }
-                console.log("Join Meeting Socket after Remove: ", joinMeetingSocket);
             }
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
