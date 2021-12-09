@@ -94,7 +94,7 @@ exports.openIO = function (io) {
             //     joinMeetingSocket.push({ meetingId: [username] })
             // }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket)
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket.id, joinMeetingSocket.members)
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
                 "username": data.username,
