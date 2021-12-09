@@ -96,7 +96,7 @@ exports.openIO = function (io) {
                 }
             }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket, Object.keys(joinMeetingSocket).find((item) => item === meetingId))
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members)
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
                 "username": data.username,
