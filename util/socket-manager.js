@@ -138,7 +138,7 @@ exports.openIO = function (io) {
                 console.log("End Meeting Socket emit at disconnect");
             }
 
-            if (joinMeetingSocket[socket.meetingId] == socket.id) {
+            if (joinMeetingSocket[socket.meetingId].members.id == socket.id) {
                 const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
 
                 joinMeetingSocket[socket.meetingId].members = afterRemove;
