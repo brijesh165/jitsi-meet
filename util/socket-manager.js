@@ -111,16 +111,19 @@ exports.openIO = function (io) {
             io.emit('allowOneTrue', data)
         })
 
-        socket.on('allowMember', (data) => {
-            console.log(`Allow Member Data :`, data)
-            io.emit('allowMemberToJitsi', {
-                "info": data
-            })
-        })
-
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, joinMeetingSocket[socket.meetingId].members.length > 0, socket.id)
             const disconnectedMember = joinMeetingSocket[socket.meetingId].members.length > 0 && joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id);
+
+            if (disconnectedMember) {
+                const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
+
+                if (afterRemove.length > 0) {
+                    joinMeetingSocket[socket.meetingId].members = afterRemove;
+                } else {
+                    joinMeetingSocket = {};
+                }
+            }
 
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
@@ -133,16 +136,6 @@ exports.openIO = function (io) {
                 });
 
                 console.log("End Meeting Socket emit at disconnect");
-            }
-
-            if (disconnectedMember) {
-                const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id)
-
-                if (afterRemove.length > 0) {
-                    joinMeetingSocket[socket.meetingId].members = afterRemove;
-                } else {
-                    joinMeetingSocket = {};
-                }
             }
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
