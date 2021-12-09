@@ -122,7 +122,7 @@ exports.openIO = function (io) {
         })
 
         socket.on("disconnect", () => {
-            console.log("Disconnect", socket.meetingId, socket.isHost, socket.id)
+            console.log("Disconnect", socket, socket.isHost, socket.id)
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
