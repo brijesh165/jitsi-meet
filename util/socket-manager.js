@@ -84,6 +84,7 @@ exports.openIO = function (io) {
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
 
+            socket.socketId = socket.id;
             let findId = Object.keys(joinMeetingSocket).find((item) => item === meetingId);
             if (findId) {
                 joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
@@ -99,7 +100,7 @@ exports.openIO = function (io) {
                 "meetingId": data.meetingId,
                 "username": data.username,
                 "role": "participant",
-                "userSocketId": socket.id,
+                "userSocketId": socket.socketId,
             })
         })
 
