@@ -94,7 +94,7 @@ exports.openIO = function (io) {
                 }
             }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "------------------ Socket id", socket.id)
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
 
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
@@ -105,7 +105,7 @@ exports.openIO = function (io) {
         })
 
         socket.on('allowOne', (data) => {
-            console.log('------- allowOne :', data)
+            console.log('allowOne :', data)
             const allowedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
             console.log("Allowed Member: ", allowedMember);
 
@@ -118,6 +118,12 @@ exports.openIO = function (io) {
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
             io.emit('allowOneTrue', data)
 
+        })
+
+        socket.on('canceledMembers', (data) => {
+            console.log("--------- canceledMembers: ", data);
+            console.log("joinMeetingSocket.meetingId :", joinMeetingSocket.meetingId)
+            console.log("Check :", data == joinMeetingSocket.meetingId)
         })
 
         socket.on("disconnect", () => {
