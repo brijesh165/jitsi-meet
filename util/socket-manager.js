@@ -106,21 +106,24 @@ exports.openIO = function (io) {
 
         socket.on('allowOne', (data) => {
             console.log('------- allowOne :', data)
+            const disconnectedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
+            console.log("Disconnected Member: ", disconnectedMember);
+
+            if (disconnectedMember) {
+                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
+
+                if (afterRemove.length > 0) {
+                    joinMeetingSocket[data.meetingId].members = afterRemove;
+                }
+            }
+
+            console.log("Allow One Join Socket: ", joinMeetingSocket);
             io.emit('allowOneTrue', data)
+
         })
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
-            const disconnectedMember = (socket.isHost == undefined && joinMeetingSocket[socket.meetingId].members.length > 0) ? joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id) : false;
-            console.log("Disconnected Member: ", disconnectedMember);
-
-            if (disconnectedMember) {
-                const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
-
-                if (afterRemove.length > 0) {
-                    joinMeetingSocket[socket.meetingId].members = afterRemove;
-                }
-            }
 
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
