@@ -122,8 +122,8 @@ exports.openIO = function (io) {
 
         socket.on('canceledMembers', (data) => {
             console.log("--------- canceledMembers: ", data);
-            console.log("joinMeetingSocket.meetingId :", joinMeetingSocket.meetingId)
-            console.log("Check :", data == joinMeetingSocket.meetingId)
+            console.log("joinMeetingSocket :", joinMeetingSocket)
+            // console.log("Check :", data == joinMeetingSocket)
         })
 
         socket.on("disconnect", () => {
