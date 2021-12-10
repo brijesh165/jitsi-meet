@@ -116,7 +116,7 @@ exports.openIO = function (io) {
             }
 
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
-            io.emit('allowOneTrue', data)
+            io.emit('allowOneTrue', { "waitingMemberList": data })
 
         })
 
