@@ -102,12 +102,7 @@ exports.openIO = function (io) {
         })
 
         socket.on('allowOne', (data) => {
-            console.log('allowOne :', data)
-            io.emit('allowOneTrue', data)
-        })
-
-        socket.on('allowAll', (data) => {
-            console.log('allowAll :', data)
+            console.log('allowOne :', data, "socket id :", socket.id)
             io.emit('allowOneTrue', data)
         })
 
