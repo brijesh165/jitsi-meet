@@ -94,18 +94,18 @@ exports.openIO = function (io) {
                 }
             }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "------------------------------------ Socket id", socket.id)
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "------------------ Socket id", socket.id)
 
             io.emit("person_waiting", {
                 "meetingId": data.meetingId,
                 "username": data.username,
                 "role": "participant",
-                // "userSocketId": socket.socketId,
+                "userSocketId": socket.socketId,
             })
         })
 
         socket.on('allowOne', (data) => {
-            console.log('allowOne :', data)
+            console.log('------- allowOne :', data)
             io.emit('allowOneTrue', data)
         })
 
