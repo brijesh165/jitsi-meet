@@ -100,12 +100,12 @@ exports.openIO = function (io) {
                 "meetingId": data.meetingId,
                 "username": data.username,
                 "role": "participant",
-                "userSocketId": socket.socketId,
+                // "userSocketId": socket.socketId,
             })
         })
 
         socket.on('allowOne', (data) => {
-            console.log('allowOne :', data, "socket id :", socket.id)
+            console.log('allowOne :', data)
             io.emit('allowOneTrue', data)
         })
 
