@@ -112,18 +112,15 @@ exports.openIO = function (io) {
         })
 
         socket.on("disconnect", () => {
-            // console.log("Disconnect", socket.isHost == undefined, joinMeetingSocket[socket.meetingId].members.length > 0, socket.isHost, socket.id)
+            console.log("Disconnect", socket.isHost, socket.id)
             const disconnectedMember = (socket.isHost == undefined && joinMeetingSocket[socket.meetingId].members.length > 0) ? joinMeetingSocket[socket.meetingId].members.find((item) => item.id == socket.id) : false;
             console.log("Disconnected Member: ", disconnectedMember);
 
             if (disconnectedMember) {
                 const afterRemove = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
-                console.log("After Remove: ", afterRemove);
 
                 if (afterRemove.length > 0) {
                     joinMeetingSocket[socket.meetingId].members = afterRemove;
-                } else {
-                    joinMeetingSocket = {};
                 }
             }
 
@@ -131,6 +128,12 @@ exports.openIO = function (io) {
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
                 })
+
+                let findId = Object.keys(joinMeetingSocket).find((item) => item === socket.meetingId);
+
+                if (findId) {
+                    joinMeetingSocket = {};
+                }
 
                 models.meeting.changeMeetingStatusByMeetingId({
                     status: "ended",
