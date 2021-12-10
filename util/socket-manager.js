@@ -125,7 +125,7 @@ exports.openIO = function (io) {
             console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
             if (joinMeetingSocket[data.meetingId].members.length > 0) {
                 console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
-                socket.emit('WaitingMembers :', joinMeetingSocket[data.meetingId].members)
+                io.emit('WaitingMembers :', joinMeetingSocket[data.meetingId].members)
             }
         })
 
