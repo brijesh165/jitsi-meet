@@ -110,11 +110,9 @@ exports.openIO = function (io) {
             console.log("Allowed Member: ", allowedMember);
 
             if (allowedMember) {
-                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id != data.socketId);
+                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
                 console.log("After Remove: ", afterRemove);
-                if (afterRemove.length > 0) {
-                    joinMeetingSocket[data.meetingId].members = afterRemove;
-                }
+                joinMeetingSocket[data.meetingId].members = afterRemove;
             }
 
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
