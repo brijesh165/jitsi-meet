@@ -116,7 +116,7 @@ exports.openIO = function (io) {
             }
 
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
-            io.emit('allowOneTrue', { "waitingMemberList": data })
+            io.emit('allowOneTrue', data)
 
         })
 
@@ -125,7 +125,7 @@ exports.openIO = function (io) {
             console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
             if (joinMeetingSocket[data.meetingId].members.length > 0) {
                 console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
-                io.emit('WaitingMembers :', joinMeetingSocket[data.meetingId].members)
+                io.emit('WaitingMembers', { "waitingMemberList": joinMeetingSocket[data.meetingId].members })
             }
         })
 
