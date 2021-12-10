@@ -106,10 +106,10 @@ exports.openIO = function (io) {
 
         socket.on('allowOne', (data) => {
             console.log('------- allowOne :', data)
-            const disconnectedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
-            console.log("Disconnected Member: ", disconnectedMember);
+            const allowedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
+            console.log("Allowed Member: ", allowedMember);
 
-            if (disconnectedMember) {
+            if (allowedMember) {
                 const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
 
                 if (afterRemove.length > 0) {
