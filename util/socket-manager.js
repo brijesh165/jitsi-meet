@@ -120,6 +120,10 @@ exports.openIO = function (io) {
 
         })
 
+        socket.on('AllowAllfromWaiting', (data) => {
+            console.log("from WaitingList", data)
+        })
+
         socket.on('canceledMembers', (data) => {
             console.log("--------- canceledMembers: ", data);
             console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
