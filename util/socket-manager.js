@@ -106,16 +106,16 @@ exports.openIO = function (io) {
 
         socket.on('allowOne', (data) => {
             console.log('allowOne :', data)
-            const allowedMember = joinMeetingSocket[data.socketId].members.length > 0 ? joinMeetingSocket[data.socketId].members.find((item) => item.id == data.socketId) : false;
+            const allowedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
             console.log("Allowed Member: ", allowedMember);
 
             if (allowedMember) {
-                const afterRemove = joinMeetingSocket[data.socketId].members.filter((item) => item.id !== data.socketId);
+                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
                 console.log("After Remove: ", afterRemove);
-                joinMeetingSocket[data.socketId].members = afterRemove;
+                joinMeetingSocket[data.meetingId].members = afterRemove;
             }
 
-            console.log("Allow One Join Socket: ", joinMeetingSocket[data.socketId].members);
+            console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
             io.emit('allowOneTrue', data)
 
         })
