@@ -96,14 +96,12 @@ exports.openIO = function (io) {
 
             console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
 
-            setInterval(() => {
-                io.emit("person_waiting", {
-                    "meetingId": data.meetingId,
-                    "username": data.username,
-                    "role": "participant",
-                    "userSocketId": socket.socketId,
-                })
-            }, 10000)
+            io.emit("person_waiting", {
+                "meetingId": data.meetingId,
+                "username": data.username,
+                "role": "participant",
+                "userSocketId": socket.socketId,
+            })
         })
 
         socket.on('allowOne', (data) => {
