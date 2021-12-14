@@ -127,6 +127,7 @@ exports.openIO = function (io) {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
+                joinMeetingSocket = {};
             }
         })
 
