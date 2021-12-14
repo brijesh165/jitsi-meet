@@ -103,7 +103,7 @@ exports.openIO = function (io) {
                     "role": "participant",
                     "userSocketId": socket.socketId,
                 })
-            }, 5000)
+            }, 10000)
         })
 
         socket.on('allowOne', (data) => {
