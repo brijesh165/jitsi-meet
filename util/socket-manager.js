@@ -132,8 +132,11 @@ exports.openIO = function (io) {
         })
 
         socket.on('CheckWaitList', (data) => {
-            console.log("checkWaitList Socket :-------------------", data)
-            console.log("joinMeetingSocket :", joinMeetingSocket, "CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
+            console.log("CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
+            if (joinMeetingSocket[data.meetingId].members.length > 0) {
+                console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
+                io.emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
+            }
         })
 
         socket.on('canceledMembers', (data) => {
