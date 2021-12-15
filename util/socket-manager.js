@@ -133,7 +133,7 @@ exports.openIO = function (io) {
 
         socket.on('CheckWaitList', (data) => {
             console.log("checkWaitList Socket :-------------------", data)
-            console.log("joinMeetingSocket :", joinMeetingSocket, "CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId].members)
+            console.log("joinMeetingSocket :", joinMeetingSocket, "CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
         })
 
         socket.on('canceledMembers', (data) => {
