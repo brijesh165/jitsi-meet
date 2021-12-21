@@ -100,7 +100,7 @@ exports.openIO = function (io) {
                 "meetingId": data.meetingId,
                 "username": data.username,
                 "role": "participant",
-                "userSocketId": socket.socketId,
+                "id": socket.socketId,
             })
         })
 
