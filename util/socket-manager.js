@@ -140,14 +140,14 @@ exports.openIO = function (io) {
             }
         })
 
-        socket.on('canceledMembers', (data) => {
-            console.log("--------- canceledMembers: ", data);
-            console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
-            if (joinMeetingSocket[data.meetingId].members.length > 0) {
-                console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
-                io.emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
-            }
-        })
+        // socket.on('canceledMembers', (data) => {
+        //     console.log("--------- canceledMembers: ", data);
+        //     console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
+        //     if (joinMeetingSocket[data.meetingId].members.length > 0) {
+        //         console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
+        //         io.emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
+        //     }
+        // })
 
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, socket.id)
