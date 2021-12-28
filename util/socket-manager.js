@@ -127,7 +127,7 @@ exports.openIO = function (io) {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
-                joinMeetingSocket = {};
+                joinMeetingSocket[data.meetingId].members = [];
             }
         })
 
@@ -160,7 +160,7 @@ exports.openIO = function (io) {
                 let findId = Object.keys(joinMeetingSocket).find((item) => item === socket.meetingId);
 
                 if (findId) {
-                    joinMeetingSocket = {};
+                    delete joinMeetingSocket[socket.meetingId];
                 }
 
                 models.meeting.changeMeetingStatusByMeetingId({
