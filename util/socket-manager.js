@@ -112,7 +112,7 @@ exports.openIO = function (io) {
 
             if (allowedMember) {
                 const foundMember = joinMeetingSocket[data.meetingId].members.findIndex((item) => item.id === data.socketId);
-                foundMember.status = "allowed";
+                joinMeetingSocket[data.meetingId].members[foundMember].status = "allowed";
                 console.log("After Remove: ", foundMember);
                 // joinMeetingSocket[data.meetingId].members = afterRemove;
             }
