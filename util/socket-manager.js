@@ -165,6 +165,7 @@ exports.openIO = function (io) {
 
                 models.meetinglist.changeMeetingStatusByMeetingId({
                     status: "ended",
+                    allow_all: false,
                     meeting_id: socket.meetingId
                 });
 
