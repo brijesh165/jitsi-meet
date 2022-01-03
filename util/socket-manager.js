@@ -90,7 +90,7 @@ exports.openIO = function (io) {
                 joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, status: 'pending' })
             } else {
                 joinMeetingSocket[meetingId] = {
-                    members: [{ id: socket.id, name: username }]
+                    members: [{ id: socket.id, name: username, status: 'pending' }]
                 }
             }
 
