@@ -87,7 +87,7 @@ exports.openIO = function (io) {
             socket.socketId = socket.id;
             let findId = Object.keys(joinMeetingSocket).find((item) => item === meetingId);
             if (findId) {
-                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
+                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, status: 'pending' })
             } else {
                 joinMeetingSocket[meetingId] = {
                     members: [{ id: socket.id, name: username }]
@@ -100,6 +100,7 @@ exports.openIO = function (io) {
                 "meetingId": data.meetingId,
                 "username": data.username,
                 "role": "participant",
+                "status": "pending",
                 "id": socket.socketId,
             })
         })
@@ -110,9 +111,10 @@ exports.openIO = function (io) {
             console.log("Allowed Member: ", allowedMember);
 
             if (allowedMember) {
-                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
-                console.log("After Remove: ", afterRemove);
-                joinMeetingSocket[data.meetingId].members = afterRemove;
+                const foundMember = joinMeetingSocket[data.meetingId].members.findIndex((item) => item.id === data.socketId);
+                foundMember.status = "allowed";
+                console.log("After Remove: ", foundMember);
+                // joinMeetingSocket[data.meetingId].members = afterRemove;
             }
 
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
