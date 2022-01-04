@@ -152,6 +152,13 @@ exports.openIO = function (io) {
         socket.on("disconnect", () => {
             console.log("Disconnect", socket.isHost, meetingSockets, socket.meetingId, socket.id)
 
+            if (socket.isHost != "host" && socket.meetingId && joinMeetingSocket[socket.meetingId].members.length > 0) {
+                const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
+                console.log("Removed Participant: ", afterremoverdParticipant);
+
+                joinMeetingSocket[socket.meetingId].members = afterremoverdParticipant;
+            }
+
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 console.log("Socket Meeting Id: ", socket.meetingId)
                 socketIO.to(socket.meetingId).emit("end_meeting", {
@@ -167,13 +174,6 @@ exports.openIO = function (io) {
                 });
 
                 console.log("End Meeting Socket emit at disconnect");
-            }
-
-            if (socket.isHost != "host" && socket.meetingId && joinMeetingSocket[socket.meetingId].members.length > 0) {
-                const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
-                console.log("Removed Participant: ", afterremoverdParticipant);
-
-                joinMeetingSocket[socket.meetingId].members = afterremoverdParticipant;
             }
 
             // models.meeting_logs.create({
