@@ -172,10 +172,12 @@ exports.openIO = function (io) {
                 console.log("End Meeting Socket emit at disconnect");
             }
 
-            const afterremoverdParticipant = socket.meetingId && joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
-            console.log("Removed Participant: ", afterremoverdParticipant);
+            if (socket.isHost != "host" && socket.meetingId) {
+                const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
+                console.log("Removed Participant: ", afterremoverdParticipant);
 
-            joinMeetingSocket[socket.meetingId].members = afterremoverdParticipant;
+                joinMeetingSocket[socket.meetingId].members = afterremoverdParticipant;
+            }
 
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
