@@ -228,6 +228,7 @@ exports.changeMeetingStatus = async (req, res) => {
 
         const params = {
             status: req.body.status,
+            allow_all: false,
             meeting_id: req.body.meeting_id
         }
         await models.meetinglist.changeMeetingStatusByMeetingId(params);

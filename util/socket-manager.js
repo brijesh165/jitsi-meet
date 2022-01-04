@@ -171,6 +171,7 @@ exports.openIO = function (io) {
 
                 console.log("End Meeting Socket emit at disconnect");
             }
+
             // models.meeting_logs.create({
             //     meeting_id: socket.meetingId,
             //     log_type: "disconnect_user_socket",
