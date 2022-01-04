@@ -233,9 +233,9 @@ exports.changeMeetingStatus = async (req, res) => {
         }
         await models.meetinglist.changeMeetingStatusByMeetingId(params);
 
-        // if (req.body.status === "pending") {
-        //     socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
-        // }
+        if (req.body.status === "pending") {
+            socketManager.emitOnDisconnect("end_meeting", req.body.meeting_id);
+        }
 
         return res.send({
             status: "ok",
