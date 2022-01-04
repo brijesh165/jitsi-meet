@@ -158,6 +158,7 @@ exports.openIO = function (io) {
                 })
 
                 let findId = Object.keys(joinMeetingSocket).find((item) => item === socket.meetingId);
+                console.log('Find Id :', findId);
 
                 if (findId) {
                     delete joinMeetingSocket[socket.meetingId];
