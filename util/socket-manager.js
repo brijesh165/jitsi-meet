@@ -75,9 +75,9 @@ exports.openIO = function (io) {
             })
         })
 
-        socket.on("end_meeting", () => {
-            meetingSockets[socket.meetingId] = null;
-        })
+        // socket.on("end_meeting", () => {
+        //     meetingSockets[socket.meetingId] = null;
+        // })
 
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
