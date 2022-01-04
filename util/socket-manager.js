@@ -157,13 +157,7 @@ exports.openIO = function (io) {
                     "meetingId": socket.meetingId
                 })
 
-                let findId = Object.keys(joinMeetingSocket).find((item) => item === socket.meetingId);
-                console.log('Find Id :', findId);
-
-                if (findId) {
-                    console.log('In If == Find Id :');
-                    delete joinMeetingSocket[socket.meetingId];
-                }
+                delete joinMeetingSocket[socket.meetingId];
 
                 models.meetinglist.changeMeetingStatusByMeetingId({
                     status: "pending",
