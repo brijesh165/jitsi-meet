@@ -173,7 +173,7 @@ exports.openIO = function (io) {
             }
 
             if (socket.isHost != "host" && socket.meetingId) {
-                const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
+                const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.length > 0 && joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
                 console.log("Removed Participant: ", afterremoverdParticipant);
 
                 joinMeetingSocket[socket.meetingId].members = afterremoverdParticipant;
