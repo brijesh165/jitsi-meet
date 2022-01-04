@@ -161,6 +161,7 @@ exports.openIO = function (io) {
                 console.log('Find Id :', findId);
 
                 if (findId) {
+                    console.log('In If == Find Id :');
                     delete joinMeetingSocket[socket.meetingId];
                 }
 
