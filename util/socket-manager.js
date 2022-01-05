@@ -89,7 +89,7 @@ exports.openIO = function (io) {
             console.log("Find Id: ", findId);
 
             if (findId) {
-                console.log("Join Meeting Members: ", joinMeetingSocket[meetingId].members);
+                console.log("Join Meeting Members: ", joinMeetingSocket[meetingId]);
                 joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
             } else {
                 joinMeetingSocket[meetingId] = {
