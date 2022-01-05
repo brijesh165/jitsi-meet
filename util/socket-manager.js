@@ -153,6 +153,7 @@ exports.openIO = function (io) {
             console.log("Disconnect", socket.isHost, meetingSockets, socket.meetingId, socket.id)
 
             if (socket.isHost != "host" && socket.meetingId) {
+                console.log("Members: ", joinMeetingSocket[socket.meetingId].members);
                 const afterremoverdParticipant = joinMeetingSocket[socket.meetingId].members.length > 0 && joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
                 console.log("Removed Participant: ", afterremoverdParticipant);
 
