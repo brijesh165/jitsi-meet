@@ -91,8 +91,9 @@ exports.openIO = function (io) {
                 console.log("Join Meeting Members: ", joinMeetingSocket[meetingId]);
                 if (joinMeetingSocket[meetingId].allow_all) {
                     socketIO.to(socket.socketId).emit('allowOneTrue');
+                } else {
+                    joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
                 }
-                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
             } else {
                 joinMeetingSocket[meetingId] = {
                     members: [{ id: socket.id, name: username }],
