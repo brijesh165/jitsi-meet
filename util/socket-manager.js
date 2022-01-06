@@ -133,7 +133,7 @@ exports.openIO = function (io) {
         socket.on('AllowAllfromWaiting', (data) => {
             console.log("from WaitingList", data, joinMeetingSocket[data.meetingId].members.length)
 
-            if (joinMeetingSocket[data.meetingId].members.length > 0 && data.allow_all) {
+            if (data.allow_all && joinMeetingSocket[data.meetingId].members.length > 0) {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
