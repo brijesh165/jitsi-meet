@@ -75,16 +75,15 @@ exports.openIO = function (io) {
             })
         })
 
-        // socket.on("end_meeting", () => {
-        //     meetingSockets[socket.meetingId] = null;
-        // })
 
+        // Socket for waiting room
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
 
             socket.socketId = socket.id;
+
             let findId = Object.keys(joinMeetingSocket).find((item) => item === meetingId);
             console.log("Find Id: ", findId);
 
@@ -93,18 +92,22 @@ exports.openIO = function (io) {
                 joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
             } else {
                 joinMeetingSocket[meetingId] = {
-                    members: [{ id: socket.id, name: username }]
+                    members: [{ id: socket.id, name: username }],
+                    allow_all: false
                 }
             }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
+            if (!joinMeetingSocket[meetingId].allow_all) {
+                io.emit("person_waiting", {
+                    "meetingId": data.meetingId,
+                    "username": data.username,
+                    "role": "participant",
+                    "id": socket.socketId,
+                });
+            }
 
-            io.emit("person_waiting", {
-                "meetingId": data.meetingId,
-                "username": data.username,
-                "role": "participant",
-                "id": socket.socketId,
-            })
+
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
         })
 
         socket.on('allowOne', (data) => {
@@ -126,7 +129,13 @@ exports.openIO = function (io) {
         socket.on('AllowAllfromWaiting', (data) => {
             console.log("from WaitingList", data, joinMeetingSocket[data.meetingId].members.length)
 
-            if (joinMeetingSocket[data.meetingId].members.length > 0) {
+            if (joinMeetingSocket[data.meetingId].members.length > 0 && data.allow_all) {
+                for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
+                    socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
+                }
+                joinMeetingSocket[data.meetingId].members = [];
+                joinMeetingSocket[data.meetingId].allow_all = true;
+            } else {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
@@ -137,7 +146,7 @@ exports.openIO = function (io) {
         socket.on('CheckWaitList', (data) => {
             console.log("CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
             if (joinMeetingSocket[data.meetingId] !== undefined) {
-                if (joinMeetingSocket[data.meetingId].members.length > 0) {
+                if (joinMeetingSocket[data.meetingId].members.length > 0 && joinMeetingSocket[data.meetingId].allow_all === false) {
                     socketIO.to(socket.id).emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
                 }
             }
