@@ -94,21 +94,28 @@ exports.openIO = function (io) {
                     joinMeetingSocket[data.meetingId].members = [];
                 } else {
                     joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
+                    io.emit("person_waiting", {
+                        "meetingId": data.meetingId,
+                        "username": data.username,
+                        "role": "participant",
+                        "id": socket.socketId,
+                    });
                 }
             } else {
                 joinMeetingSocket[meetingId] = {
                     members: [{ id: socket.id, name: username }],
                     allow_all: false
                 }
-            }
-
-            if (!joinMeetingSocket[meetingId].allow_all) {
                 io.emit("person_waiting", {
                     "meetingId": data.meetingId,
                     "username": data.username,
                     "role": "participant",
                     "id": socket.socketId,
                 });
+            }
+
+            if (!joinMeetingSocket[meetingId].allow_all) {
+
             }
 
 
