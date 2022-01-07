@@ -114,11 +114,6 @@ exports.openIO = function (io) {
                 });
             }
 
-            if (!joinMeetingSocket[meetingId].allow_all) {
-
-            }
-
-
             console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
         })
 
