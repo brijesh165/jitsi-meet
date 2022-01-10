@@ -177,7 +177,7 @@ exports.openIO = function (io) {
         //     }
         // })
 
-        socket.on("disconnect", () => {
+        socket.on("disconnect", async () => {
             console.log("Disconnect", socket.isHost, meetingSockets, socket.meetingId, socket.id)
 
             if (socket.isHost != "host" && socket.meetingId) {
@@ -214,7 +214,7 @@ exports.openIO = function (io) {
 
                 delete joinMeetingSocket[socket.meetingId];
 
-                models.meetinglist.changeMeetingStatusByMeetingId({
+                await models.meetinglist.changeMeetingStatusByMeetingId({
                     status: "pending",
                     allow_all: false,
                     meeting_id: socket.meetingId
