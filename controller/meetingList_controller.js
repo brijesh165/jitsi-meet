@@ -219,7 +219,6 @@ exports.changeAllowAll = async (req, res) => {
  */
 exports.changeMeetingStatus = async (req, res) => {
     try {
-        console.log("Change Meeting Status Params : ", req.body);
         // const keyStatus = await axios.post("https://webservice.teamlocus.com/ChatBotService.svc/chatbotauthorize", { authkey: req.body.authkey });
         // console.log("Key Status: ", keyStatus.data);
         let meetingDetails = await models.meetinglist.getMeetingByMeetingId({ meeting_id: req.body.meeting_id });
@@ -231,6 +230,8 @@ exports.changeMeetingStatus = async (req, res) => {
             allow_all: false,
             meeting_id: req.body.meeting_id
         }
+        console.log("Change Meeting Status Params : ", req.body, params);
+
         await models.meetinglist.changeMeetingStatusByMeetingId(params);
 
         if (req.body.status === "pending") {
