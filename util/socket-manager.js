@@ -190,11 +190,9 @@ exports.openIO = function (io) {
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 console.log("Socket Meeting Id: ", socket.meetingId)
 
-                setTimeout(() => {
-                    socketIO.to(socket.meetingId).emit("end_meeting", {
-                        "meetingId": socket.meetingId
-                    })
-                }, 1000);
+                socketIO.to(socket.meetingId).emit("end_meeting", {
+                    "meetingId": socket.meetingId
+                })
 
 
                 delete joinMeetingSocket[socket.meetingId];
