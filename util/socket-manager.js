@@ -3,6 +3,14 @@ const moment = require('moment');
 
 let socketIO;
 
+function delay(t, val) {
+    return new Promise(function (resolve) {
+        setTimeout(function () {
+            resolve(val);
+        }, t);
+    });
+}
+
 exports.openIO = function (io) {
     socketIO = io;
     let meetingSockets = {};
@@ -194,6 +202,15 @@ exports.openIO = function (io) {
                     "meetingId": socket.meetingId
                 })
 
+                await delay(1000);
+                socketIO.to(socket.meetingId).emit("end_meeting", {
+                    "meetingId": socket.meetingId
+                })
+
+                await delay(1000);
+                socketIO.to(socket.meetingId).emit("end_meeting", {
+                    "meetingId": socket.meetingId
+                })
 
                 delete joinMeetingSocket[socket.meetingId];
 
