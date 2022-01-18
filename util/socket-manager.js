@@ -177,12 +177,11 @@ exports.openIO = function (io) {
         //     }
         // })
 
-        socket.on('end_meeting_for_waiting_member', () => {
+        socket.on('end_meeting_for_waiting_member', (data) => {
             console.log("========================================================================");
-            console.log("end Meeting for Waiting Members");
-            console.log("========================================================================");
-            socketIO.to(socket.meetingId).emit('end_meeting_for_waiting_member', {
-                "meetingId": socket.meetingId
+            console.log("end Meeting for Waiting Members", data);
+            socketIO.to(data.meetingId).emit('end_meeting_for_waiting_member', {
+                "meetingId": data.meetingId
             });
         })
 
