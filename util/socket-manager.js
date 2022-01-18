@@ -178,10 +178,12 @@ exports.openIO = function (io) {
         // })
 
         socket.on('end_meeting_for_waiting_member', () => {
-            console.log("====================================");
+            console.log("========================================================================");
             console.log("end Meeting for Waiting Members");
-            console.log("====================================");
-            socketIO.emit('end_meeting_for_waiting_member');
+            console.log("========================================================================");
+            socketIO.to(socket.meetingId).emit('end_meeting_for_waiting_member', {
+                "meetingId": socket.meetingId
+            });
         })
 
         socket.on("disconnect", async () => {
