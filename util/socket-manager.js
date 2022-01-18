@@ -180,9 +180,7 @@ exports.openIO = function (io) {
         socket.on('end_meeting_for_waiting_member', (data) => {
             console.log("========================================================================");
             console.log("end Meeting for Waiting Members", data, "socket.meetingId :", socket.meetingId);
-            socketIO.to(socket.meetingId).emit('end_meeting_for_waiting_member', {
-                "meetingId": socket.meetingId
-            });
+            socketIO.emit('end_meeting_for_waiting_member', data);
         })
 
         socket.on("disconnect", async () => {
