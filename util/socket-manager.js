@@ -180,6 +180,15 @@ exports.openIO = function (io) {
         socket.on("disconnect", async () => {
             console.log("Disconnect", socket.isHost, meetingSockets, socket.meetingId, socket.id)
 
+            socket.on('end_meeting_for_waiting_member', () => {
+                console.log("====================================");
+                console.log("end Meeting for Waiting Members");
+                console.log("====================================");
+                socketIO.to(socket.meetingId).emit('end_meeting_for_waiting_member', {
+                    "meetingId": socket.meetingId
+                });
+            })
+
             if (socket.isHost != "host" && socket.meetingId) {
                 try {
                     if (joinMeetingSocket[socket.meetingId] != null) {
@@ -197,13 +206,6 @@ exports.openIO = function (io) {
 
             if (socket.isHost == "host" && meetingSockets[socket.meetingId] == socket.id) {
                 console.log("Socket Meeting Id: ", socket.meetingId);
-
-                socket.on('end_meeting_for_waiting_member', () => {
-                    console.log("end Meeting for Waiting Members");
-                    socketIO.to(socket.meetingId).emit('end_meeting_for_waiting_member', {
-                        "meetingId": socket.meetingId
-                    });
-                })
 
                 socketIO.to(socket.meetingId).emit("end_meeting", {
                     "meetingId": socket.meetingId
