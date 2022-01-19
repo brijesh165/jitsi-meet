@@ -172,6 +172,7 @@ exports.openIO = function (io) {
         })
 
         socket.on('backToWaiting', (data) => {
+            console.log('backToWaiting :', data);
             const allowedMember = joinMeetingSocket[data.meetingId].members.find((item) => item.id === data.socketId);
             allowedMember.allowed = false;
 
