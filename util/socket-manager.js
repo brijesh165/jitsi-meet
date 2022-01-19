@@ -172,7 +172,10 @@ exports.openIO = function (io) {
         })
 
         socket.on('backToWaiting', (data) => {
-            console.log('from Client: ', data);
+            const allowedMember = joinMeetingSocket[data.meetingId].members.find((item) => item.id === data.socketId);
+            allowedMember.allowed = false;
+
+            socketIO.to(data.socketId).emit('sendToWaiting', data)
         })
 
         socket.on('end_meeting_for_waiting_member', (data) => {
