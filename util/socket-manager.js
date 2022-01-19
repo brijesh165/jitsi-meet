@@ -102,7 +102,7 @@ exports.openIO = function (io) {
                     socketIO.to(socket.socketId).emit('allowOneTrue');
                     joinMeetingSocket[data.meetingId].members = [];
                 } else {
-                    joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username })
+                    joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: false })
                     io.emit("person_waiting", {
                         "meetingId": data.meetingId,
                         "username": data.username,
@@ -112,7 +112,7 @@ exports.openIO = function (io) {
                 }
             } else {
                 joinMeetingSocket[meetingId] = {
-                    members: [{ id: socket.id, name: username }],
+                    members: [{ id: socket.id, name: username, allowed: false }],
                     allow_all: false
                 }
                 io.emit("person_waiting", {
@@ -127,15 +127,15 @@ exports.openIO = function (io) {
         })
 
         socket.on('allowOne', (data) => {
-            console.log('allowOne :', data)
-            const allowedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
-            console.log("Allowed Member: ", allowedMember);
+            console.log('allowOne :', data);
+            // const allowedMember = joinMeetingSocket[data.meetingId].members.length > 0 ? joinMeetingSocket[data.meetingId].members.find((item) => item.id == data.socketId) : false;
+            // console.log("Allowed Member: ", allowedMember);
 
-            if (allowedMember) {
-                const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
-                console.log("After Remove: ", afterRemove);
-                joinMeetingSocket[data.meetingId].members = afterRemove;
-            }
+            // if (allowedMember) {
+            //     const afterRemove = joinMeetingSocket[data.meetingId].members.filter((item) => item.id !== data.socketId);
+            //     console.log("After Remove: ", afterRemove);
+            //     joinMeetingSocket[data.meetingId].members = afterRemove;
+            // }
 
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
             socketIO.to(data.socketId).emit('allowOneTrue', data)
@@ -171,15 +171,6 @@ exports.openIO = function (io) {
         socket.on('backToWaiting', (data) => {
             console.log('from Client: ', data);
         })
-
-        // socket.on('canceledMembers', (data) => {
-        //     console.log("--------- canceledMembers: ", data);
-        //     console.log("joinMeetingSocket :", joinMeetingSocket[data.meetingId].members)
-        //     if (joinMeetingSocket[data.meetingId].members.length > 0) {
-        //         console.log("------------------ Length :", joinMeetingSocket[data.meetingId].members.length)
-        //         io.emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
-        //     }
-        // })
 
         socket.on('end_meeting_for_waiting_member', (data) => {
             console.log("========================================================================");
