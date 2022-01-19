@@ -136,7 +136,10 @@ exports.openIO = function (io) {
             //     console.log("After Remove: ", afterRemove);
             //     joinMeetingSocket[data.meetingId].members = afterRemove;
             // }
+            const allowedMember = joinMeetingSocket[data.meetingId].members.find((item) => item.id === data.socketId);
+            allowedMember.allowed = true;
 
+            console.log("Join Meeting Socket: ", joinMeetingSocket[data.meetingId]);
             console.log("Allow One Join Socket: ", joinMeetingSocket[data.meetingId].members);
             socketIO.to(data.socketId).emit('allowOneTrue', data)
 
