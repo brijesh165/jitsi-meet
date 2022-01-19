@@ -123,7 +123,7 @@ exports.openIO = function (io) {
                 });
             }
 
-            console.log(`joinMeetingSocket :`, joinMeetingSocket, joinMeetingSocket[meetingId].members, "Socket id", socket.id)
+            console.log(`joinMeetingSocket :`, joinMeetingSocket, "\n Members :", joinMeetingSocket[meetingId].members, "\n Socket id :", socket.id)
         })
 
         socket.on('allowOne', (data) => {
@@ -166,6 +166,10 @@ exports.openIO = function (io) {
                     socketIO.to(socket.id).emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
                 }
             }
+        })
+
+        socket.on('backToWaiting', (data) => {
+            console.log('from Client: ', data);
         })
 
         // socket.on('canceledMembers', (data) => {
