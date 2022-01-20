@@ -150,17 +150,17 @@ exports.openIO = function (io) {
 
             if (data.allow_all && joinMeetingSocket[data.meetingId].members.length > 0) {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
-                    joinMeetingSocket[data.meetingId].members[i].allowed = true;
-                    console.log('Allowed All :', joinMeetingSocket[data.meetingId].members);
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
                 joinMeetingSocket[data.meetingId].members = [];
                 joinMeetingSocket[data.meetingId].allow_all = true;
             } else {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
+                    joinMeetingSocket[data.meetingId].members[i].allowed = true;
+                    console.log('Allowed All :', joinMeetingSocket[data.meetingId].members);
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
-                joinMeetingSocket[data.meetingId].members = [];
+                // joinMeetingSocket[data.meetingId].members = [];
             }
         })
 
