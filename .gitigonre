@@ -1,5 +1,3 @@
-node_modules
-*.zip
+node_modules/
 .env
-build/
 sslcert/
