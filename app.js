@@ -13,6 +13,7 @@ let privateKey = fs.readFileSync('sslcert/wildcard_teamlocus_com.key', 'utf8');
 let certificate = fs.readFileSync('sslcert/b36c27178f57ff88.crt', 'utf8');
 let credentials = { key: privateKey, cert: certificate, ca: fs.readFileSync('sslcert/gd_bundle-g2-g1.crt') };
 
+
 const server = require('http').Server(app);
 const https = require('https');
 let httpsServer = https.createServer(credentials, app);
