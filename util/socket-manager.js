@@ -193,6 +193,7 @@ exports.openIO = function (io) {
         })
 
         socket.on('end_meeting_for_waiting_member', (data) => {
+            console.log('end_meeting_for_waiting_member :', data);
             socketIO.emit('end_meeting_for_waiting_member', data);
         })
 
