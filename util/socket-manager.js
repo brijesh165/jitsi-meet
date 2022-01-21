@@ -100,7 +100,7 @@ exports.openIO = function (io) {
                 console.log("Join Meeting Members: ", joinMeetingSocket[meetingId]);
                 if (joinMeetingSocket[meetingId].allow_all) {
                     joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
-                    console.log('Test ----------------------------------------------------- \n', joinMeetingSocket[meetingId].members)
+                    // console.log('Test ----------------------------------------------------- \n', joinMeetingSocket[meetingId].members)
                     socketIO.to(socket.socketId).emit('allowOneTrue');
                     // joinMeetingSocket[data.meetingId].members = [];
                 } else {
@@ -153,7 +153,7 @@ exports.openIO = function (io) {
             if (data.allow_all && joinMeetingSocket[data.meetingId].members.length > 0) {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     joinMeetingSocket[data.meetingId].members[i].allowed = true;
-                    console.log('Allow All Without Waiting:', joinMeetingSocket[data.meetingId].members);
+                    // console.log('Allow All Without Waiting:', joinMeetingSocket[data.meetingId].members);
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
                 // joinMeetingSocket[data.meetingId].members = [];
@@ -161,7 +161,7 @@ exports.openIO = function (io) {
             } else {
                 for (let i = 0; i < joinMeetingSocket[data.meetingId].members.length; i++) {
                     joinMeetingSocket[data.meetingId].members[i].allowed = true;
-                    console.log('Allow All :', joinMeetingSocket[data.meetingId].members);
+                    // console.log('Allow All :', joinMeetingSocket[data.meetingId].members);
                     socketIO.to(joinMeetingSocket[data.meetingId].members[i].id).emit('allowOneTrue')
                 }
                 // joinMeetingSocket[data.meetingId].members = [];
@@ -169,7 +169,7 @@ exports.openIO = function (io) {
         })
 
         socket.on('CheckWaitList', (data) => {
-            console.log("CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
+            console.log("--------------- CheckWaitList All Users : --------------- \n", joinMeetingSocket[data.meetingId])
             if (joinMeetingSocket[data.meetingId] !== undefined) {
                 if (joinMeetingSocket[data.meetingId].members.length > 0) {
                     socketIO.to(socket.id).emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
