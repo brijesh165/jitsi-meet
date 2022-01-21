@@ -170,7 +170,7 @@ exports.openIO = function (io) {
 
         socket.on('kickout', (data) => {
             console.log("Kick out: ", data);
-            socketIO.to(data.meetingId).emit("end_meeting", {
+            socketIO.to(data.socketId).emit("end_meeting", {
                 "meetingId": data.meetingId
             })
         })
