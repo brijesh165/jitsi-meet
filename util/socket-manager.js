@@ -171,7 +171,7 @@ exports.openIO = function (io) {
         socket.on('CheckWaitList', (data) => {
             console.log("CheckWaitList All Users : ---------------", joinMeetingSocket[data.meetingId])
             if (joinMeetingSocket[data.meetingId] !== undefined) {
-                if (joinMeetingSocket[data.meetingId].members.length > 0 && joinMeetingSocket[data.meetingId].allow_all === false) {
+                if (joinMeetingSocket[data.meetingId].members.length > 0) {
                     socketIO.to(socket.id).emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
                 }
             }
