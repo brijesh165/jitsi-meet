@@ -180,6 +180,8 @@ exports.openIO = function (io) {
             if (joinMeetingSocket[data.meetingId] !== undefined) {
                 if (joinMeetingSocket[data.meetingId].members.length > 0) {
                     socketIO.to(socket.id).emit('WaitingMembers', joinMeetingSocket[data.meetingId].members)
+                } else {
+                    socketIO.to(socket.id).emit('WaitingMembers', 'blank');
                 }
             }
         })
