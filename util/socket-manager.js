@@ -204,7 +204,10 @@ exports.openIO = function (io) {
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
             joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
-
+            const UniqueIdMembers = joinMeetingSocket[socket.meetingId].members.length > 0 && joinMeetingSocket[socket.meetingId].members.filter((item) => item.id !== socket.id);
+            if (UniqueIdMembers) {
+                joinMeetingSocket[socket.meetingId].members = UniqueIdMembers;
+            }
         })
 
         socket.on("disconnect", async () => {
