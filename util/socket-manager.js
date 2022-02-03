@@ -218,8 +218,8 @@ exports.openIO = function (io) {
             // console.log('Same Members :', isAdded);
             joinMeetingSocket[socket.meetingId].members = isAdded;
 
-            const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === id) : null;
-            console.log('Same Members :', SameMembers);
+            // const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id) : null;
+            // console.log('Same Members :', SameMembers);
 
         })
 
