@@ -218,7 +218,9 @@ exports.openIO = function (io) {
             // console.log('Same Members :', isAdded);
             joinMeetingSocket[socket.meetingId].members = isAdded;
 
-            // const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id) : null;
+            const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === member.id) : null;
+            console.log('Same Members :', SameMembers);
+
         })
 
         socket.on("disconnect", async () => {
