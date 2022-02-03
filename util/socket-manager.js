@@ -84,7 +84,6 @@ exports.openIO = function (io) {
             })
         })
 
-
         // Socket for waiting room
         socket.on('joinSocket', (data) => {
             console.log(`Join Socket Data :`, data)
@@ -197,6 +196,10 @@ exports.openIO = function (io) {
         socket.on('end_meeting_for_waiting_member', (data) => {
             console.log('end_meeting_for_waiting_member :', data);
             socketIO.emit('end_meeting_for_waiting_member', data);
+        })
+
+        socket.on('reconnectUser', (data) => {
+            console.log('reconnectUser :', data);
         })
 
         socket.on("disconnect", async () => {
