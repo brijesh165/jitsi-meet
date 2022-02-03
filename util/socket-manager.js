@@ -204,16 +204,11 @@ exports.openIO = function (io) {
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
             joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
-            const UniqueIdMembers = joinMeetingSocket[meetingId].members.length > 0 && joinMeetingSocket[meetingId].members.filter((item) => item.id !== socket.id);
-            const SameMembers = joinMeetingSocket[meetingId].members.length > 0 && joinMeetingSocket[meetingId].members.filter((item) => {
-                console.log('===============\nItems\n=============== :', item);
-                item.id === socket.id
-            }
-            );
+            const SameMembers = joinMeetingSocket[meetingId].members.length > 0 && joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id);
             // if (UniqueIdMembers) {
             //     joinMeetingSocket[socket.meetingId].members = UniqueIdMembers;
             // }
-            console.log('UniqueIdMembers :', UniqueIdMembers, '\nSame Members :', SameMembers);
+            console.log('Same Members :', SameMembers);
         })
 
         socket.on("disconnect", async () => {
