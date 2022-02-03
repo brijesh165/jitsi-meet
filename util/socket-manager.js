@@ -99,7 +99,6 @@ exports.openIO = function (io) {
                 console.log("Join Meeting Members: ", joinMeetingSocket[meetingId]);
                 if (joinMeetingSocket[meetingId].allow_all) {
                     joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
-                    // console.log('Test ----------------------------------------------------- \n', joinMeetingSocket[meetingId].members)
                     socketIO.to(socket.socketId).emit('allowOneTrue');
                     // joinMeetingSocket[data.meetingId].members = [];
                 } else {
@@ -204,11 +203,22 @@ exports.openIO = function (io) {
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
             joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
-            const SameMembers = joinMeetingSocket[meetingId].members.length > 0 && joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id);
-            // if (UniqueIdMembers) {
-            //     joinMeetingSocket[socket.meetingId].members = UniqueIdMembers;
-            // }
-            console.log('Same Members :', SameMembers);
+
+            let isAdded = [];
+            if (joinMeetingSocket[meetingId].members && joinMeetingSocket[meetingId].members.length > 0) {
+
+                for (let member of joinMeetingSocket[meetingId].members) {
+                    if (isAdded.map(item => item.id).includes(member.id)) {
+
+                    } else {
+                        isAdded.push(member);
+                    }
+                }
+            }
+
+
+            // const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id) : null;
+            console.log('Same Members :', isAdded);
         })
 
         socket.on("disconnect", async () => {
