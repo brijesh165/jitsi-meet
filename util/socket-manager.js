@@ -202,7 +202,8 @@ exports.openIO = function (io) {
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
-            console.log('All :', joinMeetingSocket[meetingId], '\nMembers :', joinMeetingSocket[meetingId].members)
+            console.log('All :', joinMeetingSocket[meetingId]);
+            console.log('Members :', joinMeetingSocket[meetingId].members)
             joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
 
             let isAdded = [];
