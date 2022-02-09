@@ -202,25 +202,26 @@ exports.openIO = function (io) {
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
-            joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
 
-            let isAdded = [];
-            if (joinMeetingSocket[meetingId].members && joinMeetingSocket[meetingId].members.length > 0) {
+            if (joinMeetingSocket[meetingId] !== undefined) {
+                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
 
-                for (let member of joinMeetingSocket[meetingId].members) {
-                    if (isAdded.map(item => item.id).includes(member.id)) {
+                let isAdded = [];
+                if (joinMeetingSocket[meetingId].members && joinMeetingSocket[meetingId].members.length > 0) {
 
-                    } else {
-                        isAdded.push(member);
+                    for (let member of joinMeetingSocket[meetingId].members) {
+                        if (isAdded.map(item => item.id).includes(member.id)) {
+
+                        } else {
+                            isAdded.push(member);
+                        }
                     }
                 }
+                joinMeetingSocket[socket.meetingId].members = isAdded;
             }
-            // console.log('Same Members :', isAdded);
-            joinMeetingSocket[socket.meetingId].members = isAdded;
 
             // const SameMembers = joinMeetingSocket[meetingId].members.length > 0 ? joinMeetingSocket[meetingId].members.filter((item) => item.id === socket.id) : null;
             // console.log('Same Members :', SameMembers);
-
         })
 
         socket.on("disconnect", async () => {
