@@ -202,11 +202,10 @@ exports.openIO = function (io) {
             const { meetingId, username } = data;
             socket.meetingId = meetingId;
             socket.socketId = socket.id;
-            joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
 
             let isAdded = [];
             if (joinMeetingSocket[meetingId].members && joinMeetingSocket[meetingId].members.length > 0) {
-
+                joinMeetingSocket[meetingId].members.push({ id: socket.id, name: username, allowed: true });
                 for (let member of joinMeetingSocket[meetingId].members) {
                     if (isAdded.map(item => item.id).includes(member.id)) {
 
