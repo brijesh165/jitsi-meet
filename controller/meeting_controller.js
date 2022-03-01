@@ -1029,9 +1029,10 @@ exports.deletemeeting = async (req, res) => {
 
 // Find a single Version with an id
 exports.getAppVersion = (req, res) => {
-    try {
-        return res.status(200).json({ status: 'success', data: '1.0.1' })
-    } catch (error) {
-        return res.status(404).json({ status: 'failed', data: error })
-    }
+    return res.status(200).json({ status: 'success', data: '1.0.1' });
+    // try {
+    //     return res.status(200).json({ status: 'success', data: '1.0.1' });
+    // } catch (error) {
+    //     return res.status(404).json({ status: 'failed', data: error });
+    // }
 };
