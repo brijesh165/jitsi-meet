@@ -9,8 +9,8 @@ const meeting = require('../models/meeting');
 exports.getUpcomingMeetings = async (req, res) => {
     try {
         console.log("Get All Meetings: ", req.body);
-        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v43.svc/calendararea_listjeetvideomeeting", req.body);
-        // const meetings = await axios.post("http://192.168.75.131:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("https://webservice.teamlocus.com/webservice_v44.svc/calendararea_listjeetvideomeeting", req.body);
+        // const meetings = await axios.post("http://192.168.75.131:91/WebService_v44.svc/calendararea_listjeetvideomeeting", req.body);
 
         console.log("Data: ", meetings.data)
 
@@ -140,7 +140,7 @@ exports.checkMeetingValidity = async (req, res) => {
  */
 exports.allMeetings = async (req, res) => {
     try {
-        // const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        // const meetings = await axios.post("http://192.168.75.132:91/WebService_v44.svc/calendararea_listjeetvideomeeting", req.body);
         // const meetings = await models.meeting.findAll({
         //     where: {
         //         meeting_host: req.body.username,
@@ -177,7 +177,7 @@ exports.allMeetings = async (req, res) => {
         //     webpage: "",
         //     meetings: meetings
         // })
-        const meetings = await axios.post("http://192.168.75.131:91/WebService_V43.svc/calendararea_listjeetvideomeeting", req.body);
+        const meetings = await axios.post("http://192.168.75.131:91/WebService_v44.svc/calendararea_listjeetvideomeeting", req.body);
         if (meetings.data.status == "error") {
             return res.send({
                 status: 401,
@@ -754,7 +754,6 @@ exports.startMeeting = async (req, res) => {
     }
 }
 
-
 /**
  * 
  * @param {*} meeting_id 
@@ -999,7 +998,7 @@ exports.deletemeeting = async (req, res) => {
     try {
         // console.log("Delete Meeting Params: ", req.body);
 
-        const meetings = await axios.post("http://192.168.75.132:91/WebService_V43.svc/calendar_deleteevent", req.body);
+        const meetings = await axios.post("http://192.168.75.132:91/WebService_v44.svc/calendar_deleteevent", req.body);
 
         // console.log("Delete Meeting: ", meetings);
 
@@ -1027,3 +1026,12 @@ exports.deletemeeting = async (req, res) => {
         });
     }
 }
+
+// Find a single Version with an id
+exports.getAppVersion = (req, res) => {
+    try {
+        return res.status(200).json({ status: 'success', data: '1.0.1' })
+    } catch (error) {
+        return res.status(404).json({ status: 'failed', data: error })
+    }
+};
