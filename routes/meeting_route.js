@@ -62,6 +62,6 @@ module.exports = function (app) {
 
   app.post('/add-logs', meetingController.addlogs)
 
-  app.get('/get-version', meetingController.getAppVersion);
+  // app.get('/get-version', meetingController.getAppVersion);
   // app.post('/run-schedule', scheduleManager.meetingStatusChange);
 }
