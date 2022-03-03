@@ -1029,5 +1029,5 @@ exports.deletemeeting = async (req, res) => {
 
 // Find a single Version with an id
 exports.getAppVersion = (req, res) => {
-    return res.status(200).json({ status: 'success', data: '2022.0.1' });
+    return res.status(200).json({ status: 'success', data: '2022.0.2' });
 };
